@@ -1,6 +1,6 @@
 package com.github.Ukasz09.applicationLogic.printer.paper;
 
-import com.github.Ukasz09.graphiceUserInterface.sprites.printerParts.PartDrawing;
+import com.github.Ukasz09.graphiceUserInterface.sprites.PartDrawing;
 import javafx.scene.image.Image;
 
 public class PrinterPaper {

@@ -5,7 +5,7 @@ import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
 import com.github.Ukasz09.applicationLogic.printer.paper.PrinterPaper;
 import com.github.Ukasz09.applicationLogic.printer.printOption.GrayPrint;
 import com.github.Ukasz09.applicationLogic.printer.printOption.PrintOption;
-import com.github.Ukasz09.graphiceUserInterface.sprites.printerParts.PartDrawing;
+import com.github.Ukasz09.graphiceUserInterface.sprites.PartDrawing;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printerParts.PrinterBodySprite;
 import javafx.scene.image.Image;
 

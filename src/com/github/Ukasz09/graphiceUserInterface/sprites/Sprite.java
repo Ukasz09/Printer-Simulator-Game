@@ -62,6 +62,7 @@ public abstract class Sprite {
             actualFramePositionX = 0;
             actualFramePositionY += spriteSheetProperties.getHeightOfOneFrame();
         }
+
     }
 
     public void update() {

@@ -1,7 +1,7 @@
 package com.github.Ukasz09.applicationLogic.printer.colorInks;
 
 
-import com.github.Ukasz09.graphiceUserInterface.sprites.printerParts.PartDrawing;
+import com.github.Ukasz09.graphiceUserInterface.sprites.PartDrawing;
 
 public class ColorInk {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

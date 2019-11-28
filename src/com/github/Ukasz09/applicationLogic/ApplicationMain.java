@@ -4,7 +4,8 @@ import com.github.Ukasz09.applicationLogic.printer.Printer;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.Background;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.RoomBackground;
-import com.github.Ukasz09.graphiceUserInterface.sprites.printerParts.PartDrawing;
+import com.github.Ukasz09.graphiceUserInterface.sprites.PartDrawing;
+import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.GlobeSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printerParts.PrinterBodySprite;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -16,7 +17,7 @@ import java.util.List;
 public class ApplicationMain extends Application {
     private final static String applicationTitle = "Printer Game Application";
 
-    private final boolean fullScreen=true;
+    private final boolean fullScreen = true;
 
     private ViewManager manager;
     private double elapsedTime;
@@ -33,7 +34,7 @@ public class ApplicationMain extends Application {
         lastNanoTime = System.nanoTime();
         itemsList = new ArrayList<>();
         addStartedItems();
-        printer=new Printer();
+        printer = new Printer();
     }
 
     @Override
@@ -59,7 +60,16 @@ public class ApplicationMain extends Application {
     }
 
     private void addStartedItems() {
+        addMachines();
+        addDecorations();
+    }
+
+    private void addMachines() {
         itemsList.add(new PrinterBodySprite());
+    }
+
+    private void addDecorations() {
+        itemsList.add(new GlobeSprite());
     }
 
     private void updateApplication() {
