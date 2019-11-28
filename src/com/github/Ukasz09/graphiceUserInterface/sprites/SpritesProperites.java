@@ -8,8 +8,8 @@ public class SpritesProperites {
         ImageSheetProperty sheetProperty = ImageSheetProperty.bulider()
                 .withImagePath(spritePath)
                 .withSizeOfOneFrame(256, 256)
-                .withDefaultDurationPerOneFrame(0)
-                .withAddActionState(PrinterState.STANDBY, 0, 1)
+                .withDefaultDurationPerOneFrame(10)
+                .withAddActionState(PrinterState.STANDBY, 0, 2)
                 .build();
         return sheetProperty;
     }

@@ -137,23 +137,27 @@ public class ImageSheetProperty {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    public Image getImage() {
-//        return imageSheet;
-//    }
-//
-//    public double getDurationPerFrame() {
-//        return durationPerFrame;
-//    }
-//
-//    public FrameStatePositions getAction(KindOfState kindOfAction) {
-//        return actionStates.get(kindOfAction);
-//    }
-//
-//    public double getWidthOfOneFrame() {
-//        return widthOfOneFrame;
-//    }
-//
-//    public double getHeightOfOneFrame() {
-//        return heightOfOneFrame;
-//    }
+    public Image getSheet() {
+        return imageSheet;
+    }
+
+    public double getDurationPerFrame() {
+        return durationPerFrame;
+    }
+
+    public FrameStatePositions getAction(KindOfState kindOfAction) {
+        return actionStates.get(kindOfAction);
+    }
+
+    public double getWidthOfOneFrame() {
+        return widthOfOneFrame;
+    }
+
+    public double getHeightOfOneFrame() {
+        return heightOfOneFrame;
+    }
+
+    public double getSheetWidth() {
+        return imageSheet.getWidth();
+    }
 }
