@@ -7,4 +7,9 @@ public class SoundsProperties {
         return new SoundsPlayer(musicPath, volume, true);
     }
 
+    public static SoundsPlayer catMeow(double volume) {
+        String musicPath = "src/resources/music/catMeow.mp3";
+        return new SoundsPlayer(musicPath, volume, false);
+    }
+
 }

@@ -1,5 +1,9 @@
 package com.github.Ukasz09.graphiceUserInterface;
 
+import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -7,6 +11,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -25,6 +32,7 @@ public class ViewManager {
     private Scene mainScene;
     private Canvas canvas;
     private GraphicsContext gc;
+    private Group root;
 
     private double rightFrameBorder;
     private double leftFrameBorder;
@@ -52,7 +60,7 @@ public class ViewManager {
         mainStage.setWidth(DEFAULT_GAME_FRAME_WIDTH);
         mainStage.setHeight(DEFAULT_GAME_FRAME_HEIGHT);
         mainStage.setFullScreen(fullScreen);
-        Group root = new Group();
+        root = new Group();
         mainScene = new Scene(root);
         mainStage.setScene(mainScene);
         canvas = new Canvas(mainStage.getWidth(), mainStage.getHeight());
@@ -113,6 +121,10 @@ public class ViewManager {
     private void translateCanvas(double offsetX, double offsetY) {
         canvas.setTranslateX(offsetX);
         canvas.setTranslateY(offsetY);
+    }
+
+    public void addImageViewAsNode(ImageView iv){
+        root.getChildren().add(iv);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

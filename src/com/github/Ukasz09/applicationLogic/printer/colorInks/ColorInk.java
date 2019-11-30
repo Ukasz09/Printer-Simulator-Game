@@ -1,8 +1,6 @@
 package com.github.Ukasz09.applicationLogic.printer.colorInks;
 
 
-import com.github.Ukasz09.graphiceUserInterface.sprites.PartDrawing;
-
 public class ColorInk {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                  Fields
@@ -11,18 +9,15 @@ public class ColorInk {
     private double incConsumption;
     private double defaultCapacity;
     private double actualCapacity;
-    private PartDrawing incSprite;
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                               Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public ColorInk(ColorEnum color, double incConsumption, double defaultCapacity, PartDrawing incSprite) {
+    public ColorInk(ColorEnum color, double incConsumption, double defaultCapacity) {
         this.color = color;
         this.incConsumption = incConsumption;
         this.defaultCapacity = defaultCapacity;
         actualCapacity = defaultCapacity;
-        this.incSprite = incSprite;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,5 +44,9 @@ public class ColorInk {
 
     public double getActualCapacity() {
         return actualCapacity;
+    }
+
+    public double getPercentageLevel() {
+        return actualCapacity / defaultCapacity*100;
     }
 }

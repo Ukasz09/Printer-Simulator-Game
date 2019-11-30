@@ -1,6 +1,6 @@
-package com.github.Ukasz09.graphiceUserInterface.sprites;
+package com.github.Ukasz09.graphiceUserInterface.sprites.properites;
 
-import com.github.Ukasz09.graphiceUserInterface.sprites.states.KindOfState;
+import com.github.Ukasz09.graphiceUserInterface.sprites.states.IKindOfState;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
@@ -14,7 +14,7 @@ public class ImageSheetProperty {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static final class Builder {
         private Image imageSheet;
-        private Map<KindOfState, FrameStatePositions> actionStates;
+        private Map<IKindOfState, FrameStatePositions> actionStates;
         private double widthOfOneFrame;
         private double heightOfOneFrame;
         private int maxAmountOfFramesInRow;
@@ -46,7 +46,7 @@ public class ImageSheetProperty {
             return this;
         }
 
-        public Builder withAddActionState(KindOfState state, int startedIndex, int amountOfFrames) {
+        public Builder withAddActionState(IKindOfState state, int startedIndex, int amountOfFrames) {
             this.actionStates.put(state, getFrameState(startedIndex, amountOfFrames));
             return this;
         }
@@ -82,7 +82,7 @@ public class ImageSheetProperty {
     private static final double DEFAULT_DURATION_PER_FRAME = 3;
 
     private Image imageSheet;
-    private Map<KindOfState, FrameStatePositions> actionStates;
+    private Map<IKindOfState, FrameStatePositions> actionStates;
     private double widthOfOneFrame;
     private double heightOfOneFrame;
     private double durationPerFrame;
@@ -145,7 +145,7 @@ public class ImageSheetProperty {
         return durationPerFrame;
     }
 
-    public FrameStatePositions getAction(KindOfState kindOfAction) {
+    public FrameStatePositions getAction(IKindOfState kindOfAction) {
         return actionStates.get(kindOfAction);
     }
 

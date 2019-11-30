@@ -5,8 +5,6 @@ import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
 import com.github.Ukasz09.applicationLogic.printer.paper.PrinterPaper;
 import com.github.Ukasz09.applicationLogic.printer.printOption.GrayPrint;
 import com.github.Ukasz09.applicationLogic.printer.printOption.PrintOption;
-import com.github.Ukasz09.graphiceUserInterface.sprites.PartDrawing;
-import com.github.Ukasz09.graphiceUserInterface.sprites.printerParts.PrinterBodySprite;
 import javafx.scene.image.Image;
 
 import java.util.*;
@@ -15,26 +13,23 @@ public class Printer {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                  Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final double DEFAULT_INC_CAPACITY = 50;
+    private static final double DEFAULT_INC_CAPACITY = 40;
     private static final int DEFAULT_AMOUNT_OF_SHEETS = 10;
-    private final ColorEnum[] defaultIncColors = {ColorEnum.BLACK, ColorEnum.MULTICOLOR};
+    private final ColorEnum[] defaultIncColors = {ColorEnum.BLUE, ColorEnum.RED, ColorEnum.YEALLOW, ColorEnum.BLACK};
 
     private List<PrintOption> printOptionList;
     private Map<ColorEnum, ColorInk> printerIncs;
-    private List<PartDrawing> printerParts;
     private Deque<PrinterPaper> notTakenPrintedPages;
-    private int avaliablePaperSheets;
+    private int availablePaperSheets;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                               Constructors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Printer() {
-        printerIncs = new HashMap<>();
+        printerIncs = new LinkedHashMap<>();
         addDefaultIncs();
-        printerParts = new ArrayList<>();
-        addDefaultParts();
         notTakenPrintedPages = new LinkedList<>();
-        avaliablePaperSheets = DEFAULT_AMOUNT_OF_SHEETS;
+        availablePaperSheets = DEFAULT_AMOUNT_OF_SHEETS;
         printOptionList = new ArrayList<>();
     }
 
@@ -44,11 +39,7 @@ public class Printer {
     //todo: tmp null
     private void addDefaultIncs() {
         for (ColorEnum color : defaultIncColors)
-            printerIncs.put(color, new ColorInk(color, color.getDefaultIncConsumption(), DEFAULT_INC_CAPACITY, null));
-    }
-
-    private void addDefaultParts() {
-        printerParts.add(new PrinterBodySprite());
+            printerIncs.put(color, new ColorInk(color, color.getDefaultIncConsumption(), DEFAULT_INC_CAPACITY));
     }
 
     private void addDefaultOptions() {
@@ -60,7 +51,7 @@ public class Printer {
     }
 
     public void refillAvaliablePaper(int amount) {
-        avaliablePaperSheets += amount;
+        availablePaperSheets += amount;
     }
 
     private Image setPropertiesToImage(Image imageToPrint) {
@@ -71,25 +62,47 @@ public class Printer {
         return imageWithProperites;
     }
 
-    public boolean printImage(Image imageToPrint, ColorEnum color, int amountOfCopy) {
-        if (!isEnoughtOfInc(color) || imageToPrint == null || amountOfCopy <= 0 || avaliablePaperSheets < amountOfCopy)
+    public boolean printImage(Image imageToPrint, boolean multicolor, int amountOfCopy) {
+        if ((multicolor && !isEnoughMulticolorInc()) || imageToPrint == null || amountOfCopy <= 0 || availablePaperSheets < amountOfCopy)
             return false;
 
         Image imageWithProperties = setPropertiesToImage(imageToPrint);
         for (int i = 0; i < amountOfCopy; i++) {
-            notTakenPrintedPages.push(new PrinterPaper(imageWithProperties, null));
-            printerIncs.get(color).shrinkActualInkCapacity();
+            notTakenPrintedPages.push(new PrinterPaper(imageWithProperties));
+            shrinkIncCapacity(multicolor);
         }
         return true;
     }
 
-    private boolean isEnoughtOfInc(ColorEnum colorEnum) {
+    private boolean isEnoughMulticolorInc() {
+        return (isEnoughOfInc(ColorEnum.RED) && isEnoughOfInc(ColorEnum.BLUE) && isEnoughOfInc(ColorEnum.YEALLOW));
+    }
+
+    private boolean isEnoughOfInc(ColorEnum colorEnum) {
         ColorInk ink = printerIncs.get(colorEnum);
         if (ink == null)
             return false;
         return (ink.getActualCapacity() >= ink.getIncConsumption());
 
     }
+
+    private void shrinkIncCapacity(boolean multicolor) {
+        if (multicolor)
+            shrinkMulticolorCapacity();
+        else shrinkBlackColorCapacity();
+    }
+
+    private void shrinkMulticolorCapacity() {
+        shrinkBlackColorCapacity();
+        printerIncs.get(ColorEnum.RED).shrinkActualInkCapacity();
+        printerIncs.get(ColorEnum.YEALLOW).shrinkActualInkCapacity();
+        printerIncs.get(ColorEnum.BLUE).shrinkActualInkCapacity();
+    }
+
+    private void shrinkBlackColorCapacity() {
+        printerIncs.get(ColorEnum.BLACK).shrinkActualInkCapacity();
+    }
+
 
     public void takePrintedPages(int amount) {
         if (notTakenPrintedPages.size() <= amount)
@@ -100,15 +113,8 @@ public class Printer {
         }
     }
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //todo: tmp (?)
-    public double getColorCapacity(ColorEnum color) {
-        ColorInk colorInk = printerIncs.get(color);
-        if (colorInk == null)
-            throw new NullPointerException("This color ink dont exist in this printer");
-        return colorInk.getActualCapacity();
+    public Map<ColorEnum, ColorInk> getPrinterIncs() {
+        return printerIncs;
     }
-
-
 }

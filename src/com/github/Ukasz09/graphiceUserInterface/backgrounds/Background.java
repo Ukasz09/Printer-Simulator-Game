@@ -1,26 +1,41 @@
 package com.github.Ukasz09.graphiceUserInterface.backgrounds;
 
-import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
+import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public abstract class Background {
     private Image backgroundImage;
     private SoundsPlayer backgroundSound;
     private boolean backgroundSoundIsPlaying;
     private ViewManager manager;
+    private double floorHeight;
+    private Color floorColor;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Background(Image backgroundImage, SoundsPlayer backgroundSound) {
+    public Background(Image backgroundImage, double floorHeight, Color floorColor, SoundsPlayer backgroundSound) {
         this.backgroundImage = backgroundImage;
         this.backgroundSound = backgroundSound;
+        this.floorColor = floorColor;
         manager = ViewManager.getInstance();
         backgroundSoundIsPlaying = false;
+        this.floorHeight = floorHeight;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void render() {
         drawBackground();
+        drawFloor();
+    }
+
+    private void drawBackground() {
+        manager.getGraphicContext().drawImage(backgroundImage, 0, 0);
+    }
+
+    private void drawFloor() {
+        manager.setFillColor(floorColor);
+        manager.getGraphicContext().fillRect(0, manager.getBottomFrameBorder() - floorHeight, manager.getRightFrameBorder(), floorHeight);
     }
 
     public void playBackgroundSound() {
@@ -35,12 +50,12 @@ public abstract class Background {
         }
     }
 
-    private void drawBackground() {
-        manager.getGraphicContext().drawImage(backgroundImage, 0, 0);
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void setBackgroundImage(Image backgroundImage) {
         this.backgroundImage = backgroundImage;
+    }
+
+    public double getFloorHeight() {
+        return floorHeight;
     }
 }

@@ -1,79 +1,74 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites;
 
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public abstract class Sprite {
-    private ViewManager manager;
+    protected ViewManager manager;
+    private Image spriteImage;
+    protected ImageView spriteImageView;
+    protected double positionX;
+    protected double positionY;
+    protected double width;
+    protected double height;
 
-    private double positionX;
-    private double positionY;
-    private double width;
-    private double height;
-
-    private ImageSheetProperty spriteSheetProperties;
-    private double remainingTimeOnActualFrame;
-    private double actualFramePositionY;
-    private double actualFramePositionX;
-    private FrameStatePositions actualState;
-
-    //todo: dac bulidera pozniej
-    public Sprite(ImageSheetProperty spriteSheetProperties, double width, double height, FrameStatePositions actualState) {
-        this.spriteSheetProperties = spriteSheetProperties;
-        this.actualState = actualState;
+    public Sprite(Image spriteImage, double width, double height) {
+        this.spriteImage = spriteImage;
         this.width = width;
         this.height = height;
         positionX = 0;
         positionY = 0;
         manager = ViewManager.getInstance();
-        remainingTimeOnActualFrame = 0;
-        actualFramePositionX = 0;
-        actualFramePositionY = 0;
     }
 
-    private void updateSpriteSheetFrame() {
-        updateRemainingTimeOnFrame();
-        if (needToChangeFrame()) {
-            setPositionOfNextFrame(actualState.getMinX(), actualState.getMaxX(), actualState.getMinY(), actualState.getMaxY(), spriteSheetProperties.getSheetWidth()); //todo: tmp
-            restoreRemainingTimeOnFrame();
-        }
+    public void makeAndAddImageViewToRoot() {
+        makeImageView();
+        addImageViewToRoot();
     }
 
-    private void updateRemainingTimeOnFrame() {
-        remainingTimeOnActualFrame -= 1;
+
+    protected void addEventHandler(EventType eventType, EventHandler eventHandler) {
+        spriteImageView.addEventHandler(eventType, eventHandler);
     }
 
-    private boolean needToChangeFrame() {
-        return (remainingTimeOnActualFrame <= 0);
+    protected void makeImageView() {
+        spriteImageView = new ImageView(spriteImage);
+        setImageViewPosition(positionX, positionY);
+        setImageViewSize(width, height);
+        spriteImageView.setVisible(true);
     }
 
-    private void restoreRemainingTimeOnFrame() {
-        remainingTimeOnActualFrame = spriteSheetProperties.getDurationPerFrame();
+    protected void setImageViewPosition(double positionX, double positionY) {
+        spriteImageView.setX(positionX);
+        spriteImageView.setY(positionY);
     }
 
-    private void setPositionOfNextFrame(double minXPosition, double maxXPosition, double minYPosition, double maxYPosition, double sheetWidth) {
-        //Finished one cycle
-        actualFramePositionX += spriteSheetProperties.getWidthOfOneFrame();
-        if (actualFramePositionX >= maxXPosition && actualFramePositionY >= maxYPosition) {
-            actualFramePositionX = minXPosition;
-            actualFramePositionY = minYPosition;
-        }
-        //Steped out of sheet
-        else if (actualFramePositionX >= sheetWidth) {
-            actualFramePositionX = 0;
-            actualFramePositionY += spriteSheetProperties.getHeightOfOneFrame();
-        }
-
+    protected void setImageViewSize(double width, double height) {
+        spriteImageView.setFitWidth(width);
+        spriteImageView.setFitHeight(height);
     }
+
+    private void addImageViewToRoot() {
+        manager.addImageViewAsNode(spriteImageView);
+    }
+
 
     public void update() {
-        updateSpriteSheetFrame();
+        updateImageView();
+    }
+
+    private void updateImageView() {
+        if (spriteImageView != null) {
+            setImageViewPosition(positionX, positionY);
+            setImageViewSize(width, height);
+        }
     }
 
     public void render() {
-        double widthOfOneFrame = spriteSheetProperties.getWidthOfOneFrame();
-        double heightOfOneFrame = spriteSheetProperties.getHeightOfOneFrame();
-        manager.getGraphicContext().drawImage(spriteSheetProperties.getSheet(), actualFramePositionX, actualFramePositionY,
-                widthOfOneFrame, heightOfOneFrame, positionX, positionY, width, height);
+        manager.getGraphicContext().drawImage(spriteImage, positionX, positionY, width, height);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +77,19 @@ public abstract class Sprite {
         this.positionY = positionY;
     }
 
-    public ViewManager getManager() {
-        return manager;
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
     }
 }

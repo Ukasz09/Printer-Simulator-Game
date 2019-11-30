@@ -1,4 +1,4 @@
-package com.github.Ukasz09.graphiceUserInterface.sprites;
+package com.github.Ukasz09.graphiceUserInterface.sprites.properites;
 
 public class FrameStatePositions {
     private double minX;

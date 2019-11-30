@@ -1,5 +1,5 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.states;
 
-public enum PrinterState implements KindOfState {
+public enum PrinterState implements IKindOfState {
     STANDBY, PRINT
 }
