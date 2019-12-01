@@ -14,7 +14,7 @@ public class Printer {
     //                                                  Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final double DEFAULT_INC_CAPACITY = 40;
-    private static final int DEFAULT_AMOUNT_OF_SHEETS = 10;
+    private static final int DEFAULT_AMOUNT_OF_SHEETS =2;
     private final ColorEnum[] defaultIncColors = {ColorEnum.BLUE, ColorEnum.RED, ColorEnum.YEALLOW, ColorEnum.BLACK};
 
     private List<PrintOption> printOptionList;
@@ -50,7 +50,7 @@ public class Printer {
         printerIncs.get(color).refillInc();
     }
 
-    public void refillAvaliablePaper(int amount) {
+    public void refillAvailablePaper(int amount) {
         availablePaperSheets += amount;
     }
 
@@ -63,19 +63,28 @@ public class Printer {
     }
 
     public boolean printImage(Image imageToPrint, boolean multicolor, int amountOfCopy) {
-        if ((multicolor && !isEnoughMulticolorInc()) || imageToPrint == null || amountOfCopy <= 0 || availablePaperSheets < amountOfCopy)
+        if (!isEnoughOfRequiredColors(multicolor) || imageToPrint == null || amountOfCopy <= 0 || availablePaperSheets < amountOfCopy)
             return false;
 
         Image imageWithProperties = setPropertiesToImage(imageToPrint);
         for (int i = 0; i < amountOfCopy; i++) {
             notTakenPrintedPages.push(new PrinterPaper(imageWithProperties));
             shrinkIncCapacity(multicolor);
+            availablePaperSheets--;
         }
         return true;
     }
 
+    private boolean isEnoughOfRequiredColors(boolean multicolor) {
+        if ((multicolor && !isEnoughMulticolorInc()) || (!multicolor && !isEnoughOfInc(ColorEnum.BLACK)))
+            return false;
+        return true;
+    }
+
+
     private boolean isEnoughMulticolorInc() {
-        return (isEnoughOfInc(ColorEnum.RED) && isEnoughOfInc(ColorEnum.BLUE) && isEnoughOfInc(ColorEnum.YEALLOW));
+        return (isEnoughOfInc(ColorEnum.RED) && isEnoughOfInc(ColorEnum.BLUE) &&
+                isEnoughOfInc(ColorEnum.YEALLOW) & isEnoughOfInc(ColorEnum.BLACK));
     }
 
     private boolean isEnoughOfInc(ColorEnum colorEnum) {
@@ -116,5 +125,9 @@ public class Printer {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Map<ColorEnum, ColorInk> getPrinterIncs() {
         return printerIncs;
+    }
+
+    public int getAvailablePaperSheets() {
+        return availablePaperSheets;
     }
 }

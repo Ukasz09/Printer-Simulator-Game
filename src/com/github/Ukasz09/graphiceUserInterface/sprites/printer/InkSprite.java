@@ -2,10 +2,7 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.printer;
 
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
 import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
-import javafx.event.Event;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 
@@ -27,6 +24,7 @@ public class InkSprite extends Sprite {
         this.colorInk = colorInk;
         statusBar = new CapacityStatusBar(DEFAULT_HEIGHT);
         makeAndAddImageViewToRoot();
+        addEventHandler();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +60,7 @@ public class InkSprite extends Sprite {
 
      void addEventHandler() {
       addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
-         colorInk.shrinkActualInkCapacity();
+         colorInk.refillInc();
       });
     }
 }

@@ -13,23 +13,23 @@ public class ImagesProperties {
         return new Image(imagePath);
     }
 
-    public static Image printerFullSprite() {
-        String imagePath = "\\resources\\images\\printer\\printerFull.png";
-        return new Image(imagePath);
-    }
+//    public static Image printerFullSprite() {
+//        String imagePath = "\\resources\\images\\printer\\printerFull.png";
+//        return new Image(imagePath);
+//    }
 
     public static Image printerBodySprite() {
         String imagePath = "\\resources\\images\\printer\\printerBody.png";
         return new Image(imagePath);
     }
 
-    public static Image flowerSprite() {
-        String imagePath = "\\resources\\images\\decorations\\flower.png";
+    public static Image printerSalverSprite(){
+        String imagePath = "\\resources\\images\\printer\\salver.png";
         return new Image(imagePath);
     }
 
-    public static Image inksBackgroundSprite() {
-        String imagePath = "\\resources\\images\\decorations\\inkBackground.png";
+    public static Image flowerSprite() {
+        String imagePath = "\\resources\\images\\decorations\\flower.png";
         return new Image(imagePath);
     }
 
@@ -62,5 +62,14 @@ public class ImagesProperties {
     public static Image schemeSpriteForAnimatedImageView() {
         String imagePath = "\\resources\\images\\decorations\\testedForImageView.png";
         return new Image(imagePath);
+    }
+
+    public static Image[] zingsImages() {
+        String zingsPrefixPath = "\\resources\\images\\superZings\\zings";
+        Image[] zingsImages = new Image[4];
+        //todo: tmp
+        for (int i = 0; i < zingsImages.length; i++ )
+            zingsImages[i] = new Image(zingsPrefixPath + (i + 1) + ".png");
+        return zingsImages;
     }
 }

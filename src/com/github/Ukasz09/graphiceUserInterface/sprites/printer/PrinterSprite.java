@@ -4,22 +4,27 @@ import com.github.Ukasz09.applicationLogic.printer.Printer;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
 import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
-import javafx.event.Event;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 public class PrinterSprite extends Sprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                                  Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final static Image DEFAULT_PRINTER_IMAGE = ImagesProperties.printerFullSprite();
+    private final static Image DEFAULT_PRINTER_IMAGE = ImagesProperties.printerBodySprite();
     private final static double DEFAULT_WIDTH = 280;
-    private final static double DEFAULT_HEIGHT = 212;
+    private final static double DEFAULT_HEIGHT = 180;
     private final static double DEFAULT_SPACE_BETWEEN_INKS = 20;
 
     private Printer printer;
     private ArrayList<InkSprite> inkSpriteList;
+    private ArrayList<WhitePaperSprite> availablePapersList;
+    private PrinterSalver printerSalver;
+    private boolean isInPrintingTime;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                               Constructors
@@ -27,10 +32,16 @@ public class PrinterSprite extends Sprite {
     public PrinterSprite() {
         super(DEFAULT_PRINTER_IMAGE, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         printer = new Printer();
+        printerSalver = new PrinterSalver(width, height);
         inkSpriteList = new ArrayList<>();
         addInkSprites();
         setInkBoxesPosition(DEFAULT_SPACE_BETWEEN_INKS);
-        addEventHandlersToInks();
+        availablePapersList = new ArrayList<>();
+        isInPrintingTime = false;
+        addAvailablePaperSprite();
+
+        makeAndAddImageViewToRoot();
+        addEventHandler();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,6 +51,11 @@ public class PrinterSprite extends Sprite {
         printer.getPrinterIncs().forEach((k, v) -> {
             inkSpriteList.add(new InkSprite(getInkImageByColor(k), v));
         });
+    }
+
+    private void addAvailablePaperSprite() {
+        for (int i = 0; i < printer.getAvailablePaperSheets(); i++)
+            availablePapersList.add(new WhitePaperSprite());
     }
 
     private void setInkBoxesPosition(double spaceBetweenInks) {
@@ -66,16 +82,12 @@ public class PrinterSprite extends Sprite {
         }
     }
 
-    //todo tmp
-    private void addEventHandlersToInks() {
-        for (InkSprite inkSprite : inkSpriteList)
-            inkSprite.addEventHandler();
-    }
-
     @Override
     public void render() {
         super.render();
         renderInks();
+        renderPrinterSalver();
+        renderAvailablePapers();
     }
 
     private void renderInks() {
@@ -83,18 +95,95 @@ public class PrinterSprite extends Sprite {
             colorInk.render();
     }
 
+    private void renderPrinterSalver() {
+        printerSalver.render();
+    }
+
+    private void renderAvailablePapers() {
+        ListIterator<WhitePaperSprite> iterator = availablePapersList.listIterator(availablePapersList.size());
+        while (iterator.hasPrevious())
+            iterator.previous().render();
+    }
+
     @Override
     public void update() {
         super.update();
         updateColorInks();
+        updatePrinterSaver();
+        updateAddedNewPapers();
+        updateAvailablePapers();
 
-//        //todo: tmp
-//        printer.printImage(ImagesProperties.deskSprite(), true, 1);
+        System.out.println("Papers:" + availablePapersList.size());
     }
 
     private void updateColorInks() {
         for (InkSprite colorInk : inkSpriteList) {
             colorInk.update();
         }
+    }
+
+    private void updatePrinterSaver() {
+        printerSalver.update();
+    }
+
+    private void updateAddedNewPapers() {
+        if (amountOfAddedNewPapers() > 0)
+            addNewWhitePapers();
+    }
+
+    private void addNewWhitePapers() {
+        for (int i = 0; i < amountOfAddedNewPapers(); i++) {
+            WhitePaperSprite newPaper=new WhitePaperSprite();
+            setPositionOfWhitePaper(newPaper);
+            availablePapersList.add(newPaper);
+            printer.refillAvailablePaper(1);
+        }
+        printerSalver.clearAmountOfNewPapers();
+    }
+
+    private int amountOfAddedNewPapers() {
+        return printerSalver.getAmountOfAddedNewPapers();
+    }
+
+    private void updateAvailablePapers() {
+        Iterator<WhitePaperSprite> iterator = availablePapersList.iterator();
+        while (iterator.hasNext()) {
+            WhitePaperSprite paper = iterator.next();
+            paper.update();
+            if (paper.canBeRemoved()) {
+                isInPrintingTime = false;
+                iterator.remove();
+            }
+        }
+    }
+
+    public void print(Image image, boolean multicolor, int amountOfCopy) {
+        if (!isInPrintingTime)
+            if (printer.printImage(image, multicolor, amountOfCopy)) {
+                availablePapersList.get(0).usePaperInPrinter();
+                isInPrintingTime = true;
+            }
+    }
+
+    @Override
+    public void setPosition(double positionX, double positionY) {
+        super.setPosition(positionX, positionY);
+        printerSalver.setPosition(positionX, positionY);
+        setPositionAvailablePapers();
+    }
+
+    private void setPositionAvailablePapers() {
+        for (WhitePaperSprite paper : availablePapersList)
+            setPositionOfWhitePaper(paper);
+    }
+
+    private void setPositionOfWhitePaper(WhitePaperSprite paper) {
+        paper.setPosition(printerSalver.getPositionX(), printerSalver.getPositionY(), printerSalver.getWidth(), printerSalver.getHeight());
+    }
+
+    private void addEventHandler() {
+        addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            print(ImagesProperties.blackInkSprite(), true, 1); //todo: tmp
+        });
     }
 }

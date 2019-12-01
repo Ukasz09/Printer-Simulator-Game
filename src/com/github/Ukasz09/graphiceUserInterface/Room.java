@@ -13,7 +13,7 @@ public class Room {
     private ViewManager manager;
     private Background background;
     private Map<DecorationsEnum, Sprite> decorations;
-    private PrinterSprite printer;
+    private PrinterSprite printerSprite;
 
     public Room() {
         manager = ViewManager.getInstance();
@@ -21,7 +21,7 @@ public class Room {
         decorations = new LinkedHashMap<>();
         addDefaultDecorations();
         setPositionsOfDecorations();
-        printer = new PrinterSprite();
+        printerSprite = new PrinterSprite();
         setPrinterPosition();
     }
 
@@ -31,6 +31,7 @@ public class Room {
         decorations.put(DecorationsEnum.DESK, new DeskSprite());
         decorations.put(DecorationsEnum.CAT, new CatSprite());
         decorations.put(DecorationsEnum.FLOWER, new FlowerSprite());
+        decorations.put(DecorationsEnum.POSTER, new ZingsPosterSprite());
     }
 
     private void setPositionsOfDecorations() {
@@ -40,6 +41,7 @@ public class Room {
         }
         setCatPosition();
         setFlowerPosition();
+        setPosterPosition();
     }
 
     private boolean setDeskPosition() {
@@ -83,18 +85,28 @@ public class Room {
     }
 
     private boolean setPrinterPosition() {
-        if (printer == null)
+        if (printerSprite == null)
             return false;
         Sprite desk = decorations.get(DecorationsEnum.DESK);
-        double positionX = desk.getPositionX() + desk.getWidth()*0.95 - printer.getWidth();
-        double positionY = desk.getPositionY() - printer.getHeight();
-        printer.setPosition(positionX, positionY);
+        double positionX = desk.getPositionX() + desk.getWidth() * 0.95 - printerSprite.getWidth();
+        double positionY = desk.getPositionY() - printerSprite.getHeight();
+        printerSprite.setPosition(positionX, positionY);
+        return true;
+    }
+
+    private boolean setPosterPosition() {
+        Sprite poster = decorations.get(DecorationsEnum.POSTER);
+        if (poster == null)
+            return false;
+        double positionX, positionY;
+        positionX = positionY = ZingsPosterSprite.FRAME_THICKNESS * 2;
+        poster.setPosition(positionX, positionY);
         return true;
     }
 
     public void update() {
         updateDecorations();
-        printer.update();
+        printerSprite.update();
     }
 
     private void updateDecorations() {
@@ -104,7 +116,7 @@ public class Room {
     public void render() {
         background.render();
         renderDecorations();
-        printer.render();
+        printerSprite.render();
     }
 
     private void renderDecorations() {

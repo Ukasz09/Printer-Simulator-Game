@@ -29,7 +29,6 @@ public abstract class Sprite {
         addImageViewToRoot();
     }
 
-
     protected void addEventHandler(EventType eventType, EventHandler eventHandler) {
         spriteImageView.addEventHandler(eventType, eventHandler);
     }
@@ -39,6 +38,7 @@ public abstract class Sprite {
         setImageViewPosition(positionX, positionY);
         setImageViewSize(width, height);
         spriteImageView.setVisible(true);
+        spriteImageView.setOpacity(0);
     }
 
     protected void setImageViewPosition(double positionX, double positionY) {
@@ -54,7 +54,6 @@ public abstract class Sprite {
     private void addImageViewToRoot() {
         manager.addImageViewAsNode(spriteImageView);
     }
-
 
     public void update() {
         updateImageView();
@@ -91,5 +90,13 @@ public abstract class Sprite {
 
     public double getPositionY() {
         return positionY;
+    }
+
+    protected void setSpriteImage(Image spriteImage) {
+        this.spriteImage = spriteImage;
+    }
+
+    public Image getSpriteImage() {
+        return spriteImage;
     }
 }
