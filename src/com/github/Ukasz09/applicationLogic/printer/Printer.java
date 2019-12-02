@@ -21,6 +21,7 @@ public class Printer {
     private Map<ColorEnum, ColorInk> printerIncs;
     private Deque<PrinterPaper> notTakenPrintedPages;
     private int availablePaperSheets;
+    private boolean isInPrintingTime;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                               Constructors
@@ -31,6 +32,7 @@ public class Printer {
         notTakenPrintedPages = new LinkedList<>();
         availablePaperSheets = DEFAULT_AMOUNT_OF_SHEETS;
         printOptionList = new ArrayList<>();
+        isInPrintingTime=false;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,6 +125,16 @@ public class Printer {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    public boolean isInPrintingTime() {
+        return isInPrintingTime;
+    }
+
+    public void setInPrintingTime(boolean inPrintingTime) {
+        isInPrintingTime = inPrintingTime;
+    }
+
     public Map<ColorEnum, ColorInk> getPrinterIncs() {
         return printerIncs;
     }

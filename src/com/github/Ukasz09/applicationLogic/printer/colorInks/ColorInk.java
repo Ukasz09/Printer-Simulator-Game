@@ -47,6 +47,6 @@ public class ColorInk {
     }
 
     public double getPercentageLevel() {
-        return actualCapacity / defaultCapacity*100;
+        return actualCapacity / defaultCapacity * 100;
     }
 }
