@@ -85,4 +85,4 @@ notUsedSprites/**
 imagesProjects/**
 *.iml
 .idea/**
-*/diagrams
+diagrams/

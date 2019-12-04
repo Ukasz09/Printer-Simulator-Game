@@ -3,7 +3,11 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.printer;
 import com.github.Ukasz09.applicationLogic.printer.Printer;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
 import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.PaperGraphic;
+import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.ImagePaperGraphic;
+import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.WhitePaperGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
@@ -23,8 +27,8 @@ public class PrinterSprite extends Sprite {
     private Printer printer;
 
     private ArrayList<InkSprite> inkSpriteList;
-    private ArrayList<WhitePaperSprite> availablePapersList;
-    private ArrayList<ImagePaperSprite> printedImageList;
+    private ArrayList<WhitePaperGraphic> availablePapersList;
+    private ArrayList<ImagePaperGraphic> printedImageList;
 
     private PrinterSalver printerUpSalver;
     private PrinterSalver printerDownSalver;
@@ -63,7 +67,7 @@ public class PrinterSprite extends Sprite {
 
     private void addAvailablePaperSprite() {
         for (int i = 0; i < printer.getAvailablePaperSheets(); i++)
-            availablePapersList.add(new WhitePaperSprite());
+            availablePapersList.add(new WhitePaperGraphic());
     }
 
     private void setInkBoxesPosition(double spaceBetweenInks) {
@@ -115,18 +119,18 @@ public class PrinterSprite extends Sprite {
         printerDownSalver.render();
     }
 
-    private void renderLowerBody(){
+    private void renderLowerBody() {
         printerLowerBody.render();
     }
 
     private void renderAvailableWhitePapers() {
-        ListIterator<WhitePaperSprite> iterator = availablePapersList.listIterator(availablePapersList.size());
+        ListIterator<WhitePaperGraphic> iterator = availablePapersList.listIterator(availablePapersList.size());
         while (iterator.hasPrevious())
             iterator.previous().render();
     }
 
     private void renderPrintedPages() {
-        for (ImagePaperSprite printerPaper : printedImageList)
+        for (ImagePaperGraphic printerPaper : printedImageList)
             printerPaper.render();
     }
 
@@ -162,7 +166,7 @@ public class PrinterSprite extends Sprite {
 
     private void addNewWhitePapers() {
         for (int i = 0; i < amountOfAddedNewPapers(); i++) {
-            WhitePaperSprite newPaper = new WhitePaperSprite();
+            WhitePaperGraphic newPaper = new WhitePaperGraphic();
             setPositionOfPaper(newPaper);
             availablePapersList.add(newPaper);
             printer.refillAvailablePaper(1);
@@ -175,9 +179,9 @@ public class PrinterSprite extends Sprite {
     }
 
     private void updateAvailableWhitePapers() {
-        Iterator<WhitePaperSprite> iterator = availablePapersList.iterator();
+        Iterator<WhitePaperGraphic> iterator = availablePapersList.iterator();
         while (iterator.hasNext()) {
-            WhitePaperSprite paper = iterator.next();
+            WhitePaperGraphic paper = iterator.next();
             paper.update();
             if (paper.canBeRemoved()) {
                 printer.setInPrintingTime(false);
@@ -189,18 +193,18 @@ public class PrinterSprite extends Sprite {
     private void updateAddedPrintedPapers() {
         while (printer.getNotTakenPrintedPages().size() > printedImageList.size()) {
             double positionYWhenStopAnimation = printerDownSalver.getPositionY() + printerDownSalver.getHeight(); //todo: tmp
-            ImagePaperSprite printedSprite = new ImagePaperSprite(printer.getNotTakenPrintedPages().getFirst().getPrintedImage(), positionYWhenStopAnimation);
+            ImagePaperGraphic printedSprite = new ImagePaperGraphic(printer.getNotTakenPrintedPages().getFirst().getPrintedImage(), positionYWhenStopAnimation);
             setPositionOfPaper(printedSprite);
-            printedSprite.usePaperInPrinter();
+            printedSprite.doAnimation();
             printedImageList.add(printedSprite); //todo: tmp bo nie bedzie dzialac dal wielu kopi na raz
         }
     }
 
 
     private void updatePrintedPapers() {
-        Iterator<ImagePaperSprite> iterator = printedImageList.iterator();
+        Iterator<ImagePaperGraphic> iterator = printedImageList.iterator();
         while (iterator.hasNext()) {
-            ImagePaperSprite paper = iterator.next();
+            ImagePaperGraphic paper = iterator.next();
             paper.update();
             if (paper.canBeRemoved()) {
 //                printer.setInPrintingTime(false);
@@ -212,7 +216,7 @@ public class PrinterSprite extends Sprite {
     public void print(Image image, boolean multicolor, int amountOfCopy) {
         if (!printer.isInPrintingTime())
             if (printer.printImage(image, multicolor, amountOfCopy)) {
-                availablePapersList.get(0).usePaperInPrinter();
+                availablePapersList.get(0).doAnimation();
                 printer.setInPrintingTime(true);
             }
     }
@@ -225,18 +229,18 @@ public class PrinterSprite extends Sprite {
     public void setPosition(double positionX, double positionY) {
         super.setPosition(positionX, positionY - printerLowerBody.getHeight());
         printerLowerBody.setPosition(positionX, positionY);
-        printerUpSalver.setPosition(positionX, positionY-printerLowerBody.getHeight());
+        printerUpSalver.setPosition(positionX, positionY - printerLowerBody.getHeight());
         printerDownSalver.setPosition(positionX, positionY + height);
         setPositionAvailablePapers();
     }
 
     private void setPositionAvailablePapers() {
-        for (WhitePaperSprite paper : availablePapersList)
+        for (WhitePaperGraphic paper : availablePapersList)
             setPositionOfPaper(paper);
     }
 
     //todo: zrobic inaczej
-    private void setPositionOfPaper(PaperSprite paper) {
+    private void setPositionOfPaper(PaperGraphic paper) {
         paper.setPosition(printerUpSalver.getPositionX(), printerUpSalver.getPositionY(), printerUpSalver.getWidth(), printerUpSalver.getHeight());
     }
 
@@ -251,4 +255,11 @@ public class PrinterSprite extends Sprite {
             else System.err.println("ERROR: poster=null");
         });
     }
+
+    ///////////// //TODO
+    private Point2D getStartedPaperPosition(double salverPositionX, double salverPositionY, double salverWidth, double salverHeight) {
+        this.positionX = salverPositionX + salverWidth / 2 - width / 2;
+        this.positionY = salverPositionY + salverHeight - height;
+    }
+
 }
