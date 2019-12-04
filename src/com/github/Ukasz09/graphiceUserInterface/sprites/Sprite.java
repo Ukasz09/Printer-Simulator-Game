@@ -67,6 +67,10 @@ public abstract class Sprite {
     }
 
     public void render() {
+       renderSprite();
+    }
+
+    protected void renderSprite(){
         manager.getGraphicContext().drawImage(spriteImage, positionX, positionY, width, height);
     }
 
@@ -80,6 +84,7 @@ public abstract class Sprite {
         return width;
     }
 
+    //todo: dac osobno body a wysokosc ustawic jako body+lower
     public double getHeight() {
         return height;
     }

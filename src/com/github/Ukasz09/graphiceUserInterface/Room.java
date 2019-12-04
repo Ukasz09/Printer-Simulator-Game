@@ -107,6 +107,7 @@ public class Room {
     public void update() {
         updateDecorations();
         printerSprite.update();
+        printerSprite.updateActualPosterImage(decorations.get(DecorationsEnum.POSTER).getSpriteImage());
     }
 
     private void updateDecorations() {

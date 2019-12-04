@@ -34,6 +34,7 @@ public class PrinterSalver extends Sprite {
         super.setPosition(positionX, positionY);
     }
 
+    //todo: nie moze byc tak bo wowczas nacisniecie na dolnego salver dodaje kartki tez !!
     private void addEventHandler() {
         addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             amountOfAddedNewPapers++;

@@ -10,6 +10,8 @@ public abstract class PaperSprite {
     private static final double DEFAULT_PRINTING_TIMER = 50;
     private static final double DEFAULT_TIMER_REDUCER = 10;
     private static final Color DEFAULT_STROKE_COLOR = new Color(0, 0, 0, 1);
+    private static final double DEFAULT_SPEED_OF_CONSUMING = 1; //todo: tmp -> dac do drukarki
+    private static final Color PAPER_COLOR = new Color(1, 1, 1, 1);
 
     protected ViewManager manager;
     protected double width;
@@ -17,8 +19,10 @@ public abstract class PaperSprite {
     protected double positionX;
     protected double positionY;
     private double printerTimer;
-    private boolean isInPrintingTime;
+    protected boolean isInPrintingTime;
     private boolean canBeRemoved;
+
+    protected double speedOfPrinterConsuming; //todo: ustawic odpowiednie modyfikatory dostepu
 
     public PaperSprite() {
         manager = ViewManager.getInstance();
@@ -27,31 +31,38 @@ public abstract class PaperSprite {
         printerTimer = DEFAULT_PRINTING_TIMER;
         isInPrintingTime = false;
         canBeRemoved = false;
+        speedOfPrinterConsuming = DEFAULT_SPEED_OF_CONSUMING;
     }
 
 
     public abstract void render();
 
     public void update() {
-        if (needToDoPaperAbsorptionAnimation()) {
+        if (needToDoPrintingAnimation()) {
             if (canDoNextFrameAnimation()) {
                 nextFrameOfAnimation();
                 restoreTimerDuration();
             } else reduceTimerDuration();
-        } else {
-            restoreTimerDuration();
-            if (finishedPrinting())
-                canBeRemoved = true;
         }
+
+        if (finishedPrinting())
+            actionWhenFinishedPrinting();
+
+
+//        else {
+//            restoreTimerDuration();
+////            if (finishedPrinting()){
+//            actionWhenFinishedPrinting();
+////            }
+//        }
     }
 
-    private boolean finishedPrinting() {
-        return height <= 0;
-    }
 
-    private boolean needToDoPaperAbsorptionAnimation() {
-        return (height > 0 && isInPrintingTime);
-    }
+    public abstract void actionWhenFinishedPrinting();
+
+    protected abstract boolean finishedPrinting();
+
+    protected abstract boolean needToDoPrintingAnimation() ;
 
     private boolean canDoNextFrameAnimation() {
         return printerTimer <= 0;
@@ -83,6 +94,11 @@ public abstract class PaperSprite {
         manager.setFillColor(color);
     }
 
+    protected void drawFillRect() {
+        setColor(PAPER_COLOR);
+        setLineWidth(DEFAULT_STROKE_PAPER_WIDTH); //todo: tmp
+        manager.getGraphicContext().fillRect(positionX, positionY, width, height);
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     protected void setPosition(double salverPositionX, double salverPositionY, double salverWidth, double salverHeight) {
@@ -96,5 +112,9 @@ public abstract class PaperSprite {
 
     public boolean canBeRemoved() {
         return canBeRemoved;
+    }
+
+    public void setCanBeRemoved(boolean canBeRemoved) {
+        this.canBeRemoved = canBeRemoved;
     }
 }
