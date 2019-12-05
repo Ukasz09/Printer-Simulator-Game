@@ -5,6 +5,6 @@ import javafx.event.EventType;
 
 public interface IEventHandler {
 
-    void addNewEventHandler(EventType eventType, EventHandler eventHandler);
+   void addNewEventHandler(EventType eventType, EventHandler eventHandler);
 
 }

@@ -1,4 +1,4 @@
-package com.github.Ukasz09.graphiceUserInterface.sprites.printer;
+package com.github.Ukasz09.graphiceUserInterface.sprites.printer.printerPArtsTMP;
 
 import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;

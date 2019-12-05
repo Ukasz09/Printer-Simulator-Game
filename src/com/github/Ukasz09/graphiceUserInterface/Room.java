@@ -4,7 +4,12 @@ import com.github.Ukasz09.graphiceUserInterface.backgrounds.Background;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.RoomBackground;
 import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.*;
-import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.animatedDecorations.CatSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.animatedDecorations.GlobeSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecorations.DeskSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecorations.FlowerSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecorations.ZingsPosterSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.printer.printerPArtsTMP.PrinterSprite;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -99,7 +104,7 @@ public class Room {
         if (poster == null)
             return false;
         double positionX, positionY;
-        positionX = positionY = ZingsPosterSprite.FRAME_THICKNESS * 2;
+        positionX = positionY = ZingsPosterSprite.DEFAULT_FRAME_THICKNESS * 2;
         poster.setPosition(positionX, positionY);
         return true;
     }

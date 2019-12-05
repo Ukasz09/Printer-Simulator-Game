@@ -28,4 +28,9 @@ public class WhitePaperGraphic extends PaperGraphic {
     protected void actionWhenAnimationStopped() {
         canBeDestroyedNow = true;
     }
+
+//    @Override
+//    public void addNewEventHandler(EventType eventType, EventHandler eventHandler) {
+//        Logger.logError(this.getClass(), "Adding new event handler to WhitePaper!");
+//    }
 }

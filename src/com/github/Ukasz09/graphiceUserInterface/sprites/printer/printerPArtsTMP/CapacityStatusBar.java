@@ -1,4 +1,4 @@
-package com.github.Ukasz09.graphiceUserInterface.sprites.printer;
+package com.github.Ukasz09.graphiceUserInterface.sprites.printer.printerPArtsTMP;
 
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import javafx.scene.paint.Color;

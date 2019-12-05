@@ -6,6 +6,7 @@ public class ImagePaperGraphic extends PaperGraphic {
     private Image imageToPrint;
     private double positionYWhenStopAnimation;
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public ImagePaperGraphic(double positionX, double positionY, double animationSpeed, Image imageToPrint, double stopAnimationAtYPosition) {
         super(positionX, positionY, animationSpeed);
         height += height / 4;
@@ -13,6 +14,7 @@ public class ImagePaperGraphic extends PaperGraphic {
         this.positionYWhenStopAnimation = stopAnimationAtYPosition;
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void render() {
         drawStrokeRect();
@@ -38,4 +40,6 @@ public class ImagePaperGraphic extends PaperGraphic {
     protected boolean needToStopAnimation() {
         return positionY >= positionYWhenStopAnimation;
     }
+
+    //TODO: dodac eventHandler na kartke
 }

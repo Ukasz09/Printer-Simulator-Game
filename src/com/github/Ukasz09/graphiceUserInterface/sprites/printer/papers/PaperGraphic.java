@@ -1,7 +1,10 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers;
 
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
+import com.github.Ukasz09.graphiceUserInterface.sprites.IEventHandler;
+import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public abstract class PaperGraphic extends Sprite implements IPaperGraphic {
@@ -36,7 +39,9 @@ public abstract class PaperGraphic extends Sprite implements IPaperGraphic {
         this.animationSpeed = animationSpeed;
     }
 
+    @Override
     public void update() {
+        super.update();
         if (doingAnimationNow) {
             if (needToChangeFrame()) {
                 nextFrameOfAnimation();

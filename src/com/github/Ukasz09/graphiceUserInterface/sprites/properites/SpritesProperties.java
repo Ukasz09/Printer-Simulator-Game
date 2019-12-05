@@ -3,7 +3,7 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.properites;
 
 import com.github.Ukasz09.graphiceUserInterface.sprites.states.DecorationState;
 
-public class SpritesProperites {
+public class SpritesProperties {
 
     public static ImageSheetProperty globeSheetProperty() {
         String spritePath = "\\resources\\sprites\\decorations\\globe.png";
