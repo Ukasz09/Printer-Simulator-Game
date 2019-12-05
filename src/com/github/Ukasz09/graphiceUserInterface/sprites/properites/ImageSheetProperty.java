@@ -18,14 +18,14 @@ public class ImageSheetProperty {
         private double widthOfOneFrame;
         private double heightOfOneFrame;
         private int maxAmountOfFramesInRow;
-        private double durationPerOneFrame;
+        private double timeOnFrameInAnimation;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private Builder(int amountOfFramesInRow) {
             maxAmountOfFramesInRow = amountOfFramesInRow;
             this.widthOfOneFrame = widthOfOneFrame;
             this.heightOfOneFrame = heightOfOneFrame;
-            durationPerOneFrame = DEFAULT_DURATION_PER_FRAME;
+            timeOnFrameInAnimation = DEFAULT_DURATION_PER_FRAME;
             actionStates = new HashMap<>();
         }
 
@@ -42,7 +42,7 @@ public class ImageSheetProperty {
         }
 
         public Builder withDefaultDurationPerOneFrame(double defaultDurationPerOneFrame) {
-            this.durationPerOneFrame = defaultDurationPerOneFrame;
+            this.timeOnFrameInAnimation = defaultDurationPerOneFrame;
             return this;
         }
 
@@ -68,7 +68,7 @@ public class ImageSheetProperty {
             imageSheetProperty.imageSheet = this.imageSheet;
             imageSheetProperty.widthOfOneFrame = this.widthOfOneFrame;
             imageSheetProperty.heightOfOneFrame = this.heightOfOneFrame;
-            imageSheetProperty.durationPerFrame = this.durationPerOneFrame;
+            imageSheetProperty.timeOnFrameInAnimation = this.timeOnFrameInAnimation;
             imageSheetProperty.actionStates = this.actionStates;
             imageSheetProperty.maxAmountOfFramesInRow = this.maxAmountOfFramesInRow;
             return imageSheetProperty;
@@ -85,7 +85,7 @@ public class ImageSheetProperty {
     private Map<IKindOfState, FrameStatePositions> actionStates;
     private double widthOfOneFrame;
     private double heightOfOneFrame;
-    private double durationPerFrame;
+    private double timeOnFrameInAnimation;
     private int maxAmountOfFramesInRow;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,13 +136,15 @@ public class ImageSheetProperty {
         return new Point2D(maxXOffset, maxYOffset);
     }
 
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Image getSheet() {
         return imageSheet;
     }
 
-    public double getDurationPerFrame() {
-        return durationPerFrame;
+    public double getTimeOnFrameInAnimation() {
+        return timeOnFrameInAnimation;
     }
 
     public FrameStatePositions getAction(IKindOfState kindOfAction) {
