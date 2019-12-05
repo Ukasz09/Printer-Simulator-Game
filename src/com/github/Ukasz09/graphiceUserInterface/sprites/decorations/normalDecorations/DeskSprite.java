@@ -14,4 +14,13 @@ public class DeskSprite extends ImageSprite {
     public DeskSprite(double positionX, double positionY) {
         super(DEFAULT_SPRITE_IMAGE,DEFAULT_WIDTH,DEFAULT_HEIGHT,positionX,positionY);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static double getDefaultWidth() {
+        return DEFAULT_WIDTH;
+    }
+
+    public static double getDefaultHeight() {
+        return DEFAULT_HEIGHT;
+    }
 }

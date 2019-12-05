@@ -2,7 +2,7 @@ package com.github.Ukasz09.graphiceUserInterface.sprites;
 
 import javafx.scene.image.Image;
 
-public abstract class ImageSprite extends Sprite {
+public abstract class ImageSprite extends SpriteWithEventHandler {
     private Image spriteImage;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,8 +1,8 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers;
 
-public class WhitePaperGraphic extends PaperGraphic {
+public class WhitePaperSprite extends PaperSprite {
 
-    public WhitePaperGraphic(double positionX, double positionY, double animationSpeed) {
+    public WhitePaperSprite(double positionX, double positionY, double animationSpeed) {
         super(positionX, positionY, animationSpeed);
     }
 
@@ -28,9 +28,4 @@ public class WhitePaperGraphic extends PaperGraphic {
     protected void actionWhenAnimationStopped() {
         canBeDestroyedNow = true;
     }
-
-//    @Override
-//    public void addNewEventHandler(EventType eventType, EventHandler eventHandler) {
-//        Logger.logError(this.getClass(), "Adding new event handler to WhitePaper!");
-//    }
 }

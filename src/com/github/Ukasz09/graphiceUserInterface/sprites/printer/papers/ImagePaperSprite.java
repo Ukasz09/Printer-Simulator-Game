@@ -2,12 +2,12 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers;
 
 import javafx.scene.image.Image;
 
-public class ImagePaperGraphic extends PaperGraphic {
+public class ImagePaperSprite extends PaperSprite {
     private Image imageToPrint;
     private double positionYWhenStopAnimation;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public ImagePaperGraphic(double positionX, double positionY, double animationSpeed, Image imageToPrint, double stopAnimationAtYPosition) {
+    public ImagePaperSprite(double positionX, double positionY, double animationSpeed, Image imageToPrint, double stopAnimationAtYPosition) {
         super(positionX, positionY, animationSpeed);
         height += height / 4;
         this.imageToPrint = imageToPrint;
@@ -41,5 +41,5 @@ public class ImagePaperGraphic extends PaperGraphic {
         return positionY >= positionYWhenStopAnimation;
     }
 
-    //TODO: dodac eventHandler na kartke
+    //TODO: DAC EVENT HANDLER NA ZABIERANIE KARTKI
 }

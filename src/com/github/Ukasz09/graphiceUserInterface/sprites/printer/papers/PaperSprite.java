@@ -4,10 +4,11 @@ import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.IEventHandler;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-public abstract class PaperGraphic extends Sprite implements IPaperGraphic {
+public abstract class PaperSprite extends SpriteWithEventHandler implements IPaperGraphic {
     protected static final double DEFAULT_WIDTH = 100;
     protected static final double DEFAULT_HEIGHT = 100;
     protected static final double DEFAULT_STROKE_WIDTH = 3;
@@ -26,7 +27,7 @@ public abstract class PaperGraphic extends Sprite implements IPaperGraphic {
     protected boolean canBeDestroyedNow;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public PaperGraphic(double positionX, double positionY, double animationSpeed) {
+    public PaperSprite(double positionX, double positionY, double animationSpeed) {
         super(DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY);
         manager = ViewManager.getInstance();
         strokeWidth = DEFAULT_STROKE_WIDTH;
@@ -101,5 +102,14 @@ public abstract class PaperGraphic extends Sprite implements IPaperGraphic {
     @Override
     public boolean canBeDestroyedNow() {
         return canBeDestroyedNow;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static double getDefaultWidth() {
+        return DEFAULT_WIDTH;
+    }
+
+    public static double getDefaultHeight() {
+        return DEFAULT_HEIGHT;
     }
 }

@@ -33,4 +33,13 @@ public class CatSprite extends AnimatedSprite {
             catMeowSound.playSound();
         });
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static double getDefaultWidth() {
+        return DEFAULT_WIDTH;
+    }
+
+    public static double getDefaultHeight() {
+        return DEFAULT_HEIGHT;
+    }
 }

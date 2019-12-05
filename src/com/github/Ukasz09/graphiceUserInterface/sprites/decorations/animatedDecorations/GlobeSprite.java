@@ -15,4 +15,13 @@ public class GlobeSprite extends AnimatedSprite {
     public GlobeSprite(double positionX, double positionY) {
         super(DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY, DEFAULT_SHEET_PROPERTY, DEFAULT_SHEET_PROPERTY.getAction(DecorationState.STANDBY));
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static double getDefaultHeight() {
+        return DEFAULT_HEIGHT;
+    }
+
+    public static double getDefaultWidth() {
+        return DEFAULT_WIDTH;
+    }
 }

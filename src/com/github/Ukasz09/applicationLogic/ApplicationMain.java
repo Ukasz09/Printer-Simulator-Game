@@ -1,5 +1,6 @@
 package com.github.Ukasz09.applicationLogic;
 
+import com.github.Ukasz09.graphiceUserInterface.IRoomGraphic;
 import com.github.Ukasz09.graphiceUserInterface.Room;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import javafx.animation.AnimationTimer;
@@ -14,7 +15,7 @@ public class ApplicationMain extends Application {
     private double elapsedTime;
     private Long lastNanoTime;
 
-    private Room room;
+    private IRoomGraphic room;
 
     public ApplicationMain() {
         manager = ViewManager.getInstance();
