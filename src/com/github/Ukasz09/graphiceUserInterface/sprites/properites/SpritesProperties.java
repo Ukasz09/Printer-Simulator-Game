@@ -7,7 +7,7 @@ public class SpritesProperties {
 
     public static ImageSheetProperty globeSheetProperty() {
         String spritePath = "\\resources\\sprites\\decorations\\globe.png";
-        ImageSheetProperty sheetProperty = ImageSheetProperty.bulider()
+        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
                 .withImagePath(spritePath)
                 .withSizeOfOneFrame(256, 256)
                 .withDefaultDurationPerOneFrame(7)
@@ -18,7 +18,7 @@ public class SpritesProperties {
 
     public static ImageSheetProperty catSheetProperty() {
         String spritePath = "\\resources\\sprites\\decorations\\cat.png";
-        ImageSheetProperty sheetProperty = ImageSheetProperty.bulider()
+        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
                 .withImagePath(spritePath)
                 .withSizeOfOneFrame(256, 350)
                 .withDefaultDurationPerOneFrame(6)

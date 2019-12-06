@@ -8,8 +8,8 @@ import javafx.scene.input.MouseEvent;
 
 public class InkSprite extends ImageSprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final static double DEFAULT_WIDTH = 64;
-    private final static double DEFAULT_HEIGHT = 128;
+    public final static double DEFAULT_WIDTH = 64;
+    public final static double DEFAULT_HEIGHT = 128;
 
     private final ColorInk printerInk;
     private final CapacityStatusBar statusBar;

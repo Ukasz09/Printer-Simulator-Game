@@ -23,9 +23,4 @@ public class WhitePaperSprite extends PaperSprite {
     protected boolean needToStopAnimation() {
         return height <= 0;
     }
-
-    @Override
-    protected void actionWhenAnimationStopped() {
-        canBeDestroyedNow = true;
-    }
 }

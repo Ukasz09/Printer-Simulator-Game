@@ -139,9 +139,9 @@ public class Printer {
         return printerIncs;
     }
 
-    public Deque<PrinterPaper> getNotTakenPrintedPages() {
-        return notTakenPrintedPages;
-    }
+//    public Deque<PrinterPaper> getNotTakenPrintedPages() {
+//        return notTakenPrintedPages;
+//    }
 
     public int getAvailablePaperSheets() {
         return availablePaperSheets;

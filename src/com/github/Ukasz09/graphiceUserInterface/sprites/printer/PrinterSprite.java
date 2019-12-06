@@ -1,7 +1,11 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.printer;
 
 import com.github.Ukasz09.applicationLogic.printer.Printer;
+import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
+import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
+import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
+import com.github.Ukasz09.graphiceUserInterface.sprites.printer.inks.InkSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.IPaperGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.ImagePaperSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.WhitePaperSprite;
@@ -9,6 +13,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterLow
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterSalver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterUpperBody;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -16,18 +21,19 @@ import javafx.scene.input.MouseEvent;
 import java.util.*;
 
 public class PrinterSprite extends SpriteWithEventHandler {
-
-    //TODO: przestalo dzialac drukowanie
     private final static double DEFAULT_WIDTH = 280;
     private final static double DEFAULT_HEIGHT = 150;
     private final static double DEFAULT_PRINTING_SPEED = 1;
     private final static double UPPER_TO_LOWER_BODY_PROPORTION = 0.4;
     private final static double SALVER_TO_PRINTER_WIDTH_PROPORTION = 0.6;
     private final static double SALVER_TO_PRINTER_HEIGHT_PROPORTION = 0.4;
+    private final static double DEFAULT_SPACE_BETWEEN_INKS = 20;
 
     private Printer printer;
-    private Deque<IPaperGraphic> whitePapersList;
-    private Deque<IPaperGraphic> printedPapersList;
+
+    private Deque<IPaperGraphic> whitePapersQueue;
+    private Deque<IPaperGraphic> printedPapersQueue;
+    private List<ISpriteGraphic> inksList;
 
     private PrinterLowerBody printerLowerBody;
     private PrinterUpperBody printerUpperBody;
@@ -40,18 +46,10 @@ public class PrinterSprite extends SpriteWithEventHandler {
     public PrinterSprite(double positionX, double positionY) {
         super(DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY);
         printer = new Printer();
-        whitePapersList = new LinkedList<>();
-        printedPapersList = new LinkedList<>();
-
-        //ORDER OF INITIALIZATION IS VERY IMPORTANT!
-        initializeLowerBody();
-        initializeUpperBody(printerLowerBody.getHeight());
-        initializeUpperSalver(printerUpperBody.getPositionY());
-        initializeDownSalver();
-        addWhitePaperSprite();
-
+        initializeLists();
+        initializeAllSprites();
         addUpperSalverEventHandler();
-        addPrinterEventHandler(); //todo: tmp dopoki nie ma komuptera
+        addPrinterEventHandler();
 
         //TODO: tmp dopoki nie ma komputera zeby nie zaslanialy inne czesci eventHandlera na drukowanie
         printerLowerBody.setImageViewVisable(false);
@@ -60,6 +58,47 @@ public class PrinterSprite extends SpriteWithEventHandler {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void initializeLists() {
+        whitePapersQueue = new LinkedList<>();
+        printedPapersQueue = new LinkedList<>();
+        inksList = new ArrayList<>();
+    }
+
+    private void initializeAllSprites() {
+        //ORDER OF INITIALIZATION IS VERY IMPORTANT!
+        initializeLowerBody();
+        initializeUpperBody(printerLowerBody.getHeight());
+        initializeUpperSalver(printerUpperBody.getPositionY());
+        initializeDownSalver();
+        addWhitePaperSprite();
+        addInkSprites();
+    }
+
+    private void addInkSprites() {
+        double positionX = manager.getRightFrameBorder();
+        double positionY = 0;
+
+        for (Map.Entry<ColorEnum, ColorInk> entry : printer.getPrinterIncs().entrySet()) {
+            positionX -= (InkSprite.DEFAULT_WIDTH + DEFAULT_SPACE_BETWEEN_INKS);
+            inksList.add(new InkSprite(getInkImageByColor(entry.getKey()), entry.getValue(), positionX, positionY));
+        }
+    }
+
+    private Image getInkImageByColor(ColorEnum color) {
+        switch (color) {
+            case RED:
+                return ImagesProperties.redInkSprite();
+            case YEALLOW:
+                return ImagesProperties.yellowInkSprite();
+            case BLUE:
+                return ImagesProperties.blueInkSprite();
+            case BLACK:
+                return ImagesProperties.blackInkSprite();
+            default:
+                return ImagesProperties.whiteInkSprite();
+        }
+    }
+
     private void initializeLowerBody() {
         Point2D lowerBodySize = calculateLowerBodySize(width, height);
         Point2D lowerBodyPosition = calculateLowerBodyPosition(positionX, positionY + DEFAULT_HEIGHT, lowerBodySize.getY());
@@ -127,25 +166,26 @@ public class PrinterSprite extends SpriteWithEventHandler {
     private void addWhitePaperSprite() {
         Point2D paperPosition = calculatePaperPosition();
         for (int i = 0; i < printer.getAvailablePaperSheets(); i++)
-            whitePapersList.push(new WhitePaperSprite(paperPosition.getX(), paperPosition.getY(), DEFAULT_PRINTING_SPEED));
+            whitePapersQueue.push(new WhitePaperSprite(paperPosition.getX(), paperPosition.getY(), DEFAULT_PRINTING_SPEED));
     }
 
     private Point2D calculatePaperPosition() {
-        double paperPositionX = printerUpperSalver.getPositionX() + printerUpperSalver.getWidth() / 2 - WhitePaperSprite.getDefaultWidth() / 2;
-        double paperPositionY = printerUpperSalver.getPositionY() + printerUpperSalver.getHeight() - WhitePaperSprite.getDefaultHeight();
+        double paperPositionX = printerUpperSalver.getPositionX() + printerUpperSalver.getWidth() / 2 - WhitePaperSprite.DEFAULT_WIDTH / 2;
+        double paperPositionY = printerUpperSalver.getPositionY() + printerUpperSalver.getHeight() - WhitePaperSprite.DEFAULT_HEIGHT;
         return new Point2D(paperPositionX, paperPositionY);
+    }
+
+    private void addNewWhitePaper() {
+        Point2D paperPosition = calculatePaperPosition();
+        WhitePaperSprite newPaper = new WhitePaperSprite(paperPosition.getX(), paperPosition.getY(), DEFAULT_PRINTING_SPEED);
+        whitePapersQueue.add(newPaper);
+        printer.refillAvailablePaper(1);
     }
 
     private void addUpperSalverEventHandler() {
         printerUpperSalver.addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> addNewWhitePaper());
     }
 
-    private void addNewWhitePaper() {
-        Point2D paperPosition = calculatePaperPosition();
-        WhitePaperSprite newPaper = new WhitePaperSprite(paperPosition.getX(), paperPosition.getY(), DEFAULT_PRINTING_SPEED);
-        whitePapersList.add(newPaper);
-        printer.refillAvailablePaper(1);
-    }
 
     //todo: tmp dopoki nie ma komputera
     private void addPrinterEventHandler() {
@@ -158,6 +198,11 @@ public class PrinterSprite extends SpriteWithEventHandler {
 
     @Override
     public void render() {
+        renderPrinterComponents();
+        renderInks();
+    }
+
+    private void renderPrinterComponents() {
         //ORDER OF INITIALIZATION IS VERY IMPORTANT!
         printerUpperSalver.render();
         printerDownSalver.render();
@@ -168,15 +213,20 @@ public class PrinterSprite extends SpriteWithEventHandler {
     }
 
     private void renderWhitePapers() {
-        Iterator<IPaperGraphic> iterator = whitePapersList.descendingIterator();
+        Iterator<IPaperGraphic> iterator = whitePapersQueue.descendingIterator();
         while (iterator.hasNext())
             iterator.next().render();
     }
 
     private void renderPrintedPages() {
-        Iterator<IPaperGraphic> iterator = printedPapersList.descendingIterator();
+        Iterator<IPaperGraphic> iterator = printedPapersQueue.descendingIterator();
         while (iterator.hasNext())
             iterator.next().render();
+    }
+
+    private void renderInks() {
+        for (ISpriteGraphic colorInk : inksList)
+            colorInk.render();
     }
 
     @Override
@@ -185,11 +235,13 @@ public class PrinterSprite extends SpriteWithEventHandler {
         updatePrinterParts();
         updateWhitePapers();
         updatePrintedPapers();
+        updateColorInks();
 
-//        //TODO: testowo
-        System.out.println("Papers:" + whitePapersList.size());
-        System.out.println("Printed: " + printedPapersList.size());
+//        TODO: testowo
+        System.out.println("Papers:" + whitePapersQueue.size());
+        System.out.println("Printed: " + printedPapersQueue.size());
     }
+
 
     private void updatePrinterParts() {
         printerUpperSalver.update();
@@ -199,29 +251,30 @@ public class PrinterSprite extends SpriteWithEventHandler {
     }
 
     private void updateWhitePapers() {
-        for (IPaperGraphic paper : whitePapersList)
+        for (IPaperGraphic paper : whitePapersQueue)
             paper.update();
 
-        if (!whitePapersList.isEmpty())
-            if (whitePapersList.peek().canBeDestroyedNow()) {
+        if (!whitePapersQueue.isEmpty())
+            if (whitePapersQueue.peek().canBeDestroyedNow()) {
                 printer.setInPrintingTime(false);
-                whitePapersList.pop();
+                whitePapersQueue.pop().removeNodeFromRoot();
             }
     }
 
     private void updatePrintedPapers() {
-        for (IPaperGraphic paper : printedPapersList)
+        for (IPaperGraphic paper : printedPapersQueue)
             paper.update();
+    }
 
-        if (!printedPapersList.isEmpty())
-            if (printedPapersList.peek().canBeDestroyedNow())
-                printedPapersList.pop();
+    private void updateColorInks() {
+        for (ISpriteGraphic colorInk : inksList)
+            colorInk.update();
     }
 
     public void print(Image image, boolean multicolor, int amountOfCopy) {
         if (!printer.isInPrintingTime())
             if (printer.printImage(image, multicolor, amountOfCopy)) {
-                whitePapersList.peek().doAnimation();
+                whitePapersQueue.peek().doAnimation();
                 addPrintedPageSprite();
                 printer.setInPrintingTime(true);
             }
@@ -232,7 +285,23 @@ public class PrinterSprite extends SpriteWithEventHandler {
         double stopAnimationYPosition = printerDownSalver.getPositionY();
         ImagePaperSprite newPaper = new ImagePaperSprite(paperPosition.getX(), paperPosition.getY(), DEFAULT_PRINTING_SPEED, posterImage, stopAnimationYPosition);
         newPaper.doAnimation();
-        printedPapersList.push(newPaper);
+        addPaperEventHandler(newPaper, printedPageEventHandler());
+        printedPapersQueue.push(newPaper);
+    }
+
+    private void addPaperEventHandler(IPaperGraphic paper, EventHandler eventHandler) {
+        paper.addNewEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+
+    private EventHandler printedPageEventHandler() {
+        return event -> tryToTakePrintedPage();
+    }
+
+    private void tryToTakePrintedPage() {
+        if (printedPapersQueue.peek().canBeDestroyedNow()) {
+            printedPapersQueue.pop().removeNodeFromRoot();
+            printer.takePrintedPages(1);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

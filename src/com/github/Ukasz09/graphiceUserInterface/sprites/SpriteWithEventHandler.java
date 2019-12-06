@@ -1,12 +1,13 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites;
 
+import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public abstract class SpriteWithEventHandler extends Sprite implements ISpriteGraphic{
+public abstract class SpriteWithEventHandler extends Sprite implements ISpriteGraphic {
     private static final Image DEFAULT_SCHEME_IMAGE = ImagesProperties.schemeSpriteForImageView();
 
     private ImageView spriteImageView;
@@ -63,9 +64,31 @@ public abstract class SpriteWithEventHandler extends Sprite implements ISpriteGr
         spriteImageView.addEventHandler(eventType, eventHandler);
     }
 
+    @Override
+    public boolean removeEventHandler(EventType eventType, EventHandler eventHandler) {
+        try {
+            spriteImageView.removeEventHandler(eventType, eventHandler);
+        } catch (NullPointerException e) {
+            Logger.logError(getClass(), eventHandler + " - dont exist here");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean removeNodeFromRoot() {
+        try {
+            manager.removeImageViewFromNode(spriteImageView);
+        } catch (NullPointerException e) {
+            Logger.logError(getClass(), " Cant find this node in root. Probably already removed");
+            return false;
+        }
+        return true;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //todo: dopoki nie ma komputera
-    public void setImageViewVisable(boolean visable){
+    public void setImageViewVisable(boolean visable) {
         spriteImageView.setVisible(visable);
     }
 }

@@ -7,8 +7,8 @@ import javafx.scene.input.MouseEvent;
 
 public class ZingsPosterSprite extends ImageSprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final static double DEFAULT_WIDTH = 280;
-    private final static double DEFAULT_HEIGHT = 350;
+    public final static double DEFAULT_WIDTH = 280;
+    public final static double DEFAULT_HEIGHT = 350;
     public final static double DEFAULT_FRAME_THICKNESS = 10;
 
     private static final Image[] zingsImages = ImagesProperties.zingsImages();

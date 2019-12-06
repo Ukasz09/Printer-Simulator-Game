@@ -1,9 +1,6 @@
 package com.github.Ukasz09.graphiceUserInterface;
 
-import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
-import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
+import com.github.Ukasz09.applicationLogic.Logger;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -11,9 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -29,15 +24,12 @@ public class ViewManager {
     private static final int DEFAULT_GAME_FRAME_HEIGHT = 900;
 
     private Stage mainStage;
-    private Scene mainScene;
     private Canvas canvas;
     private GraphicsContext gc;
     private Group root;
 
     private double rightFrameBorder;
-    private double leftFrameBorder;
     private double bottomFrameBorder;
-    private double topFrameBorder;
 
     private static ViewManager instance;
 
@@ -53,24 +45,38 @@ public class ViewManager {
         return instance;
     }
 
-
     public void initialize(String title, boolean fullScreen) {
+        initializeMainStage(title, fullScreen);
+        root = new Group();
+        setMainStageScene();
+        addCanvas();
+        gc = canvas.getGraphicsContext2D();
+        setStartedGraphicsContextProperties();
+        initializeWindowBoundary(canvas);
+        scaleToProperResolution();
+    }
+
+    private void initializeMainStage(String title, boolean fullScreen) {
         mainStage = new Stage();
         mainStage.setTitle(title);
         mainStage.setWidth(DEFAULT_GAME_FRAME_WIDTH);
         mainStage.setHeight(DEFAULT_GAME_FRAME_HEIGHT);
         mainStage.setFullScreen(fullScreen);
-        root = new Group();
-        mainScene = new Scene(root);
+    }
+
+    private void setMainStageScene() {
+        Scene mainScene = new Scene(root);
         mainStage.setScene(mainScene);
+    }
+
+    private void addCanvas() {
         canvas = new Canvas(mainStage.getWidth(), mainStage.getHeight());
         root.getChildren().add(canvas);
-        gc = canvas.getGraphicsContext2D();
+    }
 
+    private void setStartedGraphicsContextProperties() {
         setFillColor(DEFAULT_FONT_COLOR);
         setDefaultFont();
-        checkWindowBoundary(canvas);
-        scaleToProperResolution();
     }
 
     public void setFillColor(Color color) {
@@ -95,12 +101,10 @@ public class ViewManager {
         gc.setFill(color);
     }
 
-    private void checkWindowBoundary(Canvas canvas) {
+    private void initializeWindowBoundary(Canvas canvas) {
         Bounds bounds = canvas.getBoundsInLocal();
         rightFrameBorder = bounds.getMaxX();
-        leftFrameBorder = bounds.getMinX();
         bottomFrameBorder = bounds.getMaxY();
-        topFrameBorder = bounds.getMinY();
     }
 
     private void scaleToProperResolution() {
@@ -123,9 +127,14 @@ public class ViewManager {
         canvas.setTranslateY(offsetY);
     }
 
-    public void addImageViewAsNode(ImageView iv){
+    public void addImageViewAsNode(ImageView iv) {
         root.getChildren().add(iv);
     }
+
+    public void removeImageViewFromNode(ImageView iv) throws NullPointerException {
+        root.getChildren().remove(iv);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Stage getMainStage() {
@@ -140,16 +149,8 @@ public class ViewManager {
         return rightFrameBorder;
     }
 
-    public double getLeftFrameBorder() {
-        return leftFrameBorder;
-    }
-
     public double getBottomFrameBorder() {
         return bottomFrameBorder;
-    }
-
-    public double getTopFrameBorder() {
-        return topFrameBorder;
     }
 
 }

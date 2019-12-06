@@ -8,13 +8,15 @@ public class FrameStatePositions {
     private int startIndex;
     private int endIndex;
 
-    public FrameStatePositions(double minX, double maxX, double minY, double maxY) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    FrameStatePositions(double minX, double maxX, double minY, double maxY) {
         this.minX = minX;
         this.maxX = maxX;
         this.minY = minY;
         this.maxY = maxY;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public double getMinX() {
         return minX;
     }
@@ -31,7 +33,7 @@ public class FrameStatePositions {
         return maxY;
     }
 
-    public void setIndexes(int startIndex, int endIndex) {
+    void setIndexes(int startIndex, int endIndex) {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
     }
@@ -40,5 +42,4 @@ public class FrameStatePositions {
         int range = (endIndex - startIndex) + 1;
         return (int) (Math.random() * range) + startIndex;
     }
-
 }

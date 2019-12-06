@@ -7,20 +7,11 @@ import javafx.scene.image.Image;
 public class DeskSprite extends ImageSprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private final static Image DEFAULT_SPRITE_IMAGE = ImagesProperties.deskSprite();
-    private final static double DEFAULT_WIDTH = 1092;
-    private final static double DEFAULT_HEIGHT = 230;
+    public final static double DEFAULT_WIDTH = 1092;
+    public final static double DEFAULT_HEIGHT = 230;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public DeskSprite(double positionX, double positionY) {
         super(DEFAULT_SPRITE_IMAGE,DEFAULT_WIDTH,DEFAULT_HEIGHT,positionX,positionY);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static double getDefaultWidth() {
-        return DEFAULT_WIDTH;
-    }
-
-    public static double getDefaultHeight() {
-        return DEFAULT_HEIGHT;
     }
 }

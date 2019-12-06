@@ -32,14 +32,7 @@ public class ImagePaperSprite extends PaperSprite {
     }
 
     @Override
-    protected void actionWhenAnimationStopped() {
-        doingAnimationNow = false;
-    }
-
-    @Override
     protected boolean needToStopAnimation() {
         return positionY >= positionYWhenStopAnimation;
     }
-
-    //TODO: DAC EVENT HANDLER NA ZABIERANIE KARTKI
 }

@@ -9,11 +9,11 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public abstract class PaperSprite extends SpriteWithEventHandler implements IPaperGraphic {
-    protected static final double DEFAULT_WIDTH = 100;
-    protected static final double DEFAULT_HEIGHT = 100;
-    protected static final double DEFAULT_STROKE_WIDTH = 3;
-    protected static final Color DEFAULT_STROKE_COLOR = Color.BLACK;
-    protected static final Color DEFAULT_PAPER_COLOR = Color.WHITE;
+    public static final double DEFAULT_WIDTH = 100;
+    public static final double DEFAULT_HEIGHT = 100;
+    private static final double DEFAULT_STROKE_WIDTH = 3;
+    private static final Color DEFAULT_STROKE_COLOR = Color.BLACK;
+    private static final Color DEFAULT_PAPER_COLOR = Color.WHITE;
     private static final double DEFAULT_TIME_ON_ONE_FRAME_IN_ANIMATION = 5;
 
     private double strokeWidth;
@@ -50,7 +50,7 @@ public abstract class PaperSprite extends SpriteWithEventHandler implements IPap
             } else reduceAnimationTimer();
         }
 
-        if (needToStopAnimation())
+        if (needToStopAnimation() && !canBeDestroyedNow)
             actionWhenAnimationStopped();
     }
 
@@ -70,7 +70,10 @@ public abstract class PaperSprite extends SpriteWithEventHandler implements IPap
 
     protected abstract boolean needToStopAnimation();
 
-    protected abstract void actionWhenAnimationStopped();
+    private void actionWhenAnimationStopped() {
+        doingAnimationNow = false;
+        canBeDestroyedNow = true;
+    }
 
     protected void drawStrokeRect() {
         setColor(strokeColor);
@@ -102,14 +105,5 @@ public abstract class PaperSprite extends SpriteWithEventHandler implements IPap
     @Override
     public boolean canBeDestroyedNow() {
         return canBeDestroyedNow;
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static double getDefaultWidth() {
-        return DEFAULT_WIDTH;
-    }
-
-    public static double getDefaultHeight() {
-        return DEFAULT_HEIGHT;
     }
 }

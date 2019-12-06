@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class ImageSheetProperty {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                               BUILDER
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static final class Builder {
         private Image imageSheet;
@@ -20,7 +19,6 @@ public class ImageSheetProperty {
         private int maxAmountOfFramesInRow;
         private double timeOnFrameInAnimation;
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private Builder(int amountOfFramesInRow) {
             maxAmountOfFramesInRow = amountOfFramesInRow;
             this.widthOfOneFrame = widthOfOneFrame;
@@ -29,24 +27,23 @@ public class ImageSheetProperty {
             actionStates = new HashMap<>();
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public Builder withImagePath(String imagePath) {
+        Builder withImagePath(String imagePath) {
             this.imageSheet = new Image(imagePath);
             return this;
         }
 
-        public Builder withSizeOfOneFrame(double widthOfOneFrame, double heightOfOneFrame) {
+        Builder withSizeOfOneFrame(double widthOfOneFrame, double heightOfOneFrame) {
             this.widthOfOneFrame = widthOfOneFrame;
             this.heightOfOneFrame = heightOfOneFrame;
             return this;
         }
 
-        public Builder withDefaultDurationPerOneFrame(double defaultDurationPerOneFrame) {
+        Builder withDefaultDurationPerOneFrame(double defaultDurationPerOneFrame) {
             this.timeOnFrameInAnimation = defaultDurationPerOneFrame;
             return this;
         }
 
-        public Builder withAddActionState(IKindOfState state, int startedIndex, int amountOfFrames) {
+        Builder withAddActionState(IKindOfState state, int startedIndex, int amountOfFrames) {
             this.actionStates.put(state, getFrameState(startedIndex, amountOfFrames));
             return this;
         }
@@ -63,7 +60,7 @@ public class ImageSheetProperty {
             return ImageSheetProperty.getPositionOfIndex(index, maxAmountOfFramesInRow, widthOfOneFrame, heightOfOneFrame);
         }
 
-        public ImageSheetProperty build() {
+        ImageSheetProperty build() {
             ImageSheetProperty imageSheetProperty = new ImageSheetProperty();
             imageSheetProperty.imageSheet = this.imageSheet;
             imageSheetProperty.widthOfOneFrame = this.widthOfOneFrame;
@@ -74,10 +71,9 @@ public class ImageSheetProperty {
             return imageSheetProperty;
         }
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                FIELDS
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final int DEFAULT_FRAMES_IN_ROW = 10;
     private static final double DEFAULT_DURATION_PER_FRAME = 3;
 
@@ -89,20 +85,16 @@ public class ImageSheetProperty {
     private int maxAmountOfFramesInRow;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                             CONSTRUCTORS
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private ImageSheetProperty() {
         //Nothing to do...
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                METHODS
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static Builder bulider(int amountOfFramesInRow) {
+    static Builder builder(int amountOfFramesInRow) {
         return new Builder(amountOfFramesInRow);
     }
 
-    public static Builder bulider() {
+    static Builder builder() {
         return new Builder(DEFAULT_FRAMES_IN_ROW);
     }
 
@@ -135,7 +127,6 @@ public class ImageSheetProperty {
 
         return new Point2D(maxXOffset, maxYOffset);
     }
-
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

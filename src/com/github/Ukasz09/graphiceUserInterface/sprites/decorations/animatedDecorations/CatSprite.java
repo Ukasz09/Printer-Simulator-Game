@@ -13,8 +13,8 @@ public class CatSprite extends AnimatedSprite {
     private final static ImageSheetProperty DEFAULT_SHEET_PROPERTY = SpritesProperties.catSheetProperty();
     private final static double DEFAULT_CAT_SOUND_VOLUME = 0.2;
     private final static SoundsPlayer DEFAULT_CAT_SOUND = SoundsProperties.catMeow(DEFAULT_CAT_SOUND_VOLUME);
-    private final static double DEFAULT_WIDTH = 219;
-    private final static double DEFAULT_HEIGHT = 300;
+    public final static double DEFAULT_WIDTH = 219;
+    public final static double DEFAULT_HEIGHT = 300;
 
     private SoundsPlayer catMeowSound;
 
@@ -32,14 +32,5 @@ public class CatSprite extends AnimatedSprite {
             catMeowSound = SoundsProperties.catMeow(DEFAULT_CAT_SOUND_VOLUME);
             catMeowSound.playSound();
         });
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static double getDefaultWidth() {
-        return DEFAULT_WIDTH;
-    }
-
-    public static double getDefaultHeight() {
-        return DEFAULT_HEIGHT;
     }
 }
