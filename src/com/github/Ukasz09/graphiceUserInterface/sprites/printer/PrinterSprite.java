@@ -20,14 +20,16 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.*;
 
+//tusz nie wyswitla sie dla pustych i mozna drukowac bez atramentu
 public class PrinterSprite extends SpriteWithEventHandler {
     private final static double DEFAULT_WIDTH = 280;
     private final static double DEFAULT_HEIGHT = 150;
-    private final static double DEFAULT_PRINTING_SPEED = 1;
+    private final static double DEFAULT_PRINTING_SPEED = 4;
     private final static double UPPER_TO_LOWER_BODY_PROPORTION = 0.4;
     private final static double SALVER_TO_PRINTER_WIDTH_PROPORTION = 0.6;
     private final static double SALVER_TO_PRINTER_HEIGHT_PROPORTION = 0.4;
     private final static double DEFAULT_SPACE_BETWEEN_INKS = 20;
+    private final static double DEFAULT_SPACE_BETWEEN_PAPERS = 5; //to made all papers visual in stack (avoid superimpose)
 
     private Printer printer;
 
@@ -238,8 +240,9 @@ public class PrinterSprite extends SpriteWithEventHandler {
         updateColorInks();
 
 //        TODO: testowo
-        System.out.println("Papers:" + whitePapersQueue.size());
-        System.out.println("Printed: " + printedPapersQueue.size());
+        System.out.println("White: SPRITE: " + whitePapersQueue.size() + ", LOGIC: " + printer.getAvailablePaperSheets());
+        System.out.println("Printed: SPRITE: " + printedPapersQueue.size() + ", LOGIC: " + printer.getQtyOfPrintedPages());
+        System.out.println("\n\n\n\n\n\n\n");
     }
 
 
@@ -282,11 +285,23 @@ public class PrinterSprite extends SpriteWithEventHandler {
 
     private void addPrintedPageSprite() {
         Point2D paperPosition = calculatePaperPosition();
-        double stopAnimationYPosition = printerDownSalver.getPositionY();
-        ImagePaperSprite newPaper = new ImagePaperSprite(paperPosition.getX(), paperPosition.getY(), DEFAULT_PRINTING_SPEED, posterImage, stopAnimationYPosition);
-        newPaper.doAnimation();
-        addPaperEventHandler(newPaper, printedPageEventHandler());
+        ImagePaperSprite newPaper = new ImagePaperSprite(paperPosition.getX(), paperPosition.getY(),
+                DEFAULT_PRINTING_SPEED, posterImage, getPaperAnimationStopPositionY());
+        initializePrintedPage(newPaper);
         printedPapersQueue.push(newPaper);
+    }
+
+    private double getPaperAnimationStopPositionY() {
+        if (printedPapersQueue.isEmpty())
+            return printerDownSalver.getPositionY();
+
+        IPaperGraphic lastPrintedPaper = printedPapersQueue.peek();
+        return lastPrintedPaper.getPositionY() - DEFAULT_SPACE_BETWEEN_PAPERS; //todo: dac mozliwosc printowania tylko jak calkoem skonczy siw wczesj9eisze
+    }
+
+    private void initializePrintedPage(IPaperGraphic newPrintedPage) {
+        newPrintedPage.doAnimation();
+        addPaperEventHandler(newPrintedPage, printedPageEventHandler());
     }
 
     private void addPaperEventHandler(IPaperGraphic paper, EventHandler eventHandler) {

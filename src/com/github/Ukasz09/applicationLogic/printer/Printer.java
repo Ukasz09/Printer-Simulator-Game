@@ -14,7 +14,7 @@ public class Printer {
     //                                                  Fields
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final double DEFAULT_INC_CAPACITY = 40;
-    private static final int DEFAULT_AMOUNT_OF_SHEETS =2;
+    private static final int DEFAULT_AMOUNT_OF_SHEETS = 2;
     private final ColorEnum[] defaultIncColors = {ColorEnum.BLUE, ColorEnum.RED, ColorEnum.YEALLOW, ColorEnum.BLACK};
 
     private List<PrintOption> printOptionList;
@@ -32,7 +32,7 @@ public class Printer {
         notTakenPrintedPages = new LinkedList<>();
         availablePaperSheets = DEFAULT_AMOUNT_OF_SHEETS;
         printOptionList = new ArrayList<>();
-        isInPrintingTime=false;
+        isInPrintingTime = false;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +114,6 @@ public class Printer {
         printerIncs.get(ColorEnum.BLACK).shrinkActualInkCapacity();
     }
 
-
     public void takePrintedPages(int amount) {
         if (notTakenPrintedPages.size() <= amount)
             notTakenPrintedPages.clear();
@@ -125,8 +124,6 @@ public class Printer {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
     public boolean isInPrintingTime() {
         return isInPrintingTime;
     }
@@ -139,11 +136,11 @@ public class Printer {
         return printerIncs;
     }
 
-//    public Deque<PrinterPaper> getNotTakenPrintedPages() {
-//        return notTakenPrintedPages;
-//    }
-
     public int getAvailablePaperSheets() {
         return availablePaperSheets;
+    }
+
+    public int getQtyOfPrintedPages() {
+        return notTakenPrintedPages.size();
     }
 }

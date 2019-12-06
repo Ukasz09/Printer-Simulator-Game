@@ -5,7 +5,6 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
-
 public class InkSprite extends ImageSprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public final static double DEFAULT_WIDTH = 64;
