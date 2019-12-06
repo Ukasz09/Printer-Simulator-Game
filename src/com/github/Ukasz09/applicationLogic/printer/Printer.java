@@ -11,10 +11,11 @@ import java.util.*;
 
 public class Printer {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                  Fields
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final double DEFAULT_INC_CAPACITY = 40;
     private static final int DEFAULT_AMOUNT_OF_SHEETS = 2;
+    private static final int DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS = 5; //todo: tmp -> pozniej dac niestatyczna zmienna i geter
+    public static final int DEFAULT_MAX_QTY_OF_PRINTED_SHEETS = 10;
+
     private final ColorEnum[] defaultIncColors = {ColorEnum.BLUE, ColorEnum.RED, ColorEnum.YEALLOW, ColorEnum.BLACK};
 
     private List<PrintOption> printOptionList;
@@ -23,8 +24,8 @@ public class Printer {
     private int availablePaperSheets;
     private boolean isInPrintingTime;
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                               Constructors
+    private int maxQtyOfAvailableSheets=DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS;
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Printer() {
         printerIncs = new LinkedHashMap<>();
@@ -36,9 +37,6 @@ public class Printer {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                                  Methods
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //todo: tmp null
     private void addDefaultIncs() {
         for (ColorEnum color : defaultIncColors)
             printerIncs.put(color, new ColorInk(color, color.getDefaultIncConsumption(), DEFAULT_INC_CAPACITY));
@@ -52,8 +50,16 @@ public class Printer {
         printerIncs.get(color).refillInc();
     }
 
-    public void refillAvailablePaper(int amount) {
-        availablePaperSheets += amount;
+    public boolean refillAvailablePaper(int amount) {
+        if (isPossibleToAddNewPapers(amount)) {
+            availablePaperSheets += amount;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isPossibleToAddNewPapers(int amount) {
+        return (availablePaperSheets + amount <= DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS);
     }
 
     private Image setPropertiesToImage(Image imageToPrint) {
@@ -65,7 +71,8 @@ public class Printer {
     }
 
     public boolean printImage(Image imageToPrint, boolean multicolor, int amountOfCopy) {
-        if (!isEnoughOfRequiredColors(multicolor) || imageToPrint == null || amountOfCopy <= 0 || availablePaperSheets < amountOfCopy)
+        if (!isEnoughOfRequiredColors(multicolor) || imageToPrint == null || amountOfCopy <= 0
+                || availablePaperSheets < amountOfCopy || getQtyOfPrintedPages() >= DEFAULT_MAX_QTY_OF_PRINTED_SHEETS) //todo: tmp - poprawic pozniej
             return false;
 
         Image imageWithProperties = setPropertiesToImage(imageToPrint);
@@ -82,7 +89,6 @@ public class Printer {
             return false;
         return true;
     }
-
 
     private boolean isEnoughMulticolorInc() {
         return (isEnoughOfInc(ColorEnum.RED) && isEnoughOfInc(ColorEnum.BLUE) &&
@@ -142,5 +148,9 @@ public class Printer {
 
     public int getQtyOfPrintedPages() {
         return notTakenPrintedPages.size();
+    }
+
+    public int getMaxQtyOfAvailableSheets() {
+        return maxQtyOfAvailableSheets;
     }
 }

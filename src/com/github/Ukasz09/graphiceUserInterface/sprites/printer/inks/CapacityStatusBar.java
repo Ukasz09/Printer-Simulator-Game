@@ -58,7 +58,6 @@ public class CapacityStatusBar extends Sprite {
     @Override
     public void render() {
         renderStatusBar();
-        System.out.println(height+" PE: "+actualCapacityPercents);
     }
 
     private void renderStatusBar() {

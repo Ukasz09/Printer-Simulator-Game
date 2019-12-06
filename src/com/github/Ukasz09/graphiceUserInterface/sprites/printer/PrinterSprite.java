@@ -3,11 +3,14 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.printer;
 import com.github.Ukasz09.applicationLogic.printer.Printer;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
+import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
+import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsProperties;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.inks.InkSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.IPaperGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.ImagePaperSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.PaperSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.WhitePaperSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterLowerBody;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterSalver;
@@ -20,8 +23,8 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.*;
 
-//tusz nie wyswitla sie dla pustych i mozna drukowac bez atramentu
 public class PrinterSprite extends SpriteWithEventHandler {
+    //todo: zapobiec dodawaniu kartek nielogicznych
     private final static double DEFAULT_WIDTH = 280;
     private final static double DEFAULT_HEIGHT = 150;
     private final static double DEFAULT_PRINTING_SPEED = 4;
@@ -29,7 +32,8 @@ public class PrinterSprite extends SpriteWithEventHandler {
     private final static double SALVER_TO_PRINTER_WIDTH_PROPORTION = 0.6;
     private final static double SALVER_TO_PRINTER_HEIGHT_PROPORTION = 0.4;
     private final static double DEFAULT_SPACE_BETWEEN_INKS = 20;
-    private final static double DEFAULT_SPACE_BETWEEN_PAPERS = 5; //to made all papers visual in stack (avoid superimpose)
+    private final static double DEFAULT_SPACE_BETWEEN_PAPERS = 3; //to made all papers visual in stack (avoid superimpose)
+    private final static double DEFAULT_PRINTING_VOLUME = 0.9;
 
     private Printer printer;
 
@@ -42,12 +46,15 @@ public class PrinterSprite extends SpriteWithEventHandler {
     private PrinterSalver printerUpperSalver;
     private PrinterSalver printerDownSalver;
 
+    private SoundsPlayer printingSound;
+
     private Image posterImage = ImagesProperties.flowerSprite(); //TODO: tmp, dopoki nie ma komputera
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PrinterSprite(double positionX, double positionY) {
         super(DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY);
         printer = new Printer();
+        printingSound = SoundsProperties.printing(DEFAULT_PRINTING_VOLUME);
         initializeLists();
         initializeAllSprites();
         addUpperSalverEventHandler();
@@ -72,7 +79,7 @@ public class PrinterSprite extends SpriteWithEventHandler {
         initializeUpperBody(printerLowerBody.getHeight());
         initializeUpperSalver(printerUpperBody.getPositionY());
         initializeDownSalver();
-        addWhitePaperSprite();
+        initializeWhitePapersList();
         addInkSprites();
     }
 
@@ -165,29 +172,49 @@ public class PrinterSprite extends SpriteWithEventHandler {
         return new Point2D(positionX, positionY);
     }
 
-    private void addWhitePaperSprite() {
-        Point2D paperPosition = calculatePaperPosition();
+    private void initializeWhitePapersList() {
         for (int i = 0; i < printer.getAvailablePaperSheets(); i++)
-            whitePapersQueue.push(new WhitePaperSprite(paperPosition.getX(), paperPosition.getY(), DEFAULT_PRINTING_SPEED));
+            addNewWhitePaperSprite();
     }
 
-    private Point2D calculatePaperPosition() {
-        double paperPositionX = printerUpperSalver.getPositionX() + printerUpperSalver.getWidth() / 2 - WhitePaperSprite.DEFAULT_WIDTH / 2;
-        double paperPositionY = printerUpperSalver.getPositionY() + printerUpperSalver.getHeight() - WhitePaperSprite.DEFAULT_HEIGHT;
+    private Point2D calculateWhitePaperPosition() {
+        Point2D paperPosition;
+        if (whitePapersQueue.isEmpty() || (whitePapersQueue.size() == 1 && printer.isInPrintingTime()))
+            paperPosition = getWhitePaperPositionBySalver(PaperSprite.DEFAULT_WIDTH, PaperSprite.DEFAULT_HEIGHT);
+        else paperPosition = getWhitePaperPositionByOtherPaper(whitePapersQueue.getLast());
+
+        return new Point2D(paperPosition.getX(), paperPosition.getY());
+    }
+
+    private Point2D getWhitePaperPositionBySalver(double paperWidth, double paperHeight) {
+        double salverPositionX = printerUpperSalver.getPositionX();
+        double salverPositionY = printerUpperSalver.getPositionY();
+        double salverWidth = printerUpperSalver.getWidth();
+        double salverHeight = printerUpperSalver.getHeight();
+        double immersionDepthOfPaper = DEFAULT_SPACE_BETWEEN_PAPERS * printer.getMaxQtyOfAvailableSheets();
+        double paperPositionX = salverPositionX + salverWidth / 2 - paperWidth / 2;
+        double paperPositionY = salverPositionY + salverHeight - paperHeight + immersionDepthOfPaper;
         return new Point2D(paperPositionX, paperPositionY);
     }
 
-    private void addNewWhitePaper() {
-        Point2D paperPosition = calculatePaperPosition();
+    private Point2D getWhitePaperPositionByOtherPaper(IPaperGraphic lastPaper) {
+        double paperPositionX = lastPaper.getPositionX();
+        double paperPositionY = lastPaper.getPositionY() - DEFAULT_SPACE_BETWEEN_PAPERS;
+        return new Point2D(paperPositionX, paperPositionY);
+    }
+
+    private void addNewWhitePaperSprite() {
+        Point2D paperPosition = calculateWhitePaperPosition();
         WhitePaperSprite newPaper = new WhitePaperSprite(paperPosition.getX(), paperPosition.getY(), DEFAULT_PRINTING_SPEED);
         whitePapersQueue.add(newPaper);
-        printer.refillAvailablePaper(1);
     }
 
     private void addUpperSalverEventHandler() {
-        printerUpperSalver.addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> addNewWhitePaper());
+        printerUpperSalver.addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if (printer.refillAvailablePaper(1))
+                addNewWhitePaperSprite();
+        });
     }
-
 
     //todo: tmp dopoki nie ma komputera
     private void addPrinterEventHandler() {
@@ -238,13 +265,15 @@ public class PrinterSprite extends SpriteWithEventHandler {
         updateWhitePapers();
         updatePrintedPapers();
         updateColorInks();
+        updatePrinterState();
 
-//        TODO: testowo
-        System.out.println("White: SPRITE: " + whitePapersQueue.size() + ", LOGIC: " + printer.getAvailablePaperSheets());
-        System.out.println("Printed: SPRITE: " + printedPapersQueue.size() + ", LOGIC: " + printer.getQtyOfPrintedPages());
-        System.out.println("\n\n\n\n\n\n\n");
+        System.out.println(printer.isInPrintingTime());
+
+////        TODO: testowo
+//        System.out.println("White: SPRITE: " + whitePapersQueue.size() + ", LOGIC: " + printer.getAvailablePaperSheets());
+//        System.out.println("Printed: SPRITE: " + printedPapersQueue.size() + ", LOGIC: " + printer.getQtyOfPrintedPages());
+//        System.out.println("\n\n\n\n\n\n\n");
     }
-
 
     private void updatePrinterParts() {
         printerUpperSalver.update();
@@ -259,7 +288,7 @@ public class PrinterSprite extends SpriteWithEventHandler {
 
         if (!whitePapersQueue.isEmpty())
             if (whitePapersQueue.peek().canBeDestroyedNow()) {
-                printer.setInPrintingTime(false);
+//                printer.setInPrintingTime(false);
                 whitePapersQueue.pop().removeNodeFromRoot();
             }
     }
@@ -274,18 +303,27 @@ public class PrinterSprite extends SpriteWithEventHandler {
             colorInk.update();
     }
 
+    private void updatePrinterState() {
+        if (printer.isInPrintingTime()) {
+            if (printedPapersQueue.peek().canBeDestroyedNow()) {
+                printingSound.stopSound();
+                printer.setInPrintingTime(false);
+            }
+        }
+    }
+
     public void print(Image image, boolean multicolor, int amountOfCopy) {
         if (!printer.isInPrintingTime())
             if (printer.printImage(image, multicolor, amountOfCopy)) {
                 whitePapersQueue.peek().doAnimation();
                 addPrintedPageSprite();
                 printer.setInPrintingTime(true);
+                printingSound.playSound();
             }
     }
 
     private void addPrintedPageSprite() {
-        Point2D paperPosition = calculatePaperPosition();
-        ImagePaperSprite newPaper = new ImagePaperSprite(paperPosition.getX(), paperPosition.getY(),
+        ImagePaperSprite newPaper = new ImagePaperSprite(whitePapersQueue.peek().getPositionX(), whitePapersQueue.peek().getPositionY(),
                 DEFAULT_PRINTING_SPEED, posterImage, getPaperAnimationStopPositionY());
         initializePrintedPage(newPaper);
         printedPapersQueue.push(newPaper);

@@ -12,4 +12,8 @@ public class SoundsProperties {
         return new SoundsPlayer(musicPath, volume, false);
     }
 
+    public static SoundsPlayer printing(double volume) {
+        String musicPath = "src/resources/music/printerSound.wav";
+        return new SoundsPlayer(musicPath, volume, true);
+    }
 }
