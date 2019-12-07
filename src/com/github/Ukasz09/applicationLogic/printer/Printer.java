@@ -5,6 +5,9 @@ import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
 import com.github.Ukasz09.applicationLogic.printer.paper.PrinterPaper;
 import com.github.Ukasz09.applicationLogic.printer.printOption.GrayPrint;
 import com.github.Ukasz09.applicationLogic.printer.printOption.PrintOption;
+import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterErrorCodes;
+import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterContainersException;
+import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
 import javafx.scene.image.Image;
 
 import java.util.*;
@@ -13,8 +16,8 @@ public class Printer {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final double DEFAULT_INC_CAPACITY = 40;
     private static final int DEFAULT_AMOUNT_OF_SHEETS = 2;
-    private static final int DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS = 5; //todo: tmp -> pozniej dac niestatyczna zmienna i geter
-    public static final int DEFAULT_MAX_QTY_OF_PRINTED_SHEETS = 10;
+    private static final int DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS = 5;
+    private static final int DEFAULT_MAX_QTY_OF_PRINTED_SHEETS = 10;
 
     private final ColorEnum[] defaultIncColors = {ColorEnum.BLUE, ColorEnum.RED, ColorEnum.YEALLOW, ColorEnum.BLACK};
 
@@ -24,7 +27,8 @@ public class Printer {
     private int availablePaperSheets;
     private boolean isInPrintingTime;
 
-    private int maxQtyOfAvailableSheets=DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS;
+    private int maxQtyOfAvailableSheets = DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS;
+    private int maxQtyOfPrintedSheets = DEFAULT_MAX_QTY_OF_PRINTED_SHEETS;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Printer() {
@@ -62,6 +66,77 @@ public class Printer {
         return (availablePaperSheets + amount <= DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS);
     }
 
+    //todo: dac dekorator
+    public Image setPropertyToImage(Image image) {
+        return setPropertiesToImage(image);
+    }
+
+    public void printImage(Image imageToPrint, boolean multicolor, int qtyOfCopy) throws PrinterException {
+        checkPrinterContainers(multicolor, qtyOfCopy);
+        checkImageToPrint(imageToPrint);
+        checkQtyOfPageToPrint(qtyOfCopy);
+
+        for (int i = 0; i < qtyOfCopy; i++) {
+            notTakenPrintedPages.push(new PrinterPaper(imageToPrint));
+            shrinkIncCapacity(multicolor);
+            availablePaperSheets--;
+        }
+    }
+
+    private void checkPrinterContainers(boolean multicolor, int qtyOfCopy) throws PrinterContainersException {
+        checkInkCapacity(multicolor);
+        checkAvailablePaperCapacity(qtyOfCopy);
+        checkPrintedPagesStack();
+    }
+
+    private void checkInkCapacity(boolean multicolor) throws PrinterContainersException {
+        if (!isEnoughOfRequiredColors(multicolor))
+            throw new PrinterContainersException(PrinterErrorCodes.RUN_OUT_OF_INK.code, new Throwable(". Not enough of ink: multicolor=" + multicolor));
+    }
+
+    private void checkAvailablePaperCapacity(double qtyOfPagesToPrint) throws PrinterContainersException {
+        if (availablePaperSheets < qtyOfPagesToPrint)
+            throw new PrinterContainersException(PrinterErrorCodes.RUN_OUT_OF_PAPER.code, new Throwable(". Not enough of paper: available=" + availablePaperSheets));
+    }
+
+    private void checkPrintedPagesStack() throws PrinterContainersException {
+        if (notTakenPrintedPages.size() >= DEFAULT_MAX_QTY_OF_PRINTED_SHEETS)
+            throw new PrinterContainersException(PrinterErrorCodes.FULL_PRINTED_PAGES_STACK.code, new Throwable(". Printed papers stack full=" + notTakenPrintedPages.size()));
+    }
+
+    private boolean isEnoughOfRequiredColors(boolean multicolor) {
+        if (multicolor)
+            return isEnoughMulticolorInc();
+        return isEnoughOfInc(ColorEnum.BLACK);
+    }
+
+    private boolean isEnoughMulticolorInc() {
+        for (Map.Entry<ColorEnum, ColorInk> inkSet : printerIncs.entrySet()) {
+            if (!isEnoughOfInc(inkSet.getKey()))
+                return false;
+        }
+
+        return true;
+    }
+
+    private boolean isEnoughOfInc(ColorEnum colorEnum) {
+        ColorInk ink = printerIncs.get(colorEnum);
+        if (ink == null)
+            return false;
+        return (ink.getActualCapacity() >= ink.getIncConsumption()); //todo: dac inc consumption do drukarki
+    }
+
+    private void checkImageToPrint(Image image) throws PrinterException {
+        if (image == null)
+            throw new PrinterException(PrinterErrorCodes.INCORRECT_IMAGE_TO_PRINT.code, new Throwable("Image == null"));
+    }
+
+    private void checkQtyOfPageToPrint(int qtyOfPageToPrint) throws PrinterException {
+        if (qtyOfPageToPrint <= 0)
+            throw new PrinterException(PrinterErrorCodes.INCORRECT_QTY_OF_PAGE_TO_PRINT.code, new Throwable("PageToPrint: " + qtyOfPageToPrint));
+    }
+
+    //todo: zmienic na dekorator
     private Image setPropertiesToImage(Image imageToPrint) {
         Image imageWithProperites = imageToPrint;
         for (PrintOption option : printOptionList)
@@ -70,55 +145,21 @@ public class Printer {
         return imageWithProperites;
     }
 
-    public boolean printImage(Image imageToPrint, boolean multicolor, int amountOfCopy) {
-        if (!isEnoughOfRequiredColors(multicolor) || imageToPrint == null || amountOfCopy <= 0
-                || availablePaperSheets < amountOfCopy || getQtyOfPrintedPages() >= DEFAULT_MAX_QTY_OF_PRINTED_SHEETS) //todo: tmp - poprawic pozniej
-            return false;
-
-        Image imageWithProperties = setPropertiesToImage(imageToPrint);
-        for (int i = 0; i < amountOfCopy; i++) {
-            notTakenPrintedPages.push(new PrinterPaper(imageWithProperties));
-            shrinkIncCapacity(multicolor);
-            availablePaperSheets--;
-        }
-        return true;
-    }
-
-    private boolean isEnoughOfRequiredColors(boolean multicolor) {
-        if ((multicolor && !isEnoughMulticolorInc()) || (!multicolor && !isEnoughOfInc(ColorEnum.BLACK)))
-            return false;
-        return true;
-    }
-
-    private boolean isEnoughMulticolorInc() {
-        return (isEnoughOfInc(ColorEnum.RED) && isEnoughOfInc(ColorEnum.BLUE) &&
-                isEnoughOfInc(ColorEnum.YEALLOW) & isEnoughOfInc(ColorEnum.BLACK));
-    }
-
-    private boolean isEnoughOfInc(ColorEnum colorEnum) {
-        ColorInk ink = printerIncs.get(colorEnum);
-        if (ink == null)
-            return false;
-        return (ink.getActualCapacity() >= ink.getIncConsumption());
-
-    }
-
     private void shrinkIncCapacity(boolean multicolor) {
         if (multicolor)
             shrinkMulticolorCapacity();
-        else shrinkBlackColorCapacity();
+        else shrinkInkCapacity(ColorEnum.BLACK);
     }
 
     private void shrinkMulticolorCapacity() {
-        shrinkBlackColorCapacity();
-        printerIncs.get(ColorEnum.RED).shrinkActualInkCapacity();
-        printerIncs.get(ColorEnum.YEALLOW).shrinkActualInkCapacity();
-        printerIncs.get(ColorEnum.BLUE).shrinkActualInkCapacity();
+        printerIncs.forEach((color, ink) -> ink.shrinkActualInkCapacity());
     }
 
-    private void shrinkBlackColorCapacity() {
-        printerIncs.get(ColorEnum.BLACK).shrinkActualInkCapacity();
+    private void shrinkInkCapacity(ColorEnum color) {
+        printerIncs.get(color).shrinkActualInkCapacity();
     }
+
+    /////////////// ///////////////// ///////////// /////////
 
     public void takePrintedPages(int amount) {
         if (notTakenPrintedPages.size() <= amount)
@@ -144,10 +185,6 @@ public class Printer {
 
     public int getAvailablePaperSheets() {
         return availablePaperSheets;
-    }
-
-    public int getQtyOfPrintedPages() {
-        return notTakenPrintedPages.size();
     }
 
     public int getMaxQtyOfAvailableSheets() {

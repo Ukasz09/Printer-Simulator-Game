@@ -1,8 +1,10 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.printer;
 
+import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.applicationLogic.printer.Printer;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
+import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsProperties;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
@@ -24,7 +26,6 @@ import javafx.scene.input.MouseEvent;
 import java.util.*;
 
 public class PrinterSprite extends SpriteWithEventHandler {
-    //todo: zapobiec dodawaniu kartek nielogicznych
     private final static double DEFAULT_WIDTH = 280;
     private final static double DEFAULT_HEIGHT = 150;
     private final static double DEFAULT_PRINTING_SPEED = 4;
@@ -220,7 +221,12 @@ public class PrinterSprite extends SpriteWithEventHandler {
     private void addPrinterEventHandler() {
         addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (posterImage != null) {
-                print(posterImage, true, 1);
+                try {
+
+                    print(posterImage, true, 1);
+                } catch (PrinterException e) {
+                    Logger.logError(getClass(), e.getMessage() + "cause: " + e.getCause().getMessage());
+                }
             } else System.err.println("ERROR: poster=null");
         });
     }
@@ -312,14 +318,18 @@ public class PrinterSprite extends SpriteWithEventHandler {
         }
     }
 
-    public void print(Image image, boolean multicolor, int amountOfCopy) {
-        if (!printer.isInPrintingTime())
-            if (printer.printImage(image, multicolor, amountOfCopy)) {
-                whitePapersQueue.peek().doAnimation();
-                addPrintedPageSprite();
-                printer.setInPrintingTime(true);
-                printingSound.playSound();
+    public void print(Image image, boolean multicolor, int amountOfCopy) throws PrinterException {
+        if (!printer.isInPrintingTime()) {
+            try {
+                printer.printImage(image, multicolor, amountOfCopy);
+            } catch (PrinterException e) {
+                throw e;
             }
+            whitePapersQueue.peek().doAnimation();
+            addPrintedPageSprite();
+            printer.setInPrintingTime(true);
+            printingSound.playSound();
+        }
     }
 
     private void addPrintedPageSprite() {
