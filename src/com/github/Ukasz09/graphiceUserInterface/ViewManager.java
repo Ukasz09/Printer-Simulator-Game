@@ -1,6 +1,5 @@
 package com.github.Ukasz09.graphiceUserInterface;
 
-import com.github.Ukasz09.applicationLogic.Logger;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
