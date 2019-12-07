@@ -4,6 +4,8 @@ import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.applicationLogic.printer.Printer;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
+import com.github.Ukasz09.applicationLogic.printer.printOption.*;
+import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterContainersException;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsProperties;
@@ -21,6 +23,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesPropert
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.util.*;
@@ -88,7 +91,7 @@ public class PrinterSprite extends SpriteWithEventHandler {
         double positionX = manager.getRightFrameBorder();
         double positionY = 0;
 
-        for (Map.Entry<ColorEnum, ColorInk> entry : printer.getPrinterIncs().entrySet()) {
+        for (Map.Entry<ColorEnum, ColorInk> entry : printer.getPrinterInks().entrySet()) {
             positionX -= (InkSprite.DEFAULT_WIDTH + DEFAULT_SPACE_BETWEEN_INKS);
             inksList.add(new InkSprite(getInkImageByColor(entry.getKey()), entry.getValue(), positionX, positionY));
         }
@@ -212,23 +215,31 @@ public class PrinterSprite extends SpriteWithEventHandler {
 
     private void addUpperSalverEventHandler() {
         printerUpperSalver.addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if (printer.refillAvailablePaper(1))
+            try {
+                printer.refillAvailablePaper(1);
                 addNewWhitePaperSprite();
+            } catch (PrinterContainersException e) {
+                Logger.logError(getClass(), e.getMessage() + "cause: " + e.getCause().getMessage());
+            }
         });
     }
 
-    //todo: tmp dopoki nie ma komputera
+    //todo: tmp dopoki nie ma komputera option sa dawane statycznie
     private void addPrinterEventHandler() {
         addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (posterImage != null) {
                 try {
-
-                    print(posterImage, true, 1);
+                    print(getOptionToTest(), true, 1);
                 } catch (PrinterException e) {
                     Logger.logError(getClass(), e.getMessage() + "cause: " + e.getCause().getMessage());
                 }
             } else System.err.println("ERROR: poster=null");
         });
+    }
+
+    //todo: tmp: na czas testow
+    private IPrintDecorator getOptionToTest() {
+        return new GrayColorDecorator(new TestGaussianBlurDecorator(new BasePrintDecorator()));
     }
 
     @Override
@@ -273,9 +284,8 @@ public class PrinterSprite extends SpriteWithEventHandler {
         updateColorInks();
         updatePrinterState();
 
-        System.out.println(printer.isInPrintingTime());
-
-////        TODO: testowo
+        //todo: tmp
+//        System.out.println(printer.isInPrintingTime());
 //        System.out.println("White: SPRITE: " + whitePapersQueue.size() + ", LOGIC: " + printer.getAvailablePaperSheets());
 //        System.out.println("Printed: SPRITE: " + printedPapersQueue.size() + ", LOGIC: " + printer.getQtyOfPrintedPages());
 //        System.out.println("\n\n\n\n\n\n\n");
@@ -294,7 +304,6 @@ public class PrinterSprite extends SpriteWithEventHandler {
 
         if (!whitePapersQueue.isEmpty())
             if (whitePapersQueue.peek().canBeDestroyedNow()) {
-//                printer.setInPrintingTime(false);
                 whitePapersQueue.pop().removeNodeFromRoot();
             }
     }
@@ -318,23 +327,24 @@ public class PrinterSprite extends SpriteWithEventHandler {
         }
     }
 
-    public void print(Image image, boolean multicolor, int amountOfCopy) throws PrinterException {
+    public void print(IPrintDecorator printOptionEffect, boolean multicolor, int amountOfCopy) throws PrinterException {
         if (!printer.isInPrintingTime()) {
+            Image imageToPrint = printOptionEffect.getImageWithAddedEffect(new ImageView(posterImage)); //todo: test
             try {
-                printer.printImage(image, multicolor, amountOfCopy);
+                printer.printImage(imageToPrint, multicolor, amountOfCopy);
             } catch (PrinterException e) {
                 throw e;
             }
             whitePapersQueue.peek().doAnimation();
-            addPrintedPageSprite();
+            addPrintedPageSprite(imageToPrint);
             printer.setInPrintingTime(true);
             printingSound.playSound();
         }
     }
 
-    private void addPrintedPageSprite() {
+    private void addPrintedPageSprite(Image imageToPrint) {
         ImagePaperSprite newPaper = new ImagePaperSprite(whitePapersQueue.peek().getPositionX(), whitePapersQueue.peek().getPositionY(),
-                DEFAULT_PRINTING_SPEED, posterImage, getPaperAnimationStopPositionY());
+                DEFAULT_PRINTING_SPEED, imageToPrint, getPaperAnimationStopPositionY());
         initializePrintedPage(newPaper);
         printedPapersQueue.push(newPaper);
     }

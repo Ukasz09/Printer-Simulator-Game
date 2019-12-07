@@ -3,8 +3,6 @@ package com.github.Ukasz09.applicationLogic.printer;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
 import com.github.Ukasz09.applicationLogic.printer.paper.PrinterPaper;
-import com.github.Ukasz09.applicationLogic.printer.printOption.GrayPrint;
-import com.github.Ukasz09.applicationLogic.printer.printOption.PrintOption;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterErrorCodes;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterContainersException;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
@@ -21,54 +19,43 @@ public class Printer {
 
     private final ColorEnum[] defaultIncColors = {ColorEnum.BLUE, ColorEnum.RED, ColorEnum.YEALLOW, ColorEnum.BLACK};
 
-    private List<PrintOption> printOptionList;
-    private Map<ColorEnum, ColorInk> printerIncs;
+    private Map<ColorEnum, ColorInk> printerInks;
     private Deque<PrinterPaper> notTakenPrintedPages;
     private int availablePaperSheets;
     private boolean isInPrintingTime;
-
-    private int maxQtyOfAvailableSheets = DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS;
-    private int maxQtyOfPrintedSheets = DEFAULT_MAX_QTY_OF_PRINTED_SHEETS;
+    private int maxQtyOfAvailableSheets;
+    private int maxQtyOfPrintedSheets;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Printer() {
-        printerIncs = new LinkedHashMap<>();
-        addDefaultIncs();
+        printerInks = new LinkedHashMap<>();
+        addDefaultIncs(DEFAULT_INC_CAPACITY);
         notTakenPrintedPages = new LinkedList<>();
         availablePaperSheets = DEFAULT_AMOUNT_OF_SHEETS;
-        printOptionList = new ArrayList<>();
         isInPrintingTime = false;
+        maxQtyOfAvailableSheets = DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS;
+        maxQtyOfPrintedSheets = DEFAULT_MAX_QTY_OF_PRINTED_SHEETS;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void addDefaultIncs() {
+    private void addDefaultIncs(double inksCapacity) {
         for (ColorEnum color : defaultIncColors)
-            printerIncs.put(color, new ColorInk(color, color.getDefaultIncConsumption(), DEFAULT_INC_CAPACITY));
-    }
-
-    private void addDefaultOptions() {
-        printOptionList.add(new GrayPrint());
+            printerInks.put(color, new ColorInk(color, color.getDefaultIncConsumption(), inksCapacity));
     }
 
     public void refillInc(ColorEnum color) {
-        printerIncs.get(color).refillInc();
+        printerInks.get(color).refillInc();
     }
 
-    public boolean refillAvailablePaper(int amount) {
-        if (isPossibleToAddNewPapers(amount)) {
-            availablePaperSheets += amount;
-            return true;
-        }
-        return false;
+    public void refillAvailablePaper(int amount) throws PrinterContainersException {
+        if (!isPossibleToAddNewPapers(amount))
+            throw new PrinterContainersException(PrinterErrorCodes.FULL_AVAILABLE_PAPER_STACK.code,
+                    new Throwable(". Cant add new paper. Available= " + availablePaperSheets));
+        availablePaperSheets += amount;
     }
 
     private boolean isPossibleToAddNewPapers(int amount) {
         return (availablePaperSheets + amount <= DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS);
-    }
-
-    //todo: dac dekorator
-    public Image setPropertyToImage(Image image) {
-        return setPropertiesToImage(image);
     }
 
     public void printImage(Image imageToPrint, boolean multicolor, int qtyOfCopy) throws PrinterException {
@@ -111,7 +98,7 @@ public class Printer {
     }
 
     private boolean isEnoughMulticolorInc() {
-        for (Map.Entry<ColorEnum, ColorInk> inkSet : printerIncs.entrySet()) {
+        for (Map.Entry<ColorEnum, ColorInk> inkSet : printerInks.entrySet()) {
             if (!isEnoughOfInc(inkSet.getKey()))
                 return false;
         }
@@ -120,7 +107,7 @@ public class Printer {
     }
 
     private boolean isEnoughOfInc(ColorEnum colorEnum) {
-        ColorInk ink = printerIncs.get(colorEnum);
+        ColorInk ink = printerInks.get(colorEnum);
         if (ink == null)
             return false;
         return (ink.getActualCapacity() >= ink.getIncConsumption()); //todo: dac inc consumption do drukarki
@@ -136,15 +123,6 @@ public class Printer {
             throw new PrinterException(PrinterErrorCodes.INCORRECT_QTY_OF_PAGE_TO_PRINT.code, new Throwable("PageToPrint: " + qtyOfPageToPrint));
     }
 
-    //todo: zmienic na dekorator
-    private Image setPropertiesToImage(Image imageToPrint) {
-        Image imageWithProperites = imageToPrint;
-        for (PrintOption option : printOptionList)
-            imageWithProperites = option.applyPropertiesToImage(imageToPrint);
-
-        return imageWithProperites;
-    }
-
     private void shrinkIncCapacity(boolean multicolor) {
         if (multicolor)
             shrinkMulticolorCapacity();
@@ -152,22 +130,18 @@ public class Printer {
     }
 
     private void shrinkMulticolorCapacity() {
-        printerIncs.forEach((color, ink) -> ink.shrinkActualInkCapacity());
+        printerInks.forEach((color, ink) -> ink.shrinkActualInkCapacity());
     }
 
     private void shrinkInkCapacity(ColorEnum color) {
-        printerIncs.get(color).shrinkActualInkCapacity();
+        printerInks.get(color).shrinkActualInkCapacity();
     }
-
-    /////////////// ///////////////// ///////////// /////////
 
     public void takePrintedPages(int amount) {
         if (notTakenPrintedPages.size() <= amount)
             notTakenPrintedPages.clear();
-        else {
-            for (int i = amount; i > 0; i--)
-                notTakenPrintedPages.pop();
-        }
+        else for (int i = 0; i < amount; i++)
+            notTakenPrintedPages.pop();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,8 +153,8 @@ public class Printer {
         isInPrintingTime = inPrintingTime;
     }
 
-    public Map<ColorEnum, ColorInk> getPrinterIncs() {
-        return printerIncs;
+    public Map<ColorEnum, ColorInk> getPrinterInks() {
+        return printerInks;
     }
 
     public int getAvailablePaperSheets() {
