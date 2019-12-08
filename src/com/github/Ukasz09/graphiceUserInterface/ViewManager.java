@@ -4,6 +4,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,6 +27,7 @@ public class ViewManager {
     private Canvas canvas;
     private GraphicsContext gc;
     private Group root;
+    Scene mainScene;
 
     private double rightFrameBorder;
     private double bottomFrameBorder;
@@ -64,7 +66,7 @@ public class ViewManager {
     }
 
     private void setMainStageScene() {
-        Scene mainScene = new Scene(root);
+        mainScene = new Scene(root);
         mainStage.setScene(mainScene);
     }
 
@@ -126,14 +128,13 @@ public class ViewManager {
         canvas.setTranslateY(offsetY);
     }
 
-    public void addImageViewAsNode(ImageView iv) {
+    public void addNode(Node iv) {
         root.getChildren().add(iv);
     }
 
-    public void removeImageViewFromNode(ImageView iv) throws NullPointerException {
+    public void removeNode(Node iv) throws NullPointerException {
         root.getChildren().remove(iv);
     }
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Stage getMainStage() {

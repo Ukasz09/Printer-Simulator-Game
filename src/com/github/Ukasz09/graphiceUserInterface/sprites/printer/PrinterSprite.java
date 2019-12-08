@@ -29,8 +29,8 @@ import javafx.scene.input.MouseEvent;
 import java.util.*;
 
 public class PrinterSprite extends SpriteWithEventHandler {
-    private final static double DEFAULT_WIDTH = 280;
-    private final static double DEFAULT_HEIGHT = 150;
+    public final static double DEFAULT_WIDTH = 280;
+    public final static double DEFAULT_HEIGHT = 150;
     private final static double DEFAULT_PRINTING_SPEED = 4;
     private final static double UPPER_TO_LOWER_BODY_PROPORTION = 0.4;
     private final static double SALVER_TO_PRINTER_WIDTH_PROPORTION = 0.6;
@@ -52,8 +52,6 @@ public class PrinterSprite extends SpriteWithEventHandler {
 
     private SoundsPlayer printingSound;
 
-    private Image posterImage = ImagesProperties.flowerSprite(); //TODO: tmp, dopoki nie ma komputera
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PrinterSprite(double positionX, double positionY) {
         super(DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY);
@@ -62,7 +60,6 @@ public class PrinterSprite extends SpriteWithEventHandler {
         initializeLists();
         initializeAllSprites();
         addUpperSalverEventHandler();
-        addPrinterEventHandler();
 
         //TODO: tmp dopoki nie ma komputera zeby nie zaslanialy inne czesci eventHandlera na drukowanie
         printerLowerBody.setImageViewVisable(false);
@@ -224,24 +221,6 @@ public class PrinterSprite extends SpriteWithEventHandler {
         });
     }
 
-    //todo: tmp dopoki nie ma komputera option sa dawane statycznie
-    private void addPrinterEventHandler() {
-        addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if (posterImage != null) {
-                try {
-                    print(getOptionToTest(), true, 1);
-                } catch (PrinterException e) {
-                    Logger.logError(getClass(), e.getMessage() + "cause: " + e.getCause().getMessage());
-                }
-            } else System.err.println("ERROR: poster=null");
-        });
-    }
-
-    //todo: tmp: na czas testow
-    private IPrintDecorator getOptionToTest() {
-        return new GrayColorDecorator(new TestGaussianBlurDecorator(new BasePrintDecorator()));
-    }
-
     @Override
     public void render() {
         renderPrinterComponents();
@@ -327,9 +306,8 @@ public class PrinterSprite extends SpriteWithEventHandler {
         }
     }
 
-    public void print(IPrintDecorator printOptionEffect, boolean multicolor, int amountOfCopy) throws PrinterException {
+    public void print(Image imageToPrint, boolean multicolor, int amountOfCopy) throws PrinterException {
         if (!printer.isInPrintingTime()) {
-            Image imageToPrint = printOptionEffect.getImageWithAddedEffect(new ImageView(posterImage)); //todo: test
             try {
                 printer.printImage(imageToPrint, multicolor, amountOfCopy);
             } catch (PrinterException e) {
@@ -375,14 +353,5 @@ public class PrinterSprite extends SpriteWithEventHandler {
             printedPapersQueue.pop().removeNodeFromRoot();
             printer.takePrintedPages(1);
         }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static double getDefaultWidth() {
-        return DEFAULT_WIDTH;
-    }
-
-    public static double getDefaultHeight() {
-        return DEFAULT_HEIGHT;
     }
 }

@@ -1,8 +1,15 @@
 package com.github.Ukasz09.graphiceUserInterface;
 
+import com.github.Ukasz09.applicationLogic.Logger;
+import com.github.Ukasz09.applicationLogic.printer.printOption.BasePrintDecorator;
+import com.github.Ukasz09.applicationLogic.printer.printOption.GrayColorDecorator;
+import com.github.Ukasz09.applicationLogic.printer.printOption.IPrintDecorator;
+import com.github.Ukasz09.applicationLogic.printer.printOption.TestGaussianBlurDecorator;
+import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.Background;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.RoomBackground;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.ComputerSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.*;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.animatedDecorations.CatSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.animatedDecorations.GlobeSprite;
@@ -10,18 +17,23 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecora
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecorations.FlowerSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecorations.ZingsPosterSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.github.Ukasz09.graphiceUserInterface.sprites.decorations.DecorationsEnum.DESK;
+import static com.github.Ukasz09.graphiceUserInterface.sprites.decorations.DecorationsEnum.*;
 
 public class Room implements IRoomGraphic {
     private ViewManager manager;
     private Background background;
     private Map<DecorationsEnum, ISpriteGraphic> decorations;
     private PrinterSprite printerSprite;
+    private ComputerSprite computerSprite;
 
     public Room() {
         manager = ViewManager.getInstance();
@@ -29,6 +41,8 @@ public class Room implements IRoomGraphic {
         decorations = new LinkedHashMap<>();
         addDefaultDecorations();
         addPrinter();
+        addComputer();
+        addComputerEventHandler();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,9 +116,41 @@ public class Room implements IRoomGraphic {
         printerSprite = new PrinterSprite(position.getX(), position.getY());
     }
 
+    private void addComputer() {
+        ISpriteGraphic globe = decorations.get(GLOBE);
+        ISpriteGraphic desk = decorations.get(DESK);
+        Point2D position = calculateComputerPosition(globe.getPositionX(), globe.getWidth(), desk.getPositionY());
+        computerSprite = new ComputerSprite(position.getX(), position.getY());
+    }
+
+    //todo: tmp -> potem na guziki + poster z dekoracji
+    private void addComputerEventHandler() {
+        computerSprite.addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            Image poster = ImagesProperties.zingsPosterSprites()[0];
+            if (poster != null) {
+                try {
+                    printerSprite.print(getImageWithOptionToTest(), true, 1);
+                } catch (PrinterException e) {
+                    Logger.logError(getClass(), e.getMessage() + "cause: " + e.getCause().getMessage());
+                }
+            } else Logger.logError(getClass(), " poster=null");
+        });
+    }
+
+    //todo: tmp: na czas testow
+    private Image getImageWithOptionToTest() {
+        return new GrayColorDecorator(new TestGaussianBlurDecorator(new BasePrintDecorator())).getImageWithAddedEffect(new ImageView(ImagesProperties.zingsPosterSprites()[0]));
+    }
+
     private Point2D calculatePrinterPosition(double deskPositionX, double deskPositionY, double deskWidth) {
-        double positionX = deskPositionX + deskWidth * 0.95 - PrinterSprite.getDefaultWidth();
-        double positionY = deskPositionY - PrinterSprite.getDefaultHeight();
+        double positionX = deskPositionX + deskWidth * 0.95 - PrinterSprite.DEFAULT_WIDTH;
+        double positionY = deskPositionY - PrinterSprite.DEFAULT_HEIGHT;
+        return new Point2D(positionX, positionY);
+    }
+
+    private Point2D calculateComputerPosition(double globePositionX, double globeWidth, double deskPositionY) {
+        double positionX = globePositionX + globeWidth;
+        double positionY = deskPositionY - ComputerSprite.DEFAULT_MONITOR_HEIGHT;
         return new Point2D(positionX, positionY);
     }
 
@@ -112,6 +158,7 @@ public class Room implements IRoomGraphic {
     public void update() {
         updateDecorations();
         printerSprite.update();
+        computerSprite.update();
     }
 
     private void updateDecorations() {
@@ -123,6 +170,7 @@ public class Room implements IRoomGraphic {
         background.render();
         renderDecorations();
         printerSprite.render();
+        computerSprite.render();
     }
 
     private void renderDecorations() {

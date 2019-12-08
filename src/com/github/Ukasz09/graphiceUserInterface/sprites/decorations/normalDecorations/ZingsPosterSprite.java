@@ -11,7 +11,7 @@ public class ZingsPosterSprite extends ImageSprite {
     public final static double DEFAULT_HEIGHT = 350;
     public final static double DEFAULT_FRAME_THICKNESS = 10;
 
-    private static final Image[] zingsImages = ImagesProperties.zingsImages();
+    private static final Image[] zingsImages = ImagesProperties.zingsPosterSprites();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public ZingsPosterSprite(double positionX, double positionY) {

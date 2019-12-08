@@ -65,11 +65,30 @@ public class ImagesProperties {
         return new Image(imagePath);
     }
 
-    public static Image[] zingsImages() {
+    public static Image[] zingsPosterSprites() {
         String zingsPrefixPath = "\\resources\\images\\superZings\\zings";
         Image[] zingsImages = new Image[AMOUNT_OF_ZINGS_POSTERS];
         for (int i = 0; i < AMOUNT_OF_ZINGS_POSTERS; i++)
             zingsImages[i] = new Image(zingsPrefixPath + (i + 1) + ".png");
         return zingsImages;
+    }
+
+    public static Image monitorSprite() {
+        String imagePath = "\\resources\\images\\computer\\computer.png";
+        return new Image(imagePath);
+    }
+
+    public static Image wallpaperImage() {
+        String imagePath = "\\resources\\images\\computer\\wallpaper.jpg";
+        return new Image(imagePath);
+    }
+
+    public static Image printerIconImage() {
+        String imagePath = "\\resources\\images\\computer\\printerIcon.png";
+        return new Image(imagePath);
+    }
+    public static Image windowsLogoTaskbarImage() {
+        String imagePath = "\\resources\\images\\computer\\windowsLogo.png";
+        return new Image(imagePath);
     }
 }

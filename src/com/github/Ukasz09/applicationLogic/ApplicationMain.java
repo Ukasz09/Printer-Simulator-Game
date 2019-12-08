@@ -44,6 +44,7 @@ public class ApplicationMain extends Application {
         room.playBackgroundTheme();
     }
 
+
     public static void main(String[] args) {
         launch(args);
     }

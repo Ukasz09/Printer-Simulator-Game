@@ -56,7 +56,7 @@ public abstract class SpriteWithEventHandler extends Sprite implements ISpriteGr
     }
 
     private void addImageViewToSceneRoot() {
-        manager.addImageViewAsNode(spriteImageView);
+        manager.addNode(spriteImageView);
     }
 
     @Override
@@ -78,7 +78,7 @@ public abstract class SpriteWithEventHandler extends Sprite implements ISpriteGr
     @Override
     public boolean removeNodeFromRoot() {
         try {
-            manager.removeImageViewFromNode(spriteImageView);
+            manager.removeNode(spriteImageView);
         } catch (NullPointerException e) {
             Logger.logError(getClass(), " Cant find this node in root. Probably already removed");
             return false;
