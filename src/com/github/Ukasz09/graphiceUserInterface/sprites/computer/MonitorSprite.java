@@ -46,7 +46,7 @@ public class MonitorSprite extends ImageSprite {
     }
 
     public void addNodeToMonitorPane(Node node) {
-        monitorPane.addNodeToPane(node);
+        monitorPane.getPane().getChildren().add(node);
     }
 
     @Override

@@ -1,25 +1,35 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 
 public class MonitorPane extends ComputerPane {
     private final static Image DEFAULT_WALLPAPER = ImagesProperties.wallpaperImage();
 
     private Image wallpaper = DEFAULT_WALLPAPER;
-    private IPane taskBarPane;
+    private TaskbarPane taskbarPane;
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MonitorPane(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height);
-        taskBarPane = new TaskbarPane(positionX, positionY + height - TaskbarPane.DEFAULT_HEIGHT, width, TaskbarPane.DEFAULT_HEIGHT);
+        taskbarPane = new TaskbarPane(positionX, positionY + height - TaskbarPane.DEFAULT_HEIGHT, width, TaskbarPane.DEFAULT_HEIGHT, height);
+        attachObserver(taskbarPane);
+        addMonitorEventHandler();
     }
 
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void addMonitorEventHandler() {
+        getPane().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyObservers(EventKind.MONITOR_PANE));
+    }
+
     @Override
     public void render() {
-        renderWallpaper();
-        taskBarPane.render();
+        taskbarPane.render();
+//        renderWallpaper(); //todo: tmp
     }
 
     private void renderWallpaper() {
@@ -28,6 +38,6 @@ public class MonitorPane extends ComputerPane {
 
     @Override
     public void update() {
-        taskBarPane.update();
+        taskbarPane.update();
     }
 }

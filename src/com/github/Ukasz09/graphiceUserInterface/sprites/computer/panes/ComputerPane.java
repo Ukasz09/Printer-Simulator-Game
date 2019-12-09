@@ -1,17 +1,23 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
+import com.github.Ukasz09.applicationLogic.observerPattern.IObservable;
+import com.github.Ukasz09.applicationLogic.observerPattern.IObserver;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
-import javafx.scene.Node;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
-public abstract class ComputerPane implements IPane {
+import java.util.HashSet;
+import java.util.Set;
+
+public abstract class ComputerPane implements IPane, IObservable {
     protected GraphicsContext graphicContext;
     private final ViewManager manager;
     private Pane pane;
 
+    private Set<IObserver> observers;
     private double positionX;
     private double positionY;
     private double width;
@@ -25,6 +31,7 @@ public abstract class ComputerPane implements IPane {
         makeMonitorPane();
         makeGraphicContext(width, height);
         manager.addNode(pane);
+        observers = new HashSet<>();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,11 +64,27 @@ public abstract class ComputerPane implements IPane {
     }
 
     @Override
-    public void addNodeToPane(Node node) {
-        pane.getChildren().add(node);
+    public Pane getPane() {
+        return pane;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public void attachObserver(IObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void detachObserver(IObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(EventKind eventKind) {
+        for (IObserver observer : observers)
+            observer.updateObserver(eventKind);
+    }
+
+    //todo: moze usunac pozniej
     @Override
     public double getPositionX() {
         return positionX;
@@ -81,4 +104,6 @@ public abstract class ComputerPane implements IPane {
     public double getHeight() {
         return height;
     }
+
+
 }
