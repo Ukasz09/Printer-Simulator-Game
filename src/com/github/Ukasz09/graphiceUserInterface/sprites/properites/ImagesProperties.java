@@ -87,8 +87,14 @@ public class ImagesProperties {
         String imagePath = "\\resources\\images\\computer\\printerIcon.png";
         return new Image(imagePath);
     }
+
     public static Image windowsLogoTaskbarImage() {
         String imagePath = "\\resources\\images\\computer\\windowsLogo.png";
+        return new Image(imagePath);
+    }
+
+    public static Image windowsStartPaneImage() {
+        String imagePath = "\\resources\\images\\computer\\StartPane.png";
         return new Image(imagePath);
     }
 }

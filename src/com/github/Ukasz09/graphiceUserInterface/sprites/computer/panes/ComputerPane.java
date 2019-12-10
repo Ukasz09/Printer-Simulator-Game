@@ -1,18 +1,21 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
-import com.github.Ukasz09.applicationLogic.observerPattern.IObservable;
 import com.github.Ukasz09.applicationLogic.observerPattern.IObserver;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
+import java.io.BufferedReader;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ComputerPane implements IPane, IObservable {
+public abstract class ComputerPane implements IPane {
     protected GraphicsContext graphicContext;
     private final ViewManager manager;
     private Pane pane;
@@ -82,6 +85,52 @@ public abstract class ComputerPane implements IPane, IObservable {
     public void notifyObservers(EventKind eventKind) {
         for (IObserver observer : observers)
             observer.updateObserver(eventKind);
+    }
+
+
+    protected Button makeButtonWithBackground(double width, double height, Image buttonImage, EventKind eventKind) {
+        Button button = new Button();
+        setNormalButtonProperty(button, width, height, eventKind);
+        setBackgroundToButton(button, buttonImage);
+        return button;
+    }
+
+    private void setNormalButtonProperty(Button windowButton, double width, double height, EventKind eventKind) {
+        windowButton.setMinSize(width, height);
+        windowButton.setMaxSize(width, height);
+        addButtonEventHandler(windowButton, eventKind);
+    }
+
+    private void addButtonEventHandler(Button button, EventKind eventKind) {
+        button.setOnMouseClicked(event -> {
+            notifyObservers(eventKind);
+        });
+    }
+
+    private void setBackgroundToButton(Button button, Image buttonImage) {
+        BackgroundRepeat noRepeat = BackgroundRepeat.NO_REPEAT;
+        BackgroundPosition backgroundPosition = BackgroundPosition.CENTER;
+        BackgroundSize backgroundSize = new BackgroundSize(button.getWidth(), button.getHeight(), false, false, true, true);
+        BackgroundImage backgroundImage = new BackgroundImage(buttonImage, noRepeat, noRepeat, backgroundPosition, backgroundSize);
+        Background background = new Background(backgroundImage);
+        button.setBackground(background);
+    }
+
+    protected Button makeButtonWithImage(double width, double height, Image buttonImage, EventKind eventKind) {
+        Button button = new Button("", getImageViewForButton(width, height, buttonImage));
+        setNormalButtonProperty(button, width, height, eventKind);
+        return button;
+    }
+
+    private ImageView getImageViewForButton(double width, double height, Image buttonImage) {
+        ImageView imageView = new ImageView(buttonImage);
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
+        return imageView;
+    }
+
+    protected void setColor(Color color) {
+        graphicContext.setFill(color);
     }
 
     //todo: moze usunac pozniej

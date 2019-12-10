@@ -1,5 +1,6 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
+import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.scene.image.Image;
@@ -9,14 +10,14 @@ public class MonitorPane extends ComputerPane {
     private final static Image DEFAULT_WALLPAPER = ImagesProperties.wallpaperImage();
 
     private Image wallpaper = DEFAULT_WALLPAPER;
-    private TaskbarPane taskbarPane;
-
+    private IPane taskbarPane;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MonitorPane(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height);
         taskbarPane = new TaskbarPane(positionX, positionY + height - TaskbarPane.DEFAULT_HEIGHT, width, TaskbarPane.DEFAULT_HEIGHT, height);
         attachObserver(taskbarPane);
+        taskbarPane.attachObserver(this);
         addMonitorEventHandler();
     }
 
@@ -29,7 +30,7 @@ public class MonitorPane extends ComputerPane {
     @Override
     public void render() {
         taskbarPane.render();
-//        renderWallpaper(); //todo: tmp
+        renderWallpaper();
     }
 
     private void renderWallpaper() {
@@ -39,5 +40,17 @@ public class MonitorPane extends ComputerPane {
     @Override
     public void update() {
         taskbarPane.update();
+    }
+
+    @Override
+    public void updateObserver(EventKind eventKind) {
+        switch (eventKind) {
+            case PRINTER_BUTTON:
+                System.out.println("Pokazac okno z drukiem");
+                break;
+
+            default:
+                Logger.logError(getClass(), "Unknown eventKind");
+        }
     }
 }

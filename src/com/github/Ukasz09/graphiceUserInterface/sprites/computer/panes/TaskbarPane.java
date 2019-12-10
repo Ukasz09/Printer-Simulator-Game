@@ -10,13 +10,13 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class TaskbarPane extends ComputerPane implements IObserver {
+public class TaskbarPane extends ComputerPane {
     private static final Image DEFAULT_WINDOW_BUTTON = ImagesProperties.windowsLogoTaskbarImage();
     private static final double DEFAULT_WINDOW_BUTTON_WIDTH = 80;
     public static final double DEFAULT_HEIGHT = 20;
 
     private final Image windowButtonImage = DEFAULT_WINDOW_BUTTON;
-    private StartPane startPane;
+    private IPane startPane;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public TaskbarPane(double positionX, double positionY, double width, double height, double monitorHeight) {
@@ -24,37 +24,13 @@ public class TaskbarPane extends ComputerPane implements IObserver {
         addStartButton();
         addStartPane(width / 3, monitorHeight * 0.6);
         attachObserver(startPane);
+        startPane.attachObserver(this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void addStartButton() {
-        Button windowButton = makeButton(DEFAULT_WINDOW_BUTTON_WIDTH, getHeight());
+        Button windowButton = makeButtonWithBackground(DEFAULT_WINDOW_BUTTON_WIDTH, getHeight(), windowButtonImage, EventKind.MENU_START_BUTTON);
         getPane().getChildren().add(windowButton);
-    }
-
-    private Button makeButton(double width, double height) {
-        Button windowButton = new Button();
-        windowButton.setMinSize(width, height);
-        windowButton.setMaxSize(width, height);
-        setWindowButtonImage(windowButton, windowButtonImage);
-        addButtonEventHandler(windowButton);
-
-        return windowButton;
-    }
-
-    private void setWindowButtonImage(Button button, Image windowButtonImage) {
-        BackgroundRepeat noRepeat = BackgroundRepeat.NO_REPEAT;
-        BackgroundPosition backgroundPosition = BackgroundPosition.CENTER;
-        BackgroundSize backgroundSize = new BackgroundSize(button.getWidth(), button.getHeight(), false, false, true, true);
-        BackgroundImage backgroundImage = new BackgroundImage(windowButtonImage, noRepeat, noRepeat, backgroundPosition, backgroundSize);
-        Background background = new Background(backgroundImage);
-        button.setBackground(background);
-    }
-
-    private void addButtonEventHandler(Button button) {
-        button.setOnMouseClicked(event -> {
-            notifyObservers(EventKind.MENU_START_BUTTON);
-        });
     }
 
     private void addStartPane(double width, double height) {
@@ -79,10 +55,6 @@ public class TaskbarPane extends ComputerPane implements IObserver {
         graphicContext.fillRect(0, 0, getWidth(), getHeight());
     }
 
-    private void setColor(Color color) {
-        graphicContext.setFill(color);
-    }
-
     @Override
     public void update() {
         startPane.update();
@@ -91,12 +63,12 @@ public class TaskbarPane extends ComputerPane implements IObserver {
     @Override
     public void updateObserver(EventKind eventKind) {
         switch (eventKind) {
-            case MENU_START_BUTTON:
-                startPane.getPane().setVisible(!startPane.getPane().isVisible());
-                break;
-
             case MONITOR_PANE:
                 startPane.getPane().setVisible(false);
+                break;
+
+            case PRINTER_BUTTON:
+                notifyObservers(EventKind.PRINTER_BUTTON);
                 break;
 
             default:

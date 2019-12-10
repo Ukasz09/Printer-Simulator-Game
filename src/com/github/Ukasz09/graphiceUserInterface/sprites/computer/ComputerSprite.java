@@ -22,7 +22,6 @@ public class ComputerSprite extends SpriteWithEventHandler {
         super(DEFAULT_MONITOR_WIDTH, DEFAULT_MONITOR_HEIGHT, positionX, positionY);
         initializeAllSprites();
         computer = new Computer();
-        addPrinterButton();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,17 +33,6 @@ public class ComputerSprite extends SpriteWithEventHandler {
         monitorSprite = new MonitorSprite(width, height, positionX, positionY);
         monitorSprite.setImageViewVisable(false);
     }
-
-    //todo: test
-    private void addPrinterButton() {
-        ImageView iv = new ImageView(ImagesProperties.printerIconImage());
-        iv.setFitWidth(50);
-        iv.setFitHeight(50);
-
-        Button but = new Button("", iv);
-        monitorSprite.addNodeToMonitorPane(but);
-    }
-
 
     @Override
     public void render() {
