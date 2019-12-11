@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class TaskbarPane extends ComputerPane {
+public class TaskbarPane extends ComputerPaneWithGraphicContext {
     private static final Image DEFAULT_WINDOW_BUTTON = ImagesProperties.windowsLogoTaskbarImage();
     private static final double DEFAULT_WINDOW_BUTTON_WIDTH = 80;
     public static final double DEFAULT_HEIGHT = 20;
@@ -51,7 +51,7 @@ public class TaskbarPane extends ComputerPane {
     }
 
     private void renderTaskBar() {
-        setColor(Color.rgb(35, 93, 219));
+        setFillColor(Color.rgb(35, 93, 219));
         graphicContext.fillRect(0, 0, getWidth(), getHeight());
     }
 
@@ -64,11 +64,13 @@ public class TaskbarPane extends ComputerPane {
     public void updateObserver(EventKind eventKind) {
         switch (eventKind) {
             case MONITOR_PANE:
+            case PRINTER_PANE:
                 startPane.getPane().setVisible(false);
                 break;
 
             case PRINTER_BUTTON:
                 notifyObservers(EventKind.PRINTER_BUTTON);
+                startPane.getPane().setVisible(false);
                 break;
 
             default:

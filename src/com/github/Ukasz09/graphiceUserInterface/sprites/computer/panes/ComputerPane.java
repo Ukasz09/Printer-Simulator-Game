@@ -1,11 +1,13 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
+import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.applicationLogic.observerPattern.IObserver;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -16,7 +18,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class ComputerPane implements IPane {
-    protected GraphicsContext graphicContext;
     private final ViewManager manager;
     private Pane pane;
 
@@ -32,7 +33,6 @@ public abstract class ComputerPane implements IPane {
         setPosition(positionX, positionY);
         setSize(width, height);
         makeMonitorPane();
-        makeGraphicContext(width, height);
         manager.addNode(pane);
         observers = new HashSet<>();
     }
@@ -48,8 +48,17 @@ public abstract class ComputerPane implements IPane {
         this.height = height;
     }
 
+    /**
+     * Use only to create instance of Pane. This method is using to choose a layouts for pane
+     */
+    protected abstract Pane makePaneInstance();
+
     private void makeMonitorPane() {
-        pane = new AnchorPane();
+        pane = makePaneInstance();
+        if (pane == null) {
+            pane = new AnchorPane();
+            Logger.logError(getClass(), " pane from makePaneInstance is null. Made pane by AnchorPane");
+        }
         setPaneProperties();
     }
 
@@ -60,11 +69,7 @@ public abstract class ComputerPane implements IPane {
         pane.setLayoutY(positionY);
     }
 
-    private void makeGraphicContext(double paneWidth, double paneHeight) {
-        Canvas canvas = new Canvas(paneWidth, paneHeight);
-        graphicContext = canvas.getGraphicsContext2D();
-        pane.getChildren().add(canvas);
-    }
+
 
     @Override
     public Pane getPane() {
@@ -128,8 +133,17 @@ public abstract class ComputerPane implements IPane {
         return imageView;
     }
 
-    protected void setColor(Color color) {
-        graphicContext.setFill(color);
+    protected Button makeButtonWithImageAndText(double width, double height, Image buttonImage, String buttonText, EventKind eventKind) {
+        Button button = new Button("", getImageViewForButton(width * 0.7, height * 0.7, buttonImage));
+        setNormalButtonProperty(button, width, height, eventKind);
+        setButtonTextProperty(button, buttonText);
+        return button;
+    }
+
+    private void setButtonTextProperty(Button button, String buttonText) {
+        button.setContentDisplay(ContentDisplay.TOP);
+        button.setStyle(String.format("-fx-font-size: %dpx;", (int) (button.getMaxHeight() / 8)));
+        button.setText(buttonText);
     }
 
     //todo: moze usunac pozniej

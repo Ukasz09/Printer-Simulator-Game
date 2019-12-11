@@ -1,6 +1,9 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer;
 
+import com.github.Ukasz09.applicationLogic.observerPattern.IObservable;
+import com.github.Ukasz09.applicationLogic.observerPattern.IObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.MonitorPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.TaskbarPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
@@ -8,7 +11,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 
-public class MonitorSprite extends ImageSprite {
+public class MonitorSprite extends ImageSprite implements IObserver {
     private final static Image DEFAULT_IMAGE = ImagesProperties.monitorSprite();
     private final static double DEFAULT_MONITOR_FRAME_THICKNESS = 15;
     private final static double DEFAULT_DISPLAY_TO_MONITOR_PROPORTION = 0.68;
@@ -24,6 +27,8 @@ public class MonitorSprite extends ImageSprite {
         frameThickness = DEFAULT_MONITOR_FRAME_THICKNESS;
         displayToMonitorProportion = DEFAULT_DISPLAY_TO_MONITOR_PROPORTION;
         initializeMonitorPane();
+
+        monitorPane.attachObserver(this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,6 +54,22 @@ public class MonitorSprite extends ImageSprite {
     public void render() {
         super.render();
         monitorPane.render();
+    }
+
+    @Override
+    public void updateObserver(EventKind eventKind) {
+        switch (eventKind){
+//            //todo: tmp
+//            case CHOOSE_PRINT_COLOR_OPTION:
+//
+//                    System.out.println("tell up layer to apply sepia effect");
+//                break;
+            default: System.out.println("Sth other");
+        }
+    }
+
+    public MonitorPane getMonitorPane() {
+        return monitorPane;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

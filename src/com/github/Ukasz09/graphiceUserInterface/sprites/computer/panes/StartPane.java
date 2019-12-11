@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class StartPane extends ComputerPane {
+public class StartPane extends ComputerPaneWithGraphicContext {
     private static final Image DEFAULT_PRINTER_ICON_IMAGE = ImagesProperties.printerIconImage();
     private static final Image DEFAULT_STARTPANE_IMAGE = ImagesProperties.windowsStartPaneImage();
     private static final double DEFAULT_UPPERTASKBAR_TO_STARTPANE_PROPORTION =0.13;
@@ -28,7 +28,7 @@ public class StartPane extends ComputerPane {
     }
 
     private void addPrinterButton(double width, double height, Image buttonImage) {
-        Button printerButton = makeButtonWithImage(width, height, buttonImage, EventKind.PRINTER_BUTTON);
+        Button printerButton = makeButtonWithImage(width, height, buttonImage,EventKind.PRINTER_BUTTON);
         AnchorPane.setTopAnchor(printerButton,getHeight()*DEFAULT_UPPERTASKBAR_TO_STARTPANE_PROPORTION);
         getPane().getChildren().add(printerButton);
     }
@@ -53,7 +53,7 @@ public class StartPane extends ComputerPane {
     //todo: tmp
     @Override
     public void render() {
-        setColor(Color.rgb(45, 10, 190));
+        setFillColor(Color.rgb(45, 10, 190));
         graphicContext.drawImage(DEFAULT_STARTPANE_IMAGE, 0, 0, getWidth(), getHeight());
     }
 }

@@ -3,14 +3,16 @@ package com.github.Ukasz09.applicationLogic.computer;
 import com.github.Ukasz09.applicationLogic.printer.Printer;
 import com.github.Ukasz09.applicationLogic.printer.printOption.BasePrintDecorator;
 import com.github.Ukasz09.applicationLogic.printer.printOption.IPrintDecorator;
+import com.github.Ukasz09.applicationLogic.printer.printOption.SepiaColorDecorator;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Computer {
     private boolean multicolor;
     private int qtyOfCopy;
     private Image imageToPrint;
-    private IPrintDecorator printDecorator;
+    private BasePrintDecorator printDecorator; //todo: tmp -> pozniej zmienic na IPrintDecorator
 
     private ErrorCommunicate errorCommunicate;
 
@@ -34,11 +36,11 @@ public class Computer {
         this.imageToPrint = imageToPrint;
     }
 
-    public void setPrintDecorator(IPrintDecorator printDecorator) {
-        IPrintDecorator actualDecorator = this.printDecorator;
+    public void setPrintDecorator(BasePrintDecorator printDecorator) {
+        this.printDecorator = printDecorator;
     }
 
-    public IPrintDecorator getPrintDecorator() {
+    public BasePrintDecorator getPrintDecorator() {
         return printDecorator;
     }
 
@@ -58,13 +60,28 @@ public class Computer {
         printDecorator = new BasePrintDecorator();
     }
 
-    public boolean print(Printer printer) {
-        try {
-            printer.printImage(imageToPrint, multicolor, qtyOfCopy);
-        } catch (PrinterException e) {
-            errorCommunicate = new ErrorCommunicate(e.getMessage(), e.getCause().getMessage());
-            return false;
-        }
-        return true;
+    ////////////////////////////
+
+    //todo: tmp
+    public Image getImageToPrint() {
+        return printDecorator.getImageWithAddedEffect(new ImageView(imageToPrint));
     }
+
+    public int getQtyOfCopy() {
+        return qtyOfCopy;
+    }
+
+    public boolean isMulticolor() {
+        return multicolor;
+    }
+
+    //    public boolean print(Printer printer) {
+//        try {
+//            printer.printImage(imageToPrint, multicolor, qtyOfCopy);
+//        } catch (PrinterException e) {
+//            errorCommunicate = new ErrorCommunicate(e.getMessage(), e.getCause().getMessage());
+//            return false;
+//        }
+//        return true;
+//    }
 }

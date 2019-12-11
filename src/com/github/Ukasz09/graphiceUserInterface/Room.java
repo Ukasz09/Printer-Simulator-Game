@@ -42,6 +42,8 @@ public class Room implements IRoomGraphic {
         addDefaultDecorations();
         addPrinter();
         addComputer();
+
+        //todo: test
         addComputerEventHandler();
     }
 
@@ -123,24 +125,25 @@ public class Room implements IRoomGraphic {
         computerSprite = new ComputerSprite(position.getX(), position.getY());
     }
 
-    //todo: tmp -> potem na guziki + poster z dekoracji
+    //todo: tmp na czas testow
     private void addComputerEventHandler() {
         computerSprite.addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             Image poster = ImagesProperties.zingsPosterSprites()[0];
             if (poster != null) {
-                try {
-                    printerSprite.print(getImageWithOptionToTest(), true, 1);
-                } catch (PrinterException e) {
-                    Logger.logError(getClass(), e.getMessage() + "cause: " + e.getCause().getMessage());
-                }
+//                try {
+                   computerSprite.print(printerSprite,ImagesProperties.zingsPosterSprites()[0]);
+                   computerSprite.reset();
+//                } catch (PrinterException e) {
+//                    Logger.logError(getClass(), e.getMessage() + "cause: " + e.getCause().getMessage());
+//                }
             } else Logger.logError(getClass(), " poster=null");
         });
     }
-
-    //todo: tmp: na czas testow
-    private Image getImageWithOptionToTest() {
-        return new GrayColorDecorator(new TestGaussianBlurDecorator(new BasePrintDecorator())).getImageWithAddedEffect(new ImageView(ImagesProperties.zingsPosterSprites()[0]));
-    }
+//
+//    //todo: tmp: na czas testow
+//    private Image getImageWithOptionToTest() {
+//        return new GrayColorDecorator(new TestGaussianBlurDecorator(new BasePrintDecorator())).getImageWithAddedEffect(new ImageView(ImagesProperties.zingsPosterSprites()[0]));
+//    }
 
     private Point2D calculatePrinterPosition(double deskPositionX, double deskPositionY, double deskWidth) {
         double positionX = deskPositionX + deskWidth * 0.95 - PrinterSprite.DEFAULT_WIDTH;

@@ -1,14 +1,27 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 
 public class PrinterPane extends ComputerPane {
+    private static final String BACKGROUND_COLOR = "#303030";
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PrinterPane(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height);
+        addPrinterPaneEventHandler();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    protected Pane makePaneInstance() {
+        FlowPane pane = new FlowPane();
+        pane.setStyle("-fx-background-color: " + BACKGROUND_COLOR);
+        return pane;
+    }
+
     @Override
     public void updateObserver(EventKind eventKind) {
         //todo:
@@ -16,11 +29,15 @@ public class PrinterPane extends ComputerPane {
 
     @Override
     public void render() {
-        //todo:
+        //nothing to do
     }
 
     @Override
     public void update() {
         //todo:
+    }
+
+    private void addPrinterPaneEventHandler() {
+        getPane().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyObservers(EventKind.PRINTER_PANE));
     }
 }
