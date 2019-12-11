@@ -87,7 +87,6 @@ public abstract class ComputerPane implements IPane {
             observer.updateObserver(eventKind);
     }
 
-
     protected Button makeButtonWithBackground(double width, double height, Image buttonImage, EventKind eventKind) {
         Button button = new Button();
         setNormalButtonProperty(button, width, height, eventKind);

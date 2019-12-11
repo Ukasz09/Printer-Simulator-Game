@@ -45,10 +45,6 @@ public class MonitorSprite extends ImageSprite {
         return new Point2D(panePositionX, panePositionY);
     }
 
-    public void addNodeToMonitorPane(Node node) {
-        monitorPane.getPane().getChildren().add(node);
-    }
-
     @Override
     public void render() {
         super.render();
