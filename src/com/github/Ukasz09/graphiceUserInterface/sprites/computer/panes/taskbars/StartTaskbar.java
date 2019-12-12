@@ -57,6 +57,10 @@ public class StartTaskbar extends Taskbar {
                 startDialogWindow.getPane().setVisible(false);
                 break;
 
+            case WALLPAPER_CHANGE:
+                notifyObservers(EventKind.WALLPAPER_CHANGE);
+                break;
+
             default:
                 Logger.logError(getClass(), "Unknown eventKind");
         }

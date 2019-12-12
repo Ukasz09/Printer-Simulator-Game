@@ -2,7 +2,7 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPa
 
 import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ContentPane;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes.HorizontalContentPane;
 import javafx.scene.input.MouseEvent;
 
 public class PrinterDialogWindow extends WindowDialogWithExitTaskbar {
@@ -15,8 +15,8 @@ public class PrinterDialogWindow extends WindowDialogWithExitTaskbar {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    protected ContentPane makeContentPaneInstance() {
-        return new ContentPane(0, 0, getWidth(), getHeight() - getWindowTaskbarHeight());
+    protected HorizontalContentPane makeContentPaneInstance() {
+        return new HorizontalContentPane(0, 0, getWidth(), getHeight() - getWindowTaskbarHeight());
     }
 
     @Override

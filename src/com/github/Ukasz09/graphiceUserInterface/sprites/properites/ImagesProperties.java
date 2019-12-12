@@ -3,7 +3,8 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.properites;
 import javafx.scene.image.Image;
 
 public class ImagesProperties {
-    private static final int AMOUNT_OF_ZINGS_POSTERS = 4;
+    private static final int AMOUNT_OF_ZINGS_POSTERS = 18;
+    private static final int AMOUNT_OF_WALLPAPERS = 4;
 
     public static Image roomBackground() {
         String imagePath = "\\resources\\images\\backgrounds\\room1.jpg";
@@ -78,9 +79,12 @@ public class ImagesProperties {
         return new Image(imagePath);
     }
 
-    public static Image wallpaperImage() {
-        String imagePath = "\\resources\\images\\computer\\wallpaper.jpg";
-        return new Image(imagePath);
+    public static Image[] wallpaperImages() {
+        String prefixPath = "\\resources\\images\\computer\\wallpapers\\wallpaper";
+        Image[] wallpaperImages = new Image[AMOUNT_OF_WALLPAPERS];
+        for (int i = 0; i < AMOUNT_OF_WALLPAPERS; i++)
+            wallpaperImages[i] = new Image(prefixPath + (i + 1) + ".jpg");
+        return wallpaperImages;
     }
 
     public static Image printerIconImage() {
@@ -90,11 +94,6 @@ public class ImagesProperties {
 
     public static Image windowsLogoTaskbarImage() {
         String imagePath = "\\resources\\images\\computer\\windowsLogo.png";
-        return new Image(imagePath);
-    }
-
-    public static Image windowsStartPaneImage() {
-        String imagePath = "\\resources\\images\\computer\\StartPane.png";
         return new Image(imagePath);
     }
 
@@ -108,8 +107,13 @@ public class ImagesProperties {
         return new Image(imagePath);
     }
 
-    public static Image userLogoImage() {
+    public static Image userLogoIcon() {
         String imagePath = "\\resources\\images\\computer\\userLogo.png";
+        return new Image(imagePath);
+    }
+
+    public static Image wallpaperChangeIcon() {
+        String imagePath = "\\resources\\images\\computer\\wallpaperChange.png";
         return new Image(imagePath);
     }
 }

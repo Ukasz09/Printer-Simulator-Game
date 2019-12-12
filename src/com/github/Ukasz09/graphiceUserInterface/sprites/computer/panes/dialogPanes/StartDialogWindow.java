@@ -2,23 +2,24 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPa
 
 import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ContentPane;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes.ContentPane;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes.VerticalContentPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.StartDialogWindowTaskbar;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.Taskbar;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 
 public class StartDialogWindow extends WindowDialog {
     private static final double DEFAULT_TASKBAR_TO_WINDOW_PROPORTION = 0.2;
     private static final double DEFAULT_ICONS_TO_WINDOW_PROPORTION = 0.2;
     private static final Image DEFAULT_PRINTER_ICON_IMAGE = ImagesProperties.printerIconImage();
+    private static final Image DEFAULT_WALLPAPER_CHANGE_ICON_IMAGE = ImagesProperties.wallpaperChangeIcon();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public StartDialogWindow(double positionX, double positionY, double width, double height) {
-        super(positionX, positionY, width, height, 1);
+        super(positionX, positionY, width, height, 0.9);
         getPane().setVisible(false);
         addStartPaneButtons();
     }
@@ -27,7 +28,7 @@ public class StartDialogWindow extends WindowDialog {
     @Override
     protected ContentPane makeContentPaneInstance() {
         double taskbarHeight = getHeight() * DEFAULT_TASKBAR_TO_WINDOW_PROPORTION;
-        ContentPane contentPane = new ContentPane(0, 0, getWidth(), getHeight() - taskbarHeight);
+        VerticalContentPane contentPane = new VerticalContentPane(0, 0, getWidth(), getHeight() - taskbarHeight);
         return contentPane;
     }
 
@@ -52,14 +53,13 @@ public class StartDialogWindow extends WindowDialog {
 
     private void addStartPaneButtons() {
         double sizeOfImageInButton = getWidth() * DEFAULT_ICONS_TO_WINDOW_PROPORTION;
-        addPrinterButton(sizeOfImageInButton, DEFAULT_PRINTER_ICON_IMAGE, "Drukowanie");
+        addStartPaneButton(sizeOfImageInButton, DEFAULT_PRINTER_ICON_IMAGE, "Drukowanie", EventKind.PRINTER_BUTTON);
+        addStartPaneButton(sizeOfImageInButton, DEFAULT_WALLPAPER_CHANGE_ICON_IMAGE , "Zmiana tapety", EventKind.WALLPAPER_CHANGE);
     }
 
-    private void addPrinterButton(double sizeOfImageInButton, Image buttonImage, String buttonTxt) {
-        EventKind buttonEvent = EventKind.PRINTER_BUTTON;
+    private void addStartPaneButton(double sizeOfImageInButton, Image buttonImage, String buttonTxt, EventKind buttonEvent) {
         Pos alignment = Pos.BASELINE_LEFT;
         Button printerButton = makeButtonWithImageTextAndEventHandler(sizeOfImageInButton, sizeOfImageInButton, getWidth(), sizeOfImageInButton, buttonImage, buttonTxt, buttonEvent, alignment);
-        AnchorPane.setTopAnchor(printerButton, getHeight() * DEFAULT_TASKBAR_TO_WINDOW_PROPORTION);
-        getPane().getChildren().add(printerButton);
+        addButtonToContentPane(printerButton);
     }
 }

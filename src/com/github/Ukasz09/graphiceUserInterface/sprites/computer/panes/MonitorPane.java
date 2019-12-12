@@ -11,7 +11,6 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPan
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.StartTaskbar;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,20 +18,18 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 
-import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrintOptionObservable {
-    private final static Image DEFAULT_WALLPAPER = ImagesProperties.wallpaperImage();
+    private final static Image[] DEFAULT_WALLPAPERS = ImagesProperties.wallpaperImages();
     private static final double OTHER_PANE_TO_MONITOR_PANE_WIDTH_PROPORTION = 0.78;
     private static final double OTHER_PANE_TO_MONITOR_PANE_HEIGHT_PROPORTION = 0.65;
     private static final double DEFAULT_BUTTON_WIDTH_TO_MONITOR_PROPORTION = 0.22;
     private static final double DEFAULT_BUTTON_HEIGHT_TO_MONITOR_PROPORTION = 0.5;
 
-    private Image wallpaper = DEFAULT_WALLPAPER;
+    private Image wallpaper = DEFAULT_WALLPAPERS[0];
     private StartTaskbar taskbarPane;
     private WindowDialog printerPane; //todo: dac pozniej na interfejsach
     private Set<IPrintOptionObserver> printOptionObservers;
@@ -142,10 +139,19 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
             case PRINTER_BUTTON:
                 printerPane.getPane().setVisible(true);
                 break;
+            case WALLPAPER_CHANGE:
+                setRandomWallpaper();
+                break;
             default:
                 Logger.logError(getClass(), "Unknown eventKind");
         }
     }
+
+    private void setRandomWallpaper() {
+        int randIndex = (int) (Math.random() * DEFAULT_WALLPAPERS.length);
+        wallpaper = DEFAULT_WALLPAPERS[randIndex];
+    }
+
 
     @Override
     public void attachPrintObserver(IPrintOptionObserver observer) {

@@ -7,8 +7,6 @@ import javafx.scene.image.ImageView;
 public class Computer {
     private final Image defaultImageToPrint;
 
-    private boolean multicolor;
-    private int qtyOfCopy;
     private Image imageToPrint;
     private BasePrintDecorator printDecorator; //todo: tmp -> pozniej zmienic na IPrintDecorator
 
@@ -21,8 +19,6 @@ public class Computer {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //todo: dac przey printowaniu B-W zabieranie tylko czarnego
     public void resetComputer() {
         resetPrintProperty();
         errorCommunicate = null;
@@ -31,14 +27,6 @@ public class Computer {
 
     public void resetPrintProperty() {
         printDecorator = new BasePrintDecorator();
-        multicolor = false;
-        qtyOfCopy = 0;
-    }
-
-    public void setPrintingOption(boolean multicolor, int qtyOfCopy, Image imageToPrint) {
-        this.multicolor = multicolor;
-        this.qtyOfCopy = qtyOfCopy;
-        this.imageToPrint = imageToPrint;
     }
 
     public void setPrintDecorator(BasePrintDecorator printDecorator) {
@@ -65,32 +53,11 @@ public class Computer {
         printDecorator = new BasePrintDecorator();
     }
 
-    ////////////////////////////
-
-    //todo: tmp
     public Image getImageToPrint() {
         return printDecorator.getImageWithAddedEffect(new ImageView(imageToPrint));
-    }
-
-    public int getQtyOfCopy() {
-        return qtyOfCopy;
-    }
-
-    public boolean isMulticolor() {
-        return multicolor;
     }
 
     public void setImageToPrint(Image imageToPrint) {
         this.imageToPrint = imageToPrint;
     }
-
-    //    public boolean print(Printer printer) {
-//        try {
-//            printer.printImage(imageToPrint, multicolor, qtyOfCopy);
-//        } catch (PrinterException e) {
-//            errorCommunicate = new ErrorCommunicate(e.getMessage(), e.getCause().getMessage());
-//            return false;
-//        }
-//        return true;
-//    }
 }

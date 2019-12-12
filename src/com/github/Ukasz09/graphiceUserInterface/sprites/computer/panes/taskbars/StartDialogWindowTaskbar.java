@@ -2,14 +2,13 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars
 
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 
 public class StartDialogWindowTaskbar extends Taskbar {
-    private static final Image DEFAULT_USER_LOGO_IMAGE = ImagesProperties.userLogoImage();
+    private static final Image DEFAULT_USER_LOGO_IMAGE = ImagesProperties.userLogoIcon();
     private static final double DEFAULT_LOGO_PADDING = 2;
 
     public StartDialogWindowTaskbar(double positionX, double positionY, double width, double height) {

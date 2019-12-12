@@ -1,16 +1,15 @@
-package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
+package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes;
 
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 
-public class ContentPane extends ComputerPane {
+public class HorizontalContentPane extends ContentPane {
     private static final double DEFAULT_SPACE_BETWEEN_BUTTONS = 10;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public ContentPane(double positionX, double positionY, double width, double height) {
+    public HorizontalContentPane(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height);
     }
 
@@ -21,10 +20,5 @@ public class ContentPane extends ComputerPane {
         pane.setPadding(new Insets(DEFAULT_SPACE_BETWEEN_BUTTONS));
 //        setPanelColor(pane, "red");
         return pane;
-    }
-
-    @Override
-    public void updateObserver(EventKind eventKind) {
-        //todo:
     }
 }

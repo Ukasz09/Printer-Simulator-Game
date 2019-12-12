@@ -55,7 +55,7 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
     @Override
     public void updateObserver(PrintOption printOption) {
         computer.setPrintDecorator(printOption.setOptionDecorator(computer.getPrintDecorator()));
-
+        print(printOption.multicolor, 1);
     }
 
     @Override
@@ -69,17 +69,17 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
         }
     }
 
-    public void updatePrintImage(Image actualImage){
+    public void updatePrintImage(Image actualImage) {
         computer.setImageToPrint(actualImage);
     }
 
-    //todo:test
-    public void print() {
-        computer.setPrintingOption(true, 1, ImagesProperties.userLogoImage());
+    private void print(boolean multicolor, int qtyOfCopy) {
         try {
-            printerSprite.print(computer.getImageToPrint(), computer.isMulticolor(), computer.getQtyOfCopy());
+            printerSprite.print(computer.getImageToPrint(), multicolor, qtyOfCopy);
         } catch (PrinterException e) {
             Logger.logError(getClass(), "Powinnien pojawic sie komunikat o tym ze printowanie sie nie udalo. " + e.getMessage());
+        } finally {
+            computer.resetPrintProperty();
         }
     }
 }
