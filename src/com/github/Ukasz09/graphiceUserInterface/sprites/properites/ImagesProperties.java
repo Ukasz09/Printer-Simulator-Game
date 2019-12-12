@@ -107,4 +107,9 @@ public class ImagesProperties {
         String imagePath = "\\resources\\images\\computer\\exitButton.png";
         return new Image(imagePath);
     }
+
+    public static Image userLogoImage() {
+        String imagePath = "\\resources\\images\\computer\\userLogo.png";
+        return new Image(imagePath);
+    }
 }

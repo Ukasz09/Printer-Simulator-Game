@@ -2,7 +2,7 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars
 
 import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.StartDialogWindow;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.StartDialogWindow;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
@@ -12,6 +12,7 @@ public class StartTaskbar extends Taskbar {
     private static final Image DEFAULT_WINDOWS_BUTTON_IMAGE = ImagesProperties.windowsLogoTaskbarImage();
     private static final double DEFAULT_WINDOWS_BUTTON_WIDTH = 80;
     public static final double DEFAULT_WINDOWS_BUTTON_HEIGHT = 20;
+    public static final double DEFAULT_START_WINDOW_TO_TASKBAR_PROPORTION = 0.3;
 
     private final Image windowButtonImage = DEFAULT_WINDOWS_BUTTON_IMAGE;
     private StartDialogWindow startDialogWindow;
@@ -20,7 +21,7 @@ public class StartTaskbar extends Taskbar {
     public StartTaskbar(double positionX, double positionY, double width, double height, double monitorHeight) {
         super(positionX, positionY, width, height);
         addStartButton();
-        addStartPane(width / 3, monitorHeight * 0.6);
+        addStartPane(width*DEFAULT_START_WINDOW_TO_TASKBAR_PROPORTION, monitorHeight * 0.6);
         attachObserver(startDialogWindow);
         startDialogWindow.attachObserver(this); //TODO: czy potrzebne ??
     }

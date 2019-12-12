@@ -1,15 +1,16 @@
-package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
+package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes;
 
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.Taskbar;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.TaskbarWithExitButton;
 
-public abstract class WindowDialogPane extends DialogPane {
+public abstract class WindowDialogWithExitTaskbar extends WindowDialog {
 
     private static final double DEFAULT_WINDOW_OPACITY = 0.9;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public WindowDialogPane(double positionX, double positionY, double width, double height) {
+    public WindowDialogWithExitTaskbar(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height, DEFAULT_WINDOW_OPACITY);
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -4,6 +4,7 @@ import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -102,9 +103,13 @@ public abstract class ComputerPane implements IPane {
 
     protected Button makeButtonWithBackground(double width, double height, Image buttonImage) {
         Button button = new Button();
+        setPropertyForButtonWithBackground(button, width, height, buttonImage);
+        return button;
+    }
+
+    private void setPropertyForButtonWithBackground(Button button, double width, double height, Image buttonImage) {
         setNormalButtonProperty(button, width, height);
         setBackgroundToButton(button, buttonImage);
-        return button;
     }
 
     private void setNormalButtonProperty(Button windowButton, double width, double height) {
@@ -146,30 +151,24 @@ public abstract class ComputerPane implements IPane {
         return imageView;
     }
 
-    protected Button makeButtonWithImageTextAndEventHandler(double width, double height, Image buttonImage, String buttonText, EventKind eventKind) {
-        Button button = makeButtonWithImageAndText(width, height, buttonImage, buttonText);
+    protected Button makeButtonWithImageTextAndEventHandler
+            (double widthOfImageInButton, double heightOfImageInButton, double widthOfButton, double heightOfButton, Image buttonImage, String buttonText, EventKind eventKind, Pos alignment) {
+        Button button = makeButtonWithImageAndText(widthOfImageInButton, heightOfImageInButton, widthOfButton, heightOfButton, buttonImage, buttonText, alignment);
         addButtonEventHandler(button, eventKind);
         return button;
     }
 
-    protected Button makeButtonWithImageAndText(double width, double height, Image buttonImage, String buttonText) {
-        Button button = new Button("", getImageViewForButton(width * 0.7, height * 0.7, buttonImage));
-        setNormalButtonProperty(button, width, height);
-        setButtonTextProperty(button, buttonText);
-        return button;
+    protected Button makeButtonWithImageAndText(double widthOfImageInButton, double heightOfImageInButton, double widthOfButton, double heightOfButton, Image buttonImage, String buttonText, Pos alignment) {
+        Button printerButton = new Button(buttonText);
+        printerButton.setGraphic(getImageViewForButton(widthOfImageInButton, heightOfImageInButton, buttonImage));
+        printerButton.setAlignment(alignment);
+        setNormalButtonProperty(printerButton,widthOfButton,heightOfButton);
+
+//        printerButton.setStyle(String.format("-fx-font-size: %dpx;", (int) (printerButton.getMaxWidth() / 10)));
+        return printerButton;
     }
 
-    private void setButtonTextProperty(Button button, String buttonText) {
-        button.setContentDisplay(ContentDisplay.TOP);
-        button.setStyle(String.format("-fx-font-size: %dpx;", (int) (button.getMaxHeight() / 8)));
-        button.setText(buttonText);
-    }
-
-//    protected void addButtonToPane(Button button) {
-//        pane.getChildren().add(button);
-//    }
-
-    protected void addNodeToPane(Node node){
+    public void addNodeToPane(Node node) {
         pane.getChildren().add(node);
     }
 

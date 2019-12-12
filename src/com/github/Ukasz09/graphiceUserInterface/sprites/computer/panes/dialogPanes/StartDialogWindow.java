@@ -1,17 +1,19 @@
-package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
+package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes;
 
 import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ContentPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.StartDialogWindowTaskbar;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.Taskbar;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 
-public class StartDialogWindow extends DialogPane {
+public class StartDialogWindow extends WindowDialog {
     private static final double DEFAULT_TASKBAR_TO_WINDOW_PROPORTION = 0.2;
-    private static final double DEFAULT_ICONS_TO_WINDOW_PROPORTION = 0.25;
+    private static final double DEFAULT_ICONS_TO_WINDOW_PROPORTION = 0.2;
     private static final Image DEFAULT_PRINTER_ICON_IMAGE = ImagesProperties.printerIconImage();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,13 +51,14 @@ public class StartDialogWindow extends DialogPane {
     }
 
     private void addStartPaneButtons() {
-        double width = getWidth() * DEFAULT_ICONS_TO_WINDOW_PROPORTION;
-        double height = width;
-        addPrinterButton(width, height, DEFAULT_PRINTER_ICON_IMAGE);
+        double sizeOfImageInButton = getWidth() * DEFAULT_ICONS_TO_WINDOW_PROPORTION;
+        addPrinterButton(sizeOfImageInButton, DEFAULT_PRINTER_ICON_IMAGE, "Drukowanie");
     }
 
-    private void addPrinterButton(double width, double height, Image buttonImage) {
-        Button printerButton = makeButtonWithImageAndEventHandler(width, height, buttonImage, EventKind.PRINTER_BUTTON);
+    private void addPrinterButton(double sizeOfImageInButton, Image buttonImage, String buttonTxt) {
+        EventKind buttonEvent = EventKind.PRINTER_BUTTON;
+        Pos alignment = Pos.BASELINE_LEFT;
+        Button printerButton = makeButtonWithImageTextAndEventHandler(sizeOfImageInButton, sizeOfImageInButton, getWidth(), sizeOfImageInButton, buttonImage, buttonTxt, buttonEvent, alignment);
         AnchorPane.setTopAnchor(printerButton, getHeight() * DEFAULT_TASKBAR_TO_WINDOW_PROPORTION);
         getPane().getChildren().add(printerButton);
     }

@@ -5,12 +5,14 @@ import com.github.Ukasz09.applicationLogic.computer.Computer;
 import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.PrintOption;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
 import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
 import javafx.scene.image.Image;
 
 //todo: tmp na sprite with handler
-public class ComputerSprite extends SpriteWithEventHandler implements IPrintOptionObserver {
+public class ComputerSprite extends SpriteWithEventHandler implements IPrintOptionObserver, IEventKindObserver {
     public final static double DEFAULT_MONITOR_WIDTH = 440;
     public final static double DEFAULT_MONITOR_HEIGHT = 320;
 
@@ -23,7 +25,8 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
         initializeAllSprites();
         computer = new Computer();
 
-        monitorSprite.getMonitorPane().attachObserver(this);
+        monitorSprite.getMonitorPane().attachPrintObserver(this);
+        monitorSprite.getMonitorPane().getPrinterPane().attachObserver(this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,6 +52,16 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
     @Override
     public void updateObserver(PrintOption printOption) {
         computer.setPrintDecorator(printOption.setOptionDecorator(computer.getPrintDecorator()));
+    }
+
+    @Override
+    public void updateObserver(EventKind eventKind) {
+        switch (eventKind) {
+            case EXIT_BUTTON:
+                computer.resetComputer();
+                break;
+            default: Logger.logError(getClass(),"unknown event");
+        }
     }
 
     //todo: pomyslec czy nie zrobic inaczej - testowo

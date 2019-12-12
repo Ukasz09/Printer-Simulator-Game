@@ -6,10 +6,14 @@ import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.P
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObservable;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObserver;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.WindowDialog;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.PrinterDialogWindow;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.StartTaskbar;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,11 +24,12 @@ import java.util.Set;
 public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrintOptionObservable {
     private final static Image DEFAULT_WALLPAPER = ImagesProperties.wallpaperImage();
     private static final double OTHER_PANE_TO_MONITOR_PANE_PROPORTION = 0.75;
-    private static final double DEFAULT_BUTTON_SIZE = 67;
+    private static final double DEFAULT_BUTTON_WIDTH_TO_MONITOR_PROPORTION = 0.22; //0.29
+    private static final double DEFAULT_BUTTON_HEIGHT_TO_MONITOR_PROPORTION = 0.5;
 
     private Image wallpaper = DEFAULT_WALLPAPER;
     private StartTaskbar taskbarPane;
-    private DialogPane printerPane; //todo: dac pozniej na interfejsach
+    private WindowDialog printerPane; //todo: dac pozniej na interfejsach
     private Set<IPrintOptionObserver> printOptionObservers;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,21 +60,37 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
     private void addDefaultPrintingWays() {
         Image thumbnailImage = ImagesProperties.thumbnailImage();
         addPrintingWayButton(thumbnailImage, "Sepia", PrintOption.SEPIA);
-        addPrintingWayButton(thumbnailImage, "Czarno-bialy", PrintOption.BLACK_AND_WHITE);
-        addPrintingWayButton(thumbnailImage, "Sepia", PrintOption.SEPIA);
-        addPrintingWayButton(thumbnailImage, "Czarno-bialy", PrintOption.BLACK_AND_WHITE);
+        addPrintingWayButton(thumbnailImage, "B-W", PrintOption.BLACK_AND_WHITE);
+        addPrintingWayButton(thumbnailImage, "Barwiony", PrintOption.RAND_HUE);
+        addPrintingWayButton(thumbnailImage, "Normalny", PrintOption.NORMAL);
     }
 
-
-    public void addPrintingWayButton(Image imageWithoutEffects, String buttonText, PrintOption printOption) {
-        Button printingWayButton;
-        if (!buttonText.isEmpty())
-            printingWayButton = makeButtonWithImageAndText(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, getImageWithEffect(printOption, imageWithoutEffects), buttonText);
-        else
-            printingWayButton = makeButtonWithImage(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, getImageWithEffect(printOption, imageWithoutEffects));
-
-        printingWayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyObservers(printOption));
+    private void addPrintingWayButton(Image imageWithoutEffects, String buttonText, PrintOption printOption) {
+        Button printingWayButton = makePrintButton(imageWithoutEffects, buttonText, printOption);
+        printingWayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyPrintObservers(printOption));
         printerPane.addButtonToContentPane(printingWayButton);
+    }
+
+    private Button makePrintButton(Image imageWithoutEffects, String buttonText, PrintOption printOption) {
+        Point2D btnSize = getPrintButtonSize();
+        Point2D btnImageSize = getPrintButtonImageSize(btnSize);
+        Pos contentPos = Pos.TOP_CENTER;
+        Image btnImage = getImageWithEffect(printOption, imageWithoutEffects);
+        Button button = makeButtonWithImageAndText(btnImageSize.getX(), btnImageSize.getY(), btnSize.getX(), btnSize.getY(), btnImage, buttonText, contentPos);
+        button.setContentDisplay(ContentDisplay.TOP);
+        return button;
+    }
+
+    private Point2D getPrintButtonSize() {
+        double buttonWidth = printerPane.getWidth() * DEFAULT_BUTTON_WIDTH_TO_MONITOR_PROPORTION;
+        double buttonHeight = printerPane.getHeight() * DEFAULT_BUTTON_HEIGHT_TO_MONITOR_PROPORTION;
+        return new Point2D(buttonWidth, buttonHeight);
+    }
+
+    private Point2D getPrintButtonImageSize(Point2D buttonSize) {
+        double imageWidth = buttonSize.getX() * 0.6;
+        double imageHeight = buttonSize.getY() * 0.6;
+        return new Point2D(imageWidth, imageHeight);
     }
 
     private Image getImageWithEffect(PrintOption printEffect, Image image) {
@@ -108,29 +129,29 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
             case PRINTER_BUTTON:
                 printerPane.getPane().setVisible(true);
                 break;
-//
-//            case PRINTER_PANE:
-//                System.out.println("Powinnien zniknac StartPane");
-//                break;
-
             default:
                 Logger.logError(getClass(), "Unknown eventKind");
         }
     }
 
     @Override
-    public void attachObserver(IPrintOptionObserver observer) {
+    public void attachPrintObserver(IPrintOptionObserver observer) {
         printOptionObservers.add(observer);
     }
 
     @Override
-    public void detachObserver(IPrintOptionObserver observer) {
+    public void detachPrintObserver(IPrintOptionObserver observer) {
         printOptionObservers.remove(observer);
     }
 
     @Override
-    public void notifyObservers(PrintOption printOption) {
+    public void notifyPrintObservers(PrintOption printOption) {
         for (IPrintOptionObserver observer : printOptionObservers)
             observer.updateObserver(printOption);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public WindowDialog getPrinterPane() {
+        return printerPane;
     }
 }

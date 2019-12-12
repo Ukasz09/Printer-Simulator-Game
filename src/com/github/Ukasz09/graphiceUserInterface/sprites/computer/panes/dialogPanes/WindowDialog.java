@@ -1,11 +1,12 @@
-package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
+package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes;
 
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ComputerPane;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ContentPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.Taskbar;
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.TaskbarWithExitButton;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 
-public abstract class DialogPane extends ComputerPane {
+public abstract class WindowDialog extends ComputerPane {
     //    protected static final String DEFAULT_BACKGROUND_COLOR = "#303030";
     private static final String DEFAULT_BACKGROUND_COLOR = "#d5e5f8";
     protected static final double DEFAULT_TASKBAR_HEIGHT_TO_WINDOW_PROPORTION = 0.12;
@@ -13,13 +14,15 @@ public abstract class DialogPane extends ComputerPane {
     private final Taskbar windowTaskbarPane;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public DialogPane(double positionX, double positionY, double width, double height, double opacity) {
+    public WindowDialog(double positionX, double positionY, double width, double height, double opacity) {
         super(positionX, positionY, width, height);
         getPane().setOpacity(opacity);
         windowTaskbarPane = makeWindowTaskbarPane();
         addNodeToPane(windowTaskbarPane.getPane());
         contentPane = makeContentPaneInstance();
         addContentPaneToNode();
+
+        windowTaskbarPane.attachObserver(this);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

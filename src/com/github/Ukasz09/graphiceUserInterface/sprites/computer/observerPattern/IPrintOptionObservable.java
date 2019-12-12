@@ -3,9 +3,9 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPatter
 import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.PrintOption;
 
 public interface IPrintOptionObservable {
-    void attachObserver(IPrintOptionObserver observer);
+    void attachPrintObserver(IPrintOptionObserver observer);
 
-    void detachObserver(IPrintOptionObserver observer);
+    void detachPrintObserver(IPrintOptionObserver observer);
 
-    void notifyObservers(PrintOption printOption);
+    void notifyPrintObservers(PrintOption printOption);
 }
