@@ -120,8 +120,9 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
 
     @Override
     public void render() {
-//        taskbarPane.render();
         renderWallpaper();
+        taskbarPane.render();
+        printerPane.render();
     }
 
     private void renderWallpaper() {
@@ -130,7 +131,8 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
 
     @Override
     public void update() {
-//        taskbarPane.update();
+        taskbarPane.update();
+        printerPane.update();
     }
 
     @Override

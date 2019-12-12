@@ -65,4 +65,16 @@ public class StartTaskbar extends Taskbar {
                 Logger.logError(getClass(), "Unknown eventKind");
         }
     }
+
+    @Override
+    public void update() {
+        super.update();
+        startDialogWindow.update();
+    }
+
+    @Override
+    public void render() {
+        super.render();
+        startDialogWindow.render();
+    }
 }

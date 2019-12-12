@@ -54,6 +54,12 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
     }
 
     @Override
+    public void update() {
+        super.update();
+        monitorPane.update();
+    }
+
+    @Override
     public void updateObserver(EventKind eventKind) {
         switch (eventKind){
 //            //todo: tmp

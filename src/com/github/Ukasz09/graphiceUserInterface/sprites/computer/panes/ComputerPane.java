@@ -1,6 +1,7 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
 import com.github.Ukasz09.applicationLogic.Logger;
+import com.github.Ukasz09.graphiceUserInterface.IDrawingGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;

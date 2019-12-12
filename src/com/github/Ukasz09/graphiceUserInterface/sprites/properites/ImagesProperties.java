@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 public class ImagesProperties {
     private static final int AMOUNT_OF_ZINGS_POSTERS = 18;
-    private static final int AMOUNT_OF_WALLPAPERS = 4;
+    private static final int AMOUNT_OF_WALLPAPERS = 5;
 
     public static Image roomBackground() {
         String imagePath = "\\resources\\images\\backgrounds\\room1.jpg";
@@ -114,6 +114,11 @@ public class ImagesProperties {
 
     public static Image wallpaperChangeIcon() {
         String imagePath = "\\resources\\images\\computer\\wallpaperChange.png";
+        return new Image(imagePath);
+    }
+
+    public static Image themeChangeIcon() {
+        String imagePath = "\\resources\\images\\computer\\themeChange.png";
         return new Image(imagePath);
     }
 }
