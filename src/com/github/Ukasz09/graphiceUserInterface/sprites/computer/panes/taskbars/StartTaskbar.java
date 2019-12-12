@@ -21,7 +21,7 @@ public class StartTaskbar extends Taskbar {
     public StartTaskbar(double positionX, double positionY, double width, double height, double monitorHeight) {
         super(positionX, positionY, width, height);
         addStartButton();
-        addStartPane(width*DEFAULT_START_WINDOW_TO_TASKBAR_PROPORTION, monitorHeight * 0.6);
+        addStartPane(width * DEFAULT_START_WINDOW_TO_TASKBAR_PROPORTION, monitorHeight * 0.6);
         attachObserver(startDialogWindow);
         startDialogWindow.attachObserver(this); //TODO: czy potrzebne ??
     }
@@ -43,28 +43,12 @@ public class StartTaskbar extends Taskbar {
         return new Point2D(positionX, positionY);
     }
 
-//    @Override
-//    public void render() {
-//        renderTaskBar();
-//        startPane.render();
-//    }
-
-//    private void renderTaskBar() {
-//        setFillColor(Color.rgb(35, 93, 219)); //todo: tmp
-//        graphicContext.fillRect(0, 0, gtWidth(), getHeight());
-//    }
-
-//    @Override
-//    public void update() {
-//        startPane.update();
-//    }
-
-    //todo: popatrzec czy cos niepotrzebne
     @Override
     public void updateObserver(EventKind eventKind) {
         switch (eventKind) {
             case MONITOR_PANE:
             case PRINTER_PANE:
+            case EXIT_BUTTON:
                 startDialogWindow.getPane().setVisible(false);
                 break;
 

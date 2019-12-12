@@ -9,6 +9,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.Event
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.scene.image.Image;
 
 //todo: tmp na sprite with handler
@@ -17,14 +18,16 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
     public final static double DEFAULT_MONITOR_HEIGHT = 320;
 
     private MonitorSprite monitorSprite;
+    private PrinterSprite printerSprite;
+
     private Computer computer;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public ComputerSprite(double positionX, double positionY) {
+    public ComputerSprite(double positionX, double positionY, PrinterSprite printerSprite, Image actualImageToPrint) {
         super(DEFAULT_MONITOR_WIDTH, DEFAULT_MONITOR_HEIGHT, positionX, positionY);
         initializeAllSprites();
-        computer = new Computer();
-
+        computer = new Computer(actualImageToPrint);
+        this.printerSprite = printerSprite;
         monitorSprite.getMonitorPane().attachPrintObserver(this);
         monitorSprite.getMonitorPane().getPrinterPane().attachObserver(this);
     }
@@ -52,31 +55,31 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
     @Override
     public void updateObserver(PrintOption printOption) {
         computer.setPrintDecorator(printOption.setOptionDecorator(computer.getPrintDecorator()));
+
     }
 
     @Override
     public void updateObserver(EventKind eventKind) {
         switch (eventKind) {
             case EXIT_BUTTON:
-                computer.resetComputer();
+                computer.resetPrintProperty();
                 break;
-            default: Logger.logError(getClass(),"unknown event");
+            default:
+                Logger.logError(getClass(), "unknown event");
         }
     }
 
-    //todo: pomyslec czy nie zrobic inaczej - testowo
-    public void print(PrinterSprite printerSprite, Image image) {
-        computer.setPrintingOption(true, 1, image);
+    public void updatePrintImage(Image actualImage){
+        computer.setImageToPrint(actualImage);
+    }
+
+    //todo:test
+    public void print() {
+        computer.setPrintingOption(true, 1, ImagesProperties.userLogoImage());
         try {
             printerSprite.print(computer.getImageToPrint(), computer.isMulticolor(), computer.getQtyOfCopy());
         } catch (PrinterException e) {
             Logger.logError(getClass(), "Powinnien pojawic sie komunikat o tym ze printowanie sie nie udalo. " + e.getMessage());
         }
     }
-
-    //todo: tmp
-    public void reset() {
-        computer.resetComputer();
-    }
-
 }

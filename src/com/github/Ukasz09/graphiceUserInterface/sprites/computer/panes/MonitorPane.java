@@ -10,6 +10,8 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPan
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.PrinterDialogWindow;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.StartTaskbar;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,14 +19,17 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrintOptionObservable {
     private final static Image DEFAULT_WALLPAPER = ImagesProperties.wallpaperImage();
-    private static final double OTHER_PANE_TO_MONITOR_PANE_PROPORTION = 0.75;
-    private static final double DEFAULT_BUTTON_WIDTH_TO_MONITOR_PROPORTION = 0.22; //0.29
+    private static final double OTHER_PANE_TO_MONITOR_PANE_WIDTH_PROPORTION = 0.78;
+    private static final double OTHER_PANE_TO_MONITOR_PANE_HEIGHT_PROPORTION = 0.65;
+    private static final double DEFAULT_BUTTON_WIDTH_TO_MONITOR_PROPORTION = 0.22;
     private static final double DEFAULT_BUTTON_HEIGHT_TO_MONITOR_PROPORTION = 0.5;
 
     private Image wallpaper = DEFAULT_WALLPAPER;
@@ -49,8 +54,8 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void makePrinterPane(double monitorX, double monitorY, double monitorWidth, double monitorHeight) {
-        double printerPaneWidth = monitorWidth * OTHER_PANE_TO_MONITOR_PANE_PROPORTION;
-        double printerPaneHeight = monitorHeight * OTHER_PANE_TO_MONITOR_PANE_PROPORTION;
+        double printerPaneWidth = monitorWidth * OTHER_PANE_TO_MONITOR_PANE_WIDTH_PROPORTION;
+        double printerPaneHeight = monitorHeight * OTHER_PANE_TO_MONITOR_PANE_HEIGHT_PROPORTION;
         Point2D printerPanePosition = calculatePrinterPanePosition(monitorX, monitorY, monitorWidth, monitorHeight, printerPaneWidth, printerPaneHeight);
         printerPane = new PrinterDialogWindow(printerPanePosition.getX(), printerPanePosition.getY(), printerPaneWidth, printerPaneHeight);
         printerPane.getPane().setVisible(false);
@@ -67,8 +72,16 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
 
     private void addPrintingWayButton(Image imageWithoutEffects, String buttonText, PrintOption printOption) {
         Button printingWayButton = makePrintButton(imageWithoutEffects, buttonText, printOption);
-        printingWayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyPrintObservers(printOption));
+        printingWayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, getPrintButtonEventHandler(printOption));
         printerPane.addButtonToContentPane(printingWayButton);
+    }
+
+    private EventHandler getPrintButtonEventHandler(PrintOption printOption) {
+        return event -> {
+            notifyPrintObservers(printOption);
+            notifyObservers(EventKind.EXIT_BUTTON);
+            printerPane.getPane().setVisible(false);
+        };
     }
 
     private Button makePrintButton(Image imageWithoutEffects, String buttonText, PrintOption printOption) {
@@ -150,7 +163,6 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
             observer.updateObserver(printOption);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public WindowDialog getPrinterPane() {
         return printerPane;
     }

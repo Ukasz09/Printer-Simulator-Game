@@ -25,4 +25,8 @@ public abstract class ImageSprite extends SpriteWithEventHandler {
     protected void setSpriteImage(Image spriteImage) {
         this.spriteImage = spriteImage;
     }
+
+    public Image getSpriteImage() {
+        return spriteImage;
+    }
 }

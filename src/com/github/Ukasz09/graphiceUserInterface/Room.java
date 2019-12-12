@@ -5,6 +5,9 @@ import com.github.Ukasz09.graphiceUserInterface.backgrounds.Background;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.RoomBackground;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.ComputerSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObservable;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.*;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.animatedDecorations.CatSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.animatedDecorations.GlobeSprite;
@@ -12,33 +15,31 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecora
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecorations.FlowerSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecorations.ZingsPosterSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
-import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static com.github.Ukasz09.graphiceUserInterface.sprites.decorations.DecorationsEnum.*;
 
-public class Room implements IRoomGraphic {
+public class Room implements IRoomGraphic, IEventKindObserver {
     private ViewManager manager;
     private Background background;
     private Map<DecorationsEnum, ISpriteGraphic> decorations;
     private PrinterSprite printerSprite;
     private ComputerSprite computerSprite;
+    private ZingsPosterSprite posterSprite;
 
     public Room() {
         manager = ViewManager.getInstance();
         background = new RoomBackground();
         decorations = new LinkedHashMap<>();
         addDefaultDecorations();
+        addPoster();
         addPrinter();
-        addComputer();
-
-        //todo: test
-        addComputerEventHandler();
+        addComputer(printerSprite);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +49,6 @@ public class Room implements IRoomGraphic {
         addGlobe(desk.getPositionX(), desk.getPositionY());
         addCat();
         addFlower();
-        addPoster();
     }
 
     private void addDesk() {
@@ -95,9 +95,11 @@ public class Room implements IRoomGraphic {
         return new Point2D(positionX, positionY);
     }
 
+    //todo: dodac go jako osobny interfejs moze
     private void addPoster() {
         Point2D position = calculatePosterPosition();
-        decorations.put(DecorationsEnum.POSTER, new ZingsPosterSprite(position.getX(), position.getY()));
+        posterSprite = new ZingsPosterSprite(position.getX(), position.getY());
+        posterSprite.attachObserver(this);
     }
 
     private Point2D calculatePosterPosition() {
@@ -112,32 +114,12 @@ public class Room implements IRoomGraphic {
         printerSprite = new PrinterSprite(position.getX(), position.getY());
     }
 
-    private void addComputer() {
+    private void addComputer(PrinterSprite printerSprite) {
         ISpriteGraphic globe = decorations.get(GLOBE);
         ISpriteGraphic desk = decorations.get(DESK);
         Point2D position = calculateComputerPosition(globe.getPositionX(), globe.getWidth(), desk.getPositionY());
-        computerSprite = new ComputerSprite(position.getX(), position.getY());
+        computerSprite = new ComputerSprite(position.getX(), position.getY(), printerSprite, posterSprite.getSpriteImage());
     }
-
-    //todo: tmp na czas testow
-    private void addComputerEventHandler() {
-        computerSprite.addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            Image poster = ImagesProperties.zingsPosterSprites()[0];
-            if (poster != null) {
-//                try {
-                   computerSprite.print(printerSprite,ImagesProperties.zingsPosterSprites()[0]);
-                   computerSprite.reset();
-//                } catch (PrinterException e) {
-//                    Logger.logError(getClass(), e.getMessage() + "cause: " + e.getCause().getMessage());
-//                }
-            } else Logger.logError(getClass(), " poster=null");
-        });
-    }
-//
-//    //todo: tmp: na czas testow
-//    private Image getImageWithOptionToTest() {
-//        return new GrayColorDecorator(new TestGaussianBlurDecorator(new BasePrintDecorator())).getImageWithAddedEffect(new ImageView(ImagesProperties.zingsPosterSprites()[0]));
-//    }
 
     private Point2D calculatePrinterPosition(double deskPositionX, double deskPositionY, double deskWidth) {
         double positionX = deskPositionX + deskWidth * 0.95 - PrinterSprite.DEFAULT_WIDTH;
@@ -156,6 +138,7 @@ public class Room implements IRoomGraphic {
         updateDecorations();
         printerSprite.update();
         computerSprite.update();
+        posterSprite.update();
     }
 
     private void updateDecorations() {
@@ -166,6 +149,7 @@ public class Room implements IRoomGraphic {
     public void render() {
         background.render();
         renderDecorations();
+        posterSprite.render();
         printerSprite.render();
         computerSprite.render();
     }
@@ -182,5 +166,17 @@ public class Room implements IRoomGraphic {
     @Override
     public void stopBackgroundTheme() {
         background.stopBackgroundSound();
+    }
+
+    @Override
+    public void updateObserver(EventKind eventKind) {
+        switch (eventKind) {
+            case POSTER_CHANGE:
+                computerSprite.updatePrintImage(posterSprite.getSpriteImage());
+                break;
+
+            default:
+                Logger.logError(getClass(), " unknown event");
+        }
     }
 }

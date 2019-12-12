@@ -1,14 +1,12 @@
 package com.github.Ukasz09.applicationLogic.computer;
 
 import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionDecorator.BasePrintDecorator;
-import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.PrintOption;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Computer {
+    private final Image defaultImageToPrint;
+
     private boolean multicolor;
     private int qtyOfCopy;
     private Image imageToPrint;
@@ -17,17 +15,24 @@ public class Computer {
     private ErrorCommunicate errorCommunicate;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Computer() {
+    public Computer(Image imageToPrint) {
+        defaultImageToPrint = imageToPrint;
         resetComputer();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //todo: dac przey printowaniu B-W zabieranie tylko czarnego
     public void resetComputer() {
+        resetPrintProperty();
+        errorCommunicate = null;
+        imageToPrint = defaultImageToPrint;
+    }
+
+    public void resetPrintProperty() {
+        printDecorator = new BasePrintDecorator();
         multicolor = false;
         qtyOfCopy = 0;
-        printDecorator = new BasePrintDecorator();
-        errorCommunicate = null;
-        imageToPrint = null;
     }
 
     public void setPrintingOption(boolean multicolor, int qtyOfCopy, Image imageToPrint) {
@@ -73,6 +78,10 @@ public class Computer {
 
     public boolean isMulticolor() {
         return multicolor;
+    }
+
+    public void setImageToPrint(Image imageToPrint) {
+        this.imageToPrint = imageToPrint;
     }
 
     //    public boolean print(Printer printer) {

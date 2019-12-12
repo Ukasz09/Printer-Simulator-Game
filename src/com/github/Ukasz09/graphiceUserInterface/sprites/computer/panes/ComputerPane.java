@@ -7,7 +7,6 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.Event
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -162,7 +161,7 @@ public abstract class ComputerPane implements IPane {
         Button printerButton = new Button(buttonText);
         printerButton.setGraphic(getImageViewForButton(widthOfImageInButton, heightOfImageInButton, buttonImage));
         printerButton.setAlignment(alignment);
-        setNormalButtonProperty(printerButton,widthOfButton,heightOfButton);
+        setNormalButtonProperty(printerButton, widthOfButton, heightOfButton);
 
 //        printerButton.setStyle(String.format("-fx-font-size: %dpx;", (int) (printerButton.getMaxWidth() / 10)));
         return printerButton;
@@ -192,6 +191,4 @@ public abstract class ComputerPane implements IPane {
     public double getHeight() {
         return height;
     }
-
-
 }

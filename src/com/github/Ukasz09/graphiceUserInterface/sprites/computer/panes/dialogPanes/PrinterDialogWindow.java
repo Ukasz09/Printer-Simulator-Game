@@ -16,10 +16,9 @@ public class PrinterDialogWindow extends WindowDialogWithExitTaskbar {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     protected ContentPane makeContentPaneInstance() {
-        return new ContentPane(0, 0, getWidth(), getHeight() / 2);
+        return new ContentPane(0, 0, getWidth(), getHeight() - getWindowTaskbarHeight());
     }
 
-    //todo: dac tez reset computer przy exicie ?
     @Override
     public void updateObserver(EventKind eventKind) {
         switch (eventKind) {
@@ -33,7 +32,6 @@ public class PrinterDialogWindow extends WindowDialogWithExitTaskbar {
         }
     }
 
-    //todo: add tez z contentPana
     private void addPrinterPaneEventHandler() {
         getPane().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyObservers(EventKind.PRINTER_PANE));
     }

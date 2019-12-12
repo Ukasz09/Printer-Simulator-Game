@@ -38,12 +38,16 @@ public abstract class WindowDialog extends ComputerPane {
     protected abstract Taskbar makeWindowTaskbarPane();
 
     private void addContentPaneToNode() {
-        AnchorPane.setTopAnchor(contentPane.getPane(), windowTaskbarPane.getHeight());
+        AnchorPane.setTopAnchor(contentPane.getPane(),  windowTaskbarPane.getHeight());
         addNodeToPane(contentPane.getPane());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void addButtonToContentPane(Button button) {
         contentPane.addNodeToPane(button);
+    }
+
+    protected double getWindowTaskbarHeight() {
+        return windowTaskbarPane.getHeight();
     }
 }
