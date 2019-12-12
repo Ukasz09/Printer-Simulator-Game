@@ -1,13 +1,11 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
 import com.github.Ukasz09.applicationLogic.Logger;
-import com.github.Ukasz09.applicationLogic.observerPattern.IObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 public class TaskbarPane extends ComputerPaneWithGraphicContext {
@@ -29,7 +27,7 @@ public class TaskbarPane extends ComputerPaneWithGraphicContext {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void addStartButton() {
-        Button windowButton = makeButtonWithBackground(DEFAULT_WINDOW_BUTTON_WIDTH, getHeight(), windowButtonImage, EventKind.MENU_START_BUTTON);
+        Button windowButton = makeButtonWithBackgroundAndEventHandler(DEFAULT_WINDOW_BUTTON_WIDTH, getHeight(), windowButtonImage, EventKind.MENU_START_BUTTON);
         getPane().getChildren().add(windowButton);
     }
 

@@ -2,16 +2,15 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.computer;
 
 import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.applicationLogic.computer.Computer;
-import com.github.Ukasz09.applicationLogic.observerPattern.IObserver;
-import com.github.Ukasz09.applicationLogic.printer.printOption.SepiaColorDecorator;
+import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.PrintOption;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
 import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
 import javafx.scene.image.Image;
 
 //todo: tmp na sprite with handler
-public class ComputerSprite extends SpriteWithEventHandler implements IObserver {
+public class ComputerSprite extends SpriteWithEventHandler implements IPrintOptionObserver {
     public final static double DEFAULT_MONITOR_WIDTH = 440;
     public final static double DEFAULT_MONITOR_HEIGHT = 320;
 
@@ -24,7 +23,6 @@ public class ComputerSprite extends SpriteWithEventHandler implements IObserver 
         initializeAllSprites();
         computer = new Computer();
 
-        //todo: tmp
         monitorSprite.getMonitorPane().attachObserver(this);
     }
 
@@ -49,14 +47,8 @@ public class ComputerSprite extends SpriteWithEventHandler implements IObserver 
     }
 
     @Override
-    public void updateObserver(EventKind eventKind) {
-        switch (eventKind) {
-            case SEPIA_BUTTON:
-                computer.setPrintDecorator(new SepiaColorDecorator(computer.getPrintDecorator()));
-                break;
-            default:
-                System.out.println("Computer dont know what to do");
-        }
+    public void updateObserver(PrintOption printOption) {
+        computer.setPrintDecorator(printOption.setOptionDecorator(computer.getPrintDecorator()));
     }
 
     //todo: pomyslec czy nie zrobic inaczej - testowo

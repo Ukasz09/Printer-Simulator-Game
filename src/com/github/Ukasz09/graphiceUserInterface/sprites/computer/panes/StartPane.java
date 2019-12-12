@@ -1,7 +1,6 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
 import com.github.Ukasz09.applicationLogic.Logger;
-import com.github.Ukasz09.applicationLogic.observerPattern.IObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.scene.control.Button;
@@ -28,7 +27,7 @@ public class StartPane extends ComputerPaneWithGraphicContext {
     }
 
     private void addPrinterButton(double width, double height, Image buttonImage) {
-        Button printerButton = makeButtonWithImage(width, height, buttonImage,EventKind.PRINTER_BUTTON);
+        Button printerButton = makeButtonWithImageAndEventHandler(width, height, buttonImage,EventKind.PRINTER_BUTTON);
         AnchorPane.setTopAnchor(printerButton,getHeight()*DEFAULT_UPPERTASKBAR_TO_STARTPANE_PROPORTION);
         getPane().getChildren().add(printerButton);
     }

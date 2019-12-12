@@ -1,19 +1,15 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
 import com.github.Ukasz09.applicationLogic.Logger;
-import com.github.Ukasz09.applicationLogic.observerPattern.IObserver;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
-import java.io.BufferedReader;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +17,7 @@ public abstract class ComputerPane implements IPane {
     private final ViewManager manager;
     private Pane pane;
 
-    private Set<IObserver> observers;
+    private Set<IEventKindObserver> observers;
     private double positionX;
     private double positionY;
     private double width;
@@ -70,39 +66,43 @@ public abstract class ComputerPane implements IPane {
     }
 
 
-
     @Override
     public Pane getPane() {
         return pane;
     }
 
     @Override
-    public void attachObserver(IObserver observer) {
+    public void attachObserver(IEventKindObserver observer) {
         observers.add(observer);
     }
 
     @Override
-    public void detachObserver(IObserver observer) {
+    public void detachObserver(IEventKindObserver observer) {
         observers.remove(observer);
     }
 
     @Override
     public void notifyObservers(EventKind eventKind) {
-        for (IObserver observer : observers)
+        for (IEventKindObserver observer : observers)
             observer.updateObserver(eventKind);
     }
 
-    protected Button makeButtonWithBackground(double width, double height, Image buttonImage, EventKind eventKind) {
+    protected Button makeButtonWithBackgroundAndEventHandler(double width, double height, Image buttonImage, EventKind eventKind) {
+        Button button = makeButtonWithBackground(width, height, buttonImage);
+        addButtonEventHandler(button, eventKind);
+        return button;
+    }
+
+    protected Button makeButtonWithBackground(double width, double height, Image buttonImage) {
         Button button = new Button();
-        setNormalButtonProperty(button, width, height, eventKind);
+        setNormalButtonProperty(button, width, height);
         setBackgroundToButton(button, buttonImage);
         return button;
     }
 
-    private void setNormalButtonProperty(Button windowButton, double width, double height, EventKind eventKind) {
+    private void setNormalButtonProperty(Button windowButton, double width, double height) {
         windowButton.setMinSize(width, height);
         windowButton.setMaxSize(width, height);
-        addButtonEventHandler(windowButton, eventKind);
     }
 
     private void addButtonEventHandler(Button button, EventKind eventKind) {
@@ -120,9 +120,15 @@ public abstract class ComputerPane implements IPane {
         button.setBackground(background);
     }
 
-    protected Button makeButtonWithImage(double width, double height, Image buttonImage, EventKind eventKind) {
+    protected Button makeButtonWithImageAndEventHandler(double width, double height, Image buttonImage, EventKind eventKind) {
+        Button button = makeButtonWithImage(width, height, buttonImage);
+        addButtonEventHandler(button, eventKind);
+        return button;
+    }
+
+    protected Button makeButtonWithImage(double width, double height, Image buttonImage) {
         Button button = new Button("", getImageViewForButton(width, height, buttonImage));
-        setNormalButtonProperty(button, width, height, eventKind);
+        setNormalButtonProperty(button, width, height);
         return button;
     }
 
@@ -133,9 +139,15 @@ public abstract class ComputerPane implements IPane {
         return imageView;
     }
 
-    protected Button makeButtonWithImageAndText(double width, double height, Image buttonImage, String buttonText, EventKind eventKind) {
+    protected Button makeButtonWithImageTextAndEventHandler(double width, double height, Image buttonImage, String buttonText, EventKind eventKind) {
+        Button button = makeButtonWithImageAndText(width, height, buttonImage, buttonText);
+        addButtonEventHandler(button, eventKind);
+        return button;
+    }
+
+    protected Button makeButtonWithImageAndText(double width, double height, Image buttonImage, String buttonText) {
         Button button = new Button("", getImageViewForButton(width * 0.7, height * 0.7, buttonImage));
-        setNormalButtonProperty(button, width, height, eventKind);
+        setNormalButtonProperty(button, width, height);
         setButtonTextProperty(button, buttonText);
         return button;
     }

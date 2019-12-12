@@ -1,17 +1,14 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer;
 
-import com.github.Ukasz09.applicationLogic.observerPattern.IObservable;
-import com.github.Ukasz09.applicationLogic.observerPattern.IObserver;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.MonitorPane;
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.TaskbarPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 
-public class MonitorSprite extends ImageSprite implements IObserver {
+public class MonitorSprite extends ImageSprite implements IEventKindObserver {
     private final static Image DEFAULT_IMAGE = ImagesProperties.monitorSprite();
     private final static double DEFAULT_MONITOR_FRAME_THICKNESS = 15;
     private final static double DEFAULT_DISPLAY_TO_MONITOR_PROPORTION = 0.68;

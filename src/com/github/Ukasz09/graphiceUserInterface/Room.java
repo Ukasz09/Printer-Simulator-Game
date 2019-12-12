@@ -1,11 +1,6 @@
 package com.github.Ukasz09.graphiceUserInterface;
 
 import com.github.Ukasz09.applicationLogic.Logger;
-import com.github.Ukasz09.applicationLogic.printer.printOption.BasePrintDecorator;
-import com.github.Ukasz09.applicationLogic.printer.printOption.GrayColorDecorator;
-import com.github.Ukasz09.applicationLogic.printer.printOption.IPrintDecorator;
-import com.github.Ukasz09.applicationLogic.printer.printOption.TestGaussianBlurDecorator;
-import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.Background;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.RoomBackground;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
@@ -20,7 +15,6 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.util.LinkedHashMap;

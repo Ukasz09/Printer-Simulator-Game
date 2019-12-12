@@ -18,8 +18,12 @@ public class PrinterPane extends ComputerPane {
     @Override
     protected Pane makePaneInstance() {
         FlowPane pane = new FlowPane();
-        pane.setStyle("-fx-background-color: " + BACKGROUND_COLOR);
+        setPanelColor(pane);
         return pane;
+    }
+
+    private void setPanelColor(Pane pane) {
+        pane.setStyle("-fx-background-color: " + BACKGROUND_COLOR);
     }
 
     @Override

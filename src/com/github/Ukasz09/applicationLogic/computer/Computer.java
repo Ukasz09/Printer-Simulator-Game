@@ -1,12 +1,12 @@
 package com.github.Ukasz09.applicationLogic.computer;
 
-import com.github.Ukasz09.applicationLogic.printer.Printer;
-import com.github.Ukasz09.applicationLogic.printer.printOption.BasePrintDecorator;
-import com.github.Ukasz09.applicationLogic.printer.printOption.IPrintDecorator;
-import com.github.Ukasz09.applicationLogic.printer.printOption.SepiaColorDecorator;
-import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
+import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionDecorator.BasePrintDecorator;
+import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.PrintOption;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Computer {
     private boolean multicolor;

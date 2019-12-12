@@ -1,4 +1,4 @@
-package com.github.Ukasz09.applicationLogic.printer.printOption;
+package com.github.Ukasz09.applicationLogic.printer.printOption.printOptionDecorator;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

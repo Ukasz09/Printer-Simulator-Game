@@ -1,16 +1,20 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
 import com.github.Ukasz09.applicationLogic.Logger;
+import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.PrintOption;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObservable;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 
-public class MonitorPane extends ComputerPaneWithGraphicContext {
+import java.util.HashSet;
+import java.util.Set;
+
+public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrintOptionObservable {
     private final static Image DEFAULT_WALLPAPER = ImagesProperties.wallpaperImage();
     private static final double OTHER_PANE_TO_MONITOR_PANE_PROPORTION = 0.75;
     private static final double DEFAULT_BUTTON_SIZE = 75;
@@ -18,10 +22,12 @@ public class MonitorPane extends ComputerPaneWithGraphicContext {
     private Image wallpaper = DEFAULT_WALLPAPER;
     private IPane taskbarPane;
     private IPane printerPane;
+    private Set<IPrintOptionObserver> printOptionObservers;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MonitorPane(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height);
+        printOptionObservers = new HashSet<>();
         makePrinterPane(positionX, positionY, width, height);
         taskbarPane = new TaskbarPane(positionX, positionY + height - TaskbarPane.DEFAULT_HEIGHT, width, TaskbarPane.DEFAULT_HEIGHT, height);
         attachObserver(taskbarPane);
@@ -44,20 +50,23 @@ public class MonitorPane extends ComputerPaneWithGraphicContext {
 
     //todo: tmp
     private void addDefaultPrintingWays() {
-        addPrintingWayButton(ImagesProperties.printerIconImage(), "Sepia", EventKind.SEPIA_BUTTON);
-        addPrintingWayButton(ImagesProperties.printerIconImage(), "Czarno-bialy", EventKind.BLACK_WHITE_BUTTON);
+        addPrintingWayButton(ImagesProperties.printerIconImage(), "Sepia", PrintOption.SEPIA );
+        addPrintingWayButton(ImagesProperties.printerIconImage(), "Czarno-bialy", PrintOption.BLACK_AND_WHITE);
     }
 
-    private void addPrintingWayButton(Image buttonImage, String buttonText, EventKind eventKind) {
+    private void addPrintingWayButton(Image buttonImage, String buttonText, PrintOption printOption) {
         Button printingWayButton;
         if (!buttonText.isEmpty())
-            printingWayButton = makeButtonWithImageAndText(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, buttonImage, buttonText, eventKind);
-        else printingWayButton = makeButtonWithImage(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, buttonImage, eventKind);
+            printingWayButton = makeButtonWithImageAndText(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, buttonImage, buttonText);
+        else
+            printingWayButton = makeButtonWithImage(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, buttonImage);
+
+        printingWayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyObservers(printOption));
         addPrintingWayButton(printingWayButton);
     }
 
     public void addPrintingWayButton(Button button) {
-        System.out.println("Button posY"+button.getLayoutY());
+        System.out.println("Button posY" + button.getLayoutY());
         printerPane.getPane().getChildren().add(button);
     }
 
@@ -102,5 +111,21 @@ public class MonitorPane extends ComputerPaneWithGraphicContext {
             default:
                 Logger.logError(getClass(), "Unknown eventKind");
         }
+    }
+
+    @Override
+    public void attachObserver(IPrintOptionObserver observer) {
+        printOptionObservers.add(observer);
+    }
+
+    @Override
+    public void detachObserver(IPrintOptionObserver observer) {
+        printOptionObservers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(PrintOption printOption) {
+        for (IPrintOptionObserver observer : printOptionObservers)
+            observer.updateObserver(printOption);
     }
 }
