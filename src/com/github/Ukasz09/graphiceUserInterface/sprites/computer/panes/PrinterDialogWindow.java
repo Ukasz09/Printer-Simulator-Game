@@ -2,28 +2,19 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
 
-public class PrinterPane extends ComputerPane {
-    private static final String BACKGROUND_COLOR = "#303030";
+public class PrinterDialogWindow extends WindowDialogPane {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public PrinterPane(double positionX, double positionY, double width, double height) {
+    public PrinterDialogWindow(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height);
         addPrinterPaneEventHandler();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    protected Pane makePaneInstance() {
-        FlowPane pane = new FlowPane();
-        setPanelColor(pane);
-        return pane;
-    }
-
-    private void setPanelColor(Pane pane) {
-        pane.setStyle("-fx-background-color: " + BACKGROUND_COLOR);
+    protected ContentPane makeContentPaneInstance() {
+        return new ContentPane(0, 0, getWidth(), getHeight() / 2);
     }
 
     @Override
@@ -31,16 +22,7 @@ public class PrinterPane extends ComputerPane {
         //todo:
     }
 
-    @Override
-    public void render() {
-        //nothing to do
-    }
-
-    @Override
-    public void update() {
-        //todo:
-    }
-
+    //todo: add tez z contentPana
     private void addPrinterPaneEventHandler() {
         getPane().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyObservers(EventKind.PRINTER_PANE));
     }

@@ -4,7 +4,6 @@ import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.applicationLogic.printer.Printer;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
-import com.github.Ukasz09.applicationLogic.printer.printOption.*;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterContainersException;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
@@ -23,7 +22,6 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesPropert
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.util.*;

@@ -5,8 +5,8 @@ import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.P
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Computer {
     private boolean multicolor;

@@ -1,14 +1,17 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes;
 
 import com.github.Ukasz09.applicationLogic.Logger;
+import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionDecorator.BasePrintDecorator;
 import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.PrintOption;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObservable;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObserver;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.StartTaskbar;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.util.HashSet;
@@ -17,11 +20,11 @@ import java.util.Set;
 public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrintOptionObservable {
     private final static Image DEFAULT_WALLPAPER = ImagesProperties.wallpaperImage();
     private static final double OTHER_PANE_TO_MONITOR_PANE_PROPORTION = 0.75;
-    private static final double DEFAULT_BUTTON_SIZE = 75;
+    private static final double DEFAULT_BUTTON_SIZE = 67;
 
     private Image wallpaper = DEFAULT_WALLPAPER;
-    private IPane taskbarPane;
-    private IPane printerPane;
+    private StartTaskbar taskbarPane;
+    private DialogPane printerPane; //todo: dac pozniej na interfejsach
     private Set<IPrintOptionObserver> printOptionObservers;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +32,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         super(positionX, positionY, width, height);
         printOptionObservers = new HashSet<>();
         makePrinterPane(positionX, positionY, width, height);
-        taskbarPane = new TaskbarPane(positionX, positionY + height - TaskbarPane.DEFAULT_HEIGHT, width, TaskbarPane.DEFAULT_HEIGHT, height);
+        taskbarPane = new StartTaskbar(positionX, positionY + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, height);
         attachObserver(taskbarPane);
         taskbarPane.attachObserver(this);
         printerPane.attachObserver(taskbarPane);
@@ -44,30 +47,33 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         double printerPaneWidth = monitorWidth * OTHER_PANE_TO_MONITOR_PANE_PROPORTION;
         double printerPaneHeight = monitorHeight * OTHER_PANE_TO_MONITOR_PANE_PROPORTION;
         Point2D printerPanePosition = calculatePrinterPanePosition(monitorX, monitorY, monitorWidth, monitorHeight, printerPaneWidth, printerPaneHeight);
-        printerPane = new PrinterPane(printerPanePosition.getX(), printerPanePosition.getY(), printerPaneWidth, printerPaneHeight);
+        printerPane = new PrinterDialogWindow(printerPanePosition.getX(), printerPanePosition.getY(), printerPaneWidth, printerPaneHeight);
         printerPane.getPane().setVisible(false);
     }
 
     //todo: tmp
     private void addDefaultPrintingWays() {
-        addPrintingWayButton(ImagesProperties.printerIconImage(), "Sepia", PrintOption.SEPIA );
-        addPrintingWayButton(ImagesProperties.printerIconImage(), "Czarno-bialy", PrintOption.BLACK_AND_WHITE);
+        Image thumbnailImage = ImagesProperties.thumbnailImage();
+        addPrintingWayButton(thumbnailImage, "Sepia", PrintOption.SEPIA);
+        addPrintingWayButton(thumbnailImage, "Czarno-bialy", PrintOption.BLACK_AND_WHITE);
+        addPrintingWayButton(thumbnailImage, "Sepia", PrintOption.SEPIA);
+        addPrintingWayButton(thumbnailImage, "Czarno-bialy", PrintOption.BLACK_AND_WHITE);
     }
 
-    private void addPrintingWayButton(Image buttonImage, String buttonText, PrintOption printOption) {
+
+    public void addPrintingWayButton(Image imageWithoutEffects, String buttonText, PrintOption printOption) {
         Button printingWayButton;
         if (!buttonText.isEmpty())
-            printingWayButton = makeButtonWithImageAndText(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, buttonImage, buttonText);
+            printingWayButton = makeButtonWithImageAndText(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, getImageWithEffect(printOption, imageWithoutEffects), buttonText);
         else
-            printingWayButton = makeButtonWithImage(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, buttonImage);
+            printingWayButton = makeButtonWithImage(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE, getImageWithEffect(printOption, imageWithoutEffects));
 
         printingWayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyObservers(printOption));
-        addPrintingWayButton(printingWayButton);
+        printerPane.addButtonToContentPane(printingWayButton);
     }
 
-    public void addPrintingWayButton(Button button) {
-        System.out.println("Button posY" + button.getLayoutY());
-        printerPane.getPane().getChildren().add(button);
+    private Image getImageWithEffect(PrintOption printEffect, Image image) {
+        return printEffect.setOptionDecorator(new BasePrintDecorator()).getImageWithAddedEffect(new ImageView(image));
     }
 
     private Point2D calculatePrinterPanePosition(
@@ -83,8 +89,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
 
     @Override
     public void render() {
-        printerPane.render();
-        taskbarPane.render();
+//        taskbarPane.render();
         renderWallpaper();
     }
 
@@ -94,7 +99,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
 
     @Override
     public void update() {
-        taskbarPane.update();
+//        taskbarPane.update();
     }
 
     @Override

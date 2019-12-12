@@ -4,6 +4,7 @@ import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
@@ -28,7 +29,7 @@ public abstract class ComputerPane implements IPane {
         manager = ViewManager.getInstance();
         setPosition(positionX, positionY);
         setSize(width, height);
-        makeMonitorPane();
+        makePane();
         manager.addNode(pane);
         observers = new HashSet<>();
     }
@@ -49,7 +50,7 @@ public abstract class ComputerPane implements IPane {
      */
     protected abstract Pane makePaneInstance();
 
-    private void makeMonitorPane() {
+    private void makePane() {
         pane = makePaneInstance();
         if (pane == null) {
             pane = new AnchorPane();
@@ -60,11 +61,17 @@ public abstract class ComputerPane implements IPane {
 
     private void setPaneProperties() {
         pane.setPrefSize(width, height);
-//        pane.setStyle("-fx-background-color: red;");
         pane.setLayoutX(positionX);
         pane.setLayoutY(positionY);
     }
 
+    public void setPanelColor(String hexColorWithHash) {
+        setPanelColor(pane, hexColorWithHash);
+    }
+
+    protected void setPanelColor(Pane pane, String hexColorWithHash) {
+        pane.setStyle("-fx-background-color: " + hexColorWithHash);
+    }
 
     @Override
     public Pane getPane() {
@@ -156,6 +163,14 @@ public abstract class ComputerPane implements IPane {
         button.setContentDisplay(ContentDisplay.TOP);
         button.setStyle(String.format("-fx-font-size: %dpx;", (int) (button.getMaxHeight() / 8)));
         button.setText(buttonText);
+    }
+
+//    protected void addButtonToPane(Button button) {
+//        pane.getChildren().add(button);
+//    }
+
+    protected void addNodeToPane(Node node){
+        pane.getChildren().add(node);
     }
 
     //todo: moze usunac pozniej

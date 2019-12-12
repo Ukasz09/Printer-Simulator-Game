@@ -97,4 +97,14 @@ public class ImagesProperties {
         String imagePath = "\\resources\\images\\computer\\StartPane.png";
         return new Image(imagePath);
     }
+
+    public static Image thumbnailImage() {
+        String imagePath = "\\resources\\images\\computer\\thumbnail.jpg";
+        return new Image(imagePath);
+    }
+
+    public static Image exitButtonImage() {
+        String imagePath = "\\resources\\images\\computer\\exitButton.png";
+        return new Image(imagePath);
+    }
 }
