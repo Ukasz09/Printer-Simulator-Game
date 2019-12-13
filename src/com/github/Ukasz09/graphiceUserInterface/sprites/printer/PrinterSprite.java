@@ -23,6 +23,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterLow
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterSalver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterUpperBody;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
+import com.github.Ukasz09.graphiceUserInterface.sprites.states.PrinterState;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -321,7 +322,9 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
                 printingSound.stopSound();
                 printer.setInPrintingTime(false);
             }
-        }
+
+            printerUpperBody.changeState(PrinterState.PRINTING);
+        } else printerUpperBody.changeState(PrinterState.STANDBY);
     }
 
     public ErrorKind print(Image imageToPrint, boolean multicolor, int amountOfCopy) {

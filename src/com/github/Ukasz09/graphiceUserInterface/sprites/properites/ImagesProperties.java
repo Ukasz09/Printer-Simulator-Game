@@ -16,11 +16,6 @@ public class ImagesProperties {
         return new Image(imagePath);
     }
 
-    public static Image printerUpperBodySprite() {
-        String imagePath = "\\resources\\images\\printer\\printerUpperBody.png";
-        return new Image(imagePath);
-    }
-
     public static Image printerLowerBodySprite() {
         String imagePath = "\\resources\\images\\printer\\printerLowerBody.png";
         return new Image(imagePath);

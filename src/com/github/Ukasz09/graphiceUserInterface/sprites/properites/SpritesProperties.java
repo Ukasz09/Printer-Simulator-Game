@@ -2,6 +2,7 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.properites;
 
 
 import com.github.Ukasz09.graphiceUserInterface.sprites.states.DecorationState;
+import com.github.Ukasz09.graphiceUserInterface.sprites.states.PrinterState;
 
 public class SpritesProperties {
 
@@ -27,4 +28,15 @@ public class SpritesProperties {
         return sheetProperty;
     }
 
+    public static ImageSheetProperty printerUpperBodyProperty() {
+        String spritePath = "\\resources\\sprites\\computer\\printerUpperBody.png";
+        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
+                .withImagePath(spritePath)
+                .withSizeOfOneFrame(666, 238)
+                .withDefaultDurationPerOneFrame(6)
+                .withAddActionState(PrinterState.STANDBY, 3, 1)
+                .withAddActionState(PrinterState.PRINTING, 0, 3)
+                .build();
+        return sheetProperty;
+    }
 }

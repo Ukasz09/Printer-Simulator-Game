@@ -6,7 +6,6 @@ import com.github.Ukasz09.graphiceUserInterface.backgrounds.RoomBackground;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.ComputerSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObservable;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.*;
 import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.animatedDecorations.CatSprite;
@@ -17,10 +16,8 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecora
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
 import javafx.geometry.Point2D;
 
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static com.github.Ukasz09.graphiceUserInterface.sprites.decorations.DecorationsEnum.*;
 

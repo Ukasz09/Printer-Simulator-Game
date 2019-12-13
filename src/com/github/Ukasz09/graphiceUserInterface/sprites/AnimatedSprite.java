@@ -3,6 +3,7 @@ package com.github.Ukasz09.graphiceUserInterface.sprites;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.FrameStatePositions;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImageSheetProperty;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
+import com.github.Ukasz09.graphiceUserInterface.sprites.states.IKindOfState;
 
 public abstract class AnimatedSprite extends ImageSprite {
     private ImageSheetProperty spriteSheetProperty;
@@ -72,5 +73,9 @@ public abstract class AnimatedSprite extends ImageSprite {
         double heightOfOneFrame = spriteSheetProperty.getHeightOfOneFrame();
         manager.getGraphicContext().drawImage(spriteSheetProperty.getSheet(), actualFramePositionX, actualFramePositionY,
                 widthOfOneFrame, heightOfOneFrame, positionX, positionY, width, height);
+    }
+
+    public void changeState(IKindOfState state) {
+        actualAnimationState = spriteSheetProperty.getAction(state);
     }
 }
