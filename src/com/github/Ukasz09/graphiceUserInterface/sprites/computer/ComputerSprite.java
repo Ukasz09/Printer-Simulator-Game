@@ -65,6 +65,9 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
             case EXIT_BUTTON:
                 computer.resetPrintProperty();
                 break;
+            case FULL_AVAILABLE_PAPER_STACK:
+                monitorSprite.getMonitorPane().showPrintErrorMessage(ErrorKind.FULL_AVAILABLE_PAPER_STACK);
+                break;
             default:
                 Logger.logError(getClass(), "unknown event");
         }

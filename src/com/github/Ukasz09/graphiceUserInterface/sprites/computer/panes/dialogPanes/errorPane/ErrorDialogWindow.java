@@ -1,6 +1,5 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.errorPane;
 
-import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes.ContentPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes.HorizontalContentPane;
@@ -14,7 +13,7 @@ public abstract class ErrorDialogWindow extends WindowDialogWithExitTaskbar {
     public ErrorDialogWindow(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height);
         addPaneEventHandler();
-        getPane().setVisible(true);
+        getPane().setVisible(false);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

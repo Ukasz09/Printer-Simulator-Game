@@ -134,4 +134,18 @@ public class ImagesProperties {
         return new Image(imagePath);
     }
 
+    public static Image noPaperError() {
+        String imagePath = "\\resources\\images\\computer\\errors\\runOutPaperError.png";
+        return new Image(imagePath);
+    }
+
+    public static Image fullPrintedPagesStackError() {
+        String imagePath = "\\resources\\images\\computer\\errors\\fullPaperStackError.png";
+        return new Image(imagePath);
+    }
+
+    public static Image unknownError() {
+        String imagePath = "\\resources\\images\\computer\\errors\\unknownError.png";
+        return new Image(imagePath);
+    }
 }

@@ -119,6 +119,7 @@ public class Room implements IRoomGraphic, IEventKindObserver {
         ISpriteGraphic desk = decorations.get(DESK);
         Point2D position = calculateComputerPosition(globe.getPositionX(), globe.getWidth(), desk.getPositionY());
         computerSprite = new ComputerSprite(position.getX(), position.getY(), printerSprite, posterSprite.getSpriteImage());
+        printerSprite.attachObserver(computerSprite);
     }
 
     private Point2D calculatePrinterPosition(double deskPositionX, double deskPositionY, double deskWidth) {

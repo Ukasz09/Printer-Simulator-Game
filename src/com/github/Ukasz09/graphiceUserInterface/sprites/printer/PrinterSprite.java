@@ -10,6 +10,9 @@ import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsProperties;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObservable;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.errorPane.ErrorKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.inks.InkSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.IPaperGraphic;
@@ -27,7 +30,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.*;
 
-public class PrinterSprite extends SpriteWithEventHandler {
+public class PrinterSprite extends SpriteWithEventHandler implements IEventKindObservable {
     public final static double DEFAULT_WIDTH = 280;
     public final static double DEFAULT_HEIGHT = 150;
     private final static double DEFAULT_PRINTING_SPEED = 4;
@@ -37,13 +40,18 @@ public class PrinterSprite extends SpriteWithEventHandler {
     private final static double DEFAULT_SPACE_BETWEEN_INKS = 20;
     private final static double DEFAULT_SPACE_BETWEEN_PAPERS = 3; //to made all papers visual in stack (avoid superimpose)
     private final static double DEFAULT_PRINTING_VOLUME = 0.9;
-    private final ErrorKind[] logicPrinterGraphicErrors = {ErrorKind.RUN_OUT_OF_INK_ERROR};
+    private final ErrorKind[] logicPrinterGraphicErrors = {
+            ErrorKind.RUN_OUT_OF_INK_ERROR,
+            ErrorKind.FULL_PRINTED_PAPER_STACK_ERROR,
+            ErrorKind.RUN_OUT_OF_PAPER_ERROR,
+    };
     private Printer printer;
 
     private Deque<IPaperGraphic> whitePapersQueue;
     private Deque<IPaperGraphic> printedPapersQueue;
     private List<ISpriteGraphic> inksList;
     private Map<String, ErrorKind> logicPrinterErrors;
+    private Set<IEventKindObserver> observers;
 
     private PrinterLowerBody printerLowerBody;
     private PrinterUpperBody printerUpperBody;
@@ -55,6 +63,7 @@ public class PrinterSprite extends SpriteWithEventHandler {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PrinterSprite(double positionX, double positionY) {
         super(DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY);
+        observers = new HashSet<>();
         printer = new Printer();
         printingSound = SoundsProperties.printing(DEFAULT_PRINTING_VOLUME);
         initializeLists();
@@ -218,7 +227,9 @@ public class PrinterSprite extends SpriteWithEventHandler {
                 printer.refillAvailablePaper(1);
                 addNewWhitePaperSprite();
             } catch (PrinterContainersException e) {
-                Logger.logError(getClass(), e.getMessage() + "cause: " + e.getCause().getMessage());
+                if (e.getMessage().equals(ErrorKind.FULL_AVAILABLE_PAPER_STACK.errorCode))
+                    notifyObservers(EventKind.FULL_AVAILABLE_PAPER_STACK);
+                else Logger.logError(getClass(), "Unknown error: " + e.getMessage());
             }
         });
     }
@@ -364,5 +375,21 @@ public class PrinterSprite extends SpriteWithEventHandler {
             printedPapersQueue.pop().removeNodeFromRoot();
             printer.takePrintedPages(1);
         }
+    }
+
+    @Override
+    public void attachObserver(IEventKindObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void detachObserver(IEventKindObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(EventKind eventKind) {
+        for (IEventKindObserver observer : observers)
+            observer.updateObserver(eventKind);
     }
 }
