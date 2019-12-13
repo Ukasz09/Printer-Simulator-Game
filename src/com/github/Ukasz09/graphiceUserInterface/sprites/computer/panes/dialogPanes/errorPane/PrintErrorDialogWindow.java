@@ -61,4 +61,10 @@ public class PrintErrorDialogWindow extends ErrorDialogWindow {
         this.errorImageView.setImage(errorImage);
         this.errorText.setText(errorText);
     }
+
+    @Override
+    public void update() {
+        super.update();
+        actualTheme.setThemeToText(errorText);
+    }
 }

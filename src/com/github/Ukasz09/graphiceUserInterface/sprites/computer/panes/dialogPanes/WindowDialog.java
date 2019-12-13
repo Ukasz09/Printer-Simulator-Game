@@ -1,21 +1,20 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes;
 
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ComputerPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ComputerPaneWithGraphicContext;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes.ContentPane;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.theme.BrightTheme;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.theme.DarkTheme;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.theme.Theme;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.Taskbar;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 
 public abstract class WindowDialog extends ComputerPaneWithGraphicContext {
-    protected static final String DEFAULT_DARK_THEME_COLOR = "#303030";
-    private static final String DEFAULT_BRIGHT_THEME_COLOR = "#d5e5f8";
     protected static final double DEFAULT_TASKBAR_HEIGHT_TO_WINDOW_PROPORTION = 0.12;
 
-    private static String actualThemeColor = DEFAULT_BRIGHT_THEME_COLOR;
     private final ContentPane contentPane;
     private final Taskbar windowTaskbarPane;
+    protected static Theme actualTheme;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public WindowDialog(double positionX, double positionY, double width, double height, double opacity) {
@@ -26,20 +25,25 @@ public abstract class WindowDialog extends ComputerPaneWithGraphicContext {
         contentPane = makeContentPaneInstance();
         addContentPaneToNode();
 
+        actualTheme = new DarkTheme();
+        applyTheme(contentPane.getPane());
+
         windowTaskbarPane.attachObserver(this);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     protected Pane makePaneInstance() {
-        AnchorPane pane = new AnchorPane();
-        setPanelColor(pane, actualThemeColor);
-        return pane;
+        return new AnchorPane();
     }
 
     protected abstract ContentPane makeContentPaneInstance();
 
     protected abstract Taskbar makeWindowTaskbarPane();
+
+    private static void applyTheme(Pane pane) {
+        actualTheme.setThemeToPane(pane);
+    }
 
     private void addContentPaneToNode() {
         AnchorPane.setTopAnchor(contentPane.getPane(), windowTaskbarPane.getHeight());
@@ -48,7 +52,7 @@ public abstract class WindowDialog extends ComputerPaneWithGraphicContext {
 
     @Override
     public void update() {
-        setPanelColor(getPane(), actualThemeColor);
+        applyTheme(contentPane.getPane());
     }
 
     @Override
@@ -66,18 +70,8 @@ public abstract class WindowDialog extends ComputerPaneWithGraphicContext {
     }
 
     protected static void changeThemeColor() {
-        changeActualThemeColor();
-    }
-
-    private static void changeActualThemeColor() {
-        if (WindowDialog.actualThemeColor.equals(DEFAULT_BRIGHT_THEME_COLOR))
-            WindowDialog.actualThemeColor = DEFAULT_DARK_THEME_COLOR;
-        else WindowDialog.actualThemeColor = DEFAULT_BRIGHT_THEME_COLOR;
-    }
-
-    //todo: ?
-
-    public ContentPane getContentPane() {
-        return contentPane;
+        if (actualTheme.isDark())
+            actualTheme = new BrightTheme();
+        else actualTheme = new DarkTheme();
     }
 }
