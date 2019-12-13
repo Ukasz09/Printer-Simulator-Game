@@ -7,7 +7,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.states.PrinterState;
 public class SpritesProperties {
 
     public static ImageSheetProperty globeSheetProperty() {
-        String spritePath = "\\resources\\sprites\\decorations\\globe.png";
+        String spritePath = "resources/sprites/decorations/globe.png";
         ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
                 .withImagePath(spritePath)
                 .withSizeOfOneFrame(256, 256)
@@ -18,7 +18,7 @@ public class SpritesProperties {
     }
 
     public static ImageSheetProperty catSheetProperty() {
-        String spritePath = "\\resources\\sprites\\decorations\\cat.png";
+        String spritePath = "resources/sprites/decorations/cat.png";
         ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
                 .withImagePath(spritePath)
                 .withSizeOfOneFrame(256, 350)
@@ -29,7 +29,7 @@ public class SpritesProperties {
     }
 
     public static ImageSheetProperty printerUpperBodyProperty() {
-        String spritePath = "\\resources\\sprites\\computer\\printerUpperBody.png";
+        String spritePath = "resources/sprites/computer/printerUpperBody.png";
         ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
                 .withImagePath(spritePath)
                 .withSizeOfOneFrame(666, 238)
@@ -41,7 +41,7 @@ public class SpritesProperties {
     }
 
     public static ImageSheetProperty screenSaverProperty() {
-        String spritePath = "\\resources\\sprites\\computer\\screensaver.png";
+        String spritePath = "resources/sprites/computer/screensaver.png";
         ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
                 .withImagePath(spritePath)
                 .withSizeOfOneFrame(634, 476)
