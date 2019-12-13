@@ -121,4 +121,17 @@ public class ImagesProperties {
         String imagePath = "\\resources\\images\\computer\\themeChange.png";
         return new Image(imagePath);
     }
+
+    ////
+
+    public static Image emptyInksError() {
+        String imagePath = "\\resources\\images\\computer\\errors\\emptyInksError.png";
+        return new Image(imagePath);
+    }
+
+    public static Image printerIsBusyError() {
+        String imagePath = "\\resources\\images\\computer\\errors\\workInProgressError.png";
+        return new Image(imagePath);
+    }
+
 }

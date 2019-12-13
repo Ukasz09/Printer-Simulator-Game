@@ -49,6 +49,7 @@ public class StartTaskbar extends Taskbar {
             case MONITOR_PANE:
             case PRINTER_PANE:
             case EXIT_BUTTON:
+            case ERROR_PANE:
                 startDialogWindow.getPane().setVisible(false);
                 break;
 
@@ -62,7 +63,7 @@ public class StartTaskbar extends Taskbar {
                 break;
 
             default:
-                Logger.logError(getClass(), "Unknown eventKind");
+                Logger.logError(getClass(), "Unknown eventKind:"+eventKind.toString());
         }
     }
 

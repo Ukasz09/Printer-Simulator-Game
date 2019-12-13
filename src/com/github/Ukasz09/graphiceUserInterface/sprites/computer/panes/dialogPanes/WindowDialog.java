@@ -4,6 +4,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ComputerP
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ComputerPaneWithGraphicContext;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes.ContentPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.Taskbar;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 
@@ -48,7 +49,6 @@ public abstract class WindowDialog extends ComputerPaneWithGraphicContext {
     @Override
     public void update() {
         setPanelColor(getPane(), actualThemeColor);
-        System.out.println("Zmieniono na: "+actualThemeColor);
     }
 
     @Override
@@ -57,8 +57,8 @@ public abstract class WindowDialog extends ComputerPaneWithGraphicContext {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void addButtonToContentPane(Button button) {
-        contentPane.addNodeToPane(button);
+    public void addNodeToContentPane(Node node) {
+        contentPane.addNodeToPane(node);
     }
 
     protected double getWindowTaskbarHeight() {
@@ -67,12 +67,17 @@ public abstract class WindowDialog extends ComputerPaneWithGraphicContext {
 
     protected static void changeThemeColor() {
         changeActualThemeColor();
-        System.out.println("Aktualny: "+actualThemeColor);
     }
 
     private static void changeActualThemeColor() {
         if (WindowDialog.actualThemeColor.equals(DEFAULT_BRIGHT_THEME_COLOR))
             WindowDialog.actualThemeColor = DEFAULT_DARK_THEME_COLOR;
         else WindowDialog.actualThemeColor = DEFAULT_BRIGHT_THEME_COLOR;
+    }
+
+    //todo: ?
+
+    public ContentPane getContentPane() {
+        return contentPane;
     }
 }

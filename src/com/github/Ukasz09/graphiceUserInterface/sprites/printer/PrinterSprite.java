@@ -10,6 +10,7 @@ import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsProperties;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.errorPane.ErrorKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.inks.InkSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.IPaperGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.ImagePaperSprite;
@@ -36,12 +37,13 @@ public class PrinterSprite extends SpriteWithEventHandler {
     private final static double DEFAULT_SPACE_BETWEEN_INKS = 20;
     private final static double DEFAULT_SPACE_BETWEEN_PAPERS = 3; //to made all papers visual in stack (avoid superimpose)
     private final static double DEFAULT_PRINTING_VOLUME = 0.9;
-
+    private final ErrorKind[] logicPrinterGraphicErrors = {ErrorKind.RUN_OUT_OF_INK_ERROR};
     private Printer printer;
 
     private Deque<IPaperGraphic> whitePapersQueue;
     private Deque<IPaperGraphic> printedPapersQueue;
     private List<ISpriteGraphic> inksList;
+    private Map<String, ErrorKind> logicPrinterErrors;
 
     private PrinterLowerBody printerLowerBody;
     private PrinterUpperBody printerUpperBody;
@@ -58,6 +60,8 @@ public class PrinterSprite extends SpriteWithEventHandler {
         initializeLists();
         initializeAllSprites();
         addUpperSalverEventHandler();
+        logicPrinterErrors = new HashMap<>();
+        addAllPrintErrorsToMap();
 
         //TODO: tmp dopoki nie ma komputera zeby nie zaslanialy inne czesci eventHandlera na drukowanie
         printerLowerBody.setImageViewVisable(false);
@@ -219,6 +223,11 @@ public class PrinterSprite extends SpriteWithEventHandler {
         });
     }
 
+    private void addAllPrintErrorsToMap() {
+        for (ErrorKind e : logicPrinterGraphicErrors)
+            logicPrinterErrors.put(e.errorCode, e);
+    }
+
     @Override
     public void render() {
         renderPrinterComponents();
@@ -304,18 +313,22 @@ public class PrinterSprite extends SpriteWithEventHandler {
         }
     }
 
-    public void print(Image imageToPrint, boolean multicolor, int amountOfCopy) throws PrinterException {
+    public ErrorKind print(Image imageToPrint, boolean multicolor, int amountOfCopy) {
         if (!printer.isInPrintingTime()) {
             try {
                 printer.printImage(imageToPrint, multicolor, amountOfCopy);
             } catch (PrinterException e) {
-                throw e;
+                ErrorKind errorKind = logicPrinterErrors.get(e.getMessage());
+                return (errorKind == null) ? ErrorKind.UNKNOWN_ERROR : errorKind;
             }
             whitePapersQueue.peek().doAnimation();
             addPrintedPageSprite(imageToPrint);
             printer.setInPrintingTime(true);
             printingSound.playSound();
+            return ErrorKind.NO_ERRORS;
         }
+
+        return ErrorKind.PRINTER_IS_BUSY_ERROR;
     }
 
     private void addPrintedPageSprite(Image imageToPrint) {

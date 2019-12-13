@@ -8,6 +8,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObserver;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.errorPane.ErrorKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.scene.image.Image;
@@ -74,12 +75,9 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
     }
 
     private void print(boolean multicolor, int qtyOfCopy) {
-        try {
-            printerSprite.print(computer.getImageToPrint(), multicolor, qtyOfCopy);
-        } catch (PrinterException e) {
-            Logger.logError(getClass(), "Powinnien pojawic sie komunikat o tym ze printowanie sie nie udalo. " + e.getMessage());
-        } finally {
-            computer.resetPrintProperty();
-        }
+        ErrorKind printerError = printerSprite.print(computer.getImageToPrint(), multicolor, qtyOfCopy);
+        if (printerError != ErrorKind.NO_ERRORS)
+            monitorSprite.getMonitorPane().showPrintErrorMessage(printerError);
+        computer.resetPrintProperty();
     }
 }

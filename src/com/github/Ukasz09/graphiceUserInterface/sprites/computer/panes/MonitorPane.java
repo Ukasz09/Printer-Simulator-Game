@@ -6,6 +6,9 @@ import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.P
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObservable;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObserver;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.errorPane.ErrorDialogWindow;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.errorPane.ErrorKind;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.errorPane.PrintErrorDialogWindow;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.WindowDialog;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.PrinterDialogWindow;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.StartTaskbar;
@@ -32,6 +35,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
     private Image wallpaper = DEFAULT_WALLPAPERS[0];
     private StartTaskbar taskbarPane;
     private WindowDialog printerPane; //todo: dac pozniej na interfejsach
+    private ErrorDialogWindow printErrorPane;
     private Set<IPrintOptionObserver> printOptionObservers;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,10 +43,12 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         super(positionX, positionY, width, height);
         printOptionObservers = new HashSet<>();
         makePrinterPane(positionX, positionY, width, height);
+        printErrorPane = new PrintErrorDialogWindow(printerPane.getPositionX(), printerPane.getPositionY(), printerPane.getWidth(), printerPane.getHeight());
         taskbarPane = new StartTaskbar(positionX, positionY + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, height);
         attachObserver(taskbarPane);
         taskbarPane.attachObserver(this);
         printerPane.attachObserver(taskbarPane);
+        printErrorPane.attachObserver(taskbarPane);
         addMonitorEventHandler();
 
         addDefaultPrintingWays();
@@ -70,7 +76,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
     private void addPrintingWayButton(Image imageWithoutEffects, String buttonText, PrintOption printOption) {
         Button printingWayButton = makePrintButton(imageWithoutEffects, buttonText, printOption);
         printingWayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, getPrintButtonEventHandler(printOption));
-        printerPane.addButtonToContentPane(printingWayButton);
+        printerPane.addNodeToContentPane(printingWayButton);
     }
 
     private EventHandler getPrintButtonEventHandler(PrintOption printOption) {
@@ -123,6 +129,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         renderWallpaper();
         taskbarPane.render();
         printerPane.render();
+        printErrorPane.render();
     }
 
     private void renderWallpaper() {
@@ -133,6 +140,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
     public void update() {
         taskbarPane.update();
         printerPane.update();
+        printErrorPane.update();
     }
 
     @Override
@@ -145,7 +153,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
                 setRandomWallpaper();
                 break;
             default:
-                Logger.logError(getClass(), "Unknown eventKind");
+                Logger.logError(getClass(), "Unknown eventKind: " + eventKind.toString());
         }
     }
 
@@ -153,7 +161,6 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         int randIndex = (int) (Math.random() * DEFAULT_WALLPAPERS.length);
         wallpaper = DEFAULT_WALLPAPERS[randIndex];
     }
-
 
     @Override
     public void attachPrintObserver(IPrintOptionObserver observer) {
@@ -170,6 +177,12 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         for (IPrintOptionObserver observer : printOptionObservers)
             observer.updateObserver(printOption);
     }
+
+    public void showPrintErrorMessage(ErrorKind errorKind) {
+        printErrorPane.updateErrorMessage(errorKind.errorImage,errorKind.errorText);
+        printErrorPane.getPane().setVisible(true);
+    }
+
 
     public WindowDialog getPrinterPane() {
         return printerPane;

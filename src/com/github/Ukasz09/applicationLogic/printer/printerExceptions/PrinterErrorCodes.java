@@ -9,7 +9,9 @@ public enum PrinterErrorCodes {
 
     //Other
     INCORRECT_IMAGE_TO_PRINT("E0005"),
-    INCORRECT_QTY_OF_PAGE_TO_PRINT("E0006");
+    INCORRECT_QTY_OF_PAGE_TO_PRINT("E0006"),
+    PRINTER_IS_BUSY_ERROR("E0007"),
+    UNKNOWN_ERROR("E9999");
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public String code;

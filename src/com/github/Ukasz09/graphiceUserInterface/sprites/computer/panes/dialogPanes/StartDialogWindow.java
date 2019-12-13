@@ -66,13 +66,13 @@ public class StartDialogWindow extends WindowDialog {
     private void addStartPaneButton(double sizeOfImageInButton, Image buttonImage, String buttonTxt, EventKind buttonEvent) {
         Pos alignment = Pos.BASELINE_LEFT;
         Button button = makeButtonWithImageTextAndEventHandler(sizeOfImageInButton, sizeOfImageInButton, getWidth(), sizeOfImageInButton, buttonImage, buttonTxt, buttonEvent, alignment);
-        addButtonToContentPane(button);
+        addNodeToContentPane(button);
     }
 
     private void addChangeThemeButton(double sizeOfImageInButton, String text) {
         Button button = makeStartPaneButton(sizeOfImageInButton, DEFAULT_THEME_CHANGE_ICON_IMAGE, text);
         button.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> changeThemeColor());
-        addButtonToContentPane(button);
+        addNodeToContentPane(button);
     }
 
     private Button makeStartPaneButton(double sizeOfImageInButton, Image buttonImage, String buttonTxt) {
