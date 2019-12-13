@@ -4,6 +4,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern
 import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.MonitorPane;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.Screensaver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -17,6 +18,7 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
     private final double displayToMonitorProportion;
 
     private MonitorPane monitorPane;
+    private Screensaver screenSaver;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MonitorSprite(double width, double height, double positionX, double positionY) {
@@ -24,6 +26,12 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
         frameThickness = DEFAULT_MONITOR_FRAME_THICKNESS;
         displayToMonitorProportion = DEFAULT_DISPLAY_TO_MONITOR_PROPORTION;
         initializeMonitorPane();
+
+        //todo: test
+        screenSaver = new Screensaver(monitorPane.getWidth(), monitorPane.getHeight(), monitorPane.getPositionX(), monitorPane.getPositionY());
+        screenSaver.attachObserver(this);
+        monitorPane.getPane().setVisible(false);
+        screenSaver.setImageViewVisable(true);
 
         monitorPane.attachObserver(this);
     }
@@ -51,23 +59,34 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
     public void render() {
         super.render();
         monitorPane.render();
+        screenSaver.render();
     }
 
     @Override
     public void update() {
         super.update();
         monitorPane.update();
+        screenSaver.update();
     }
 
     @Override
     public void updateObserver(EventKind eventKind) {
-        switch (eventKind){
-//            //todo: tmp
-//            case CHOOSE_PRINT_COLOR_OPTION:
-//
-//                    System.out.println("tell up layer to apply sepia effect");
-//                break;
-            default: System.out.println("Sth other");
+        switch (eventKind) {
+            //todo: tmp
+            case TURN_OF_SLEEPMODE: {
+                monitorPane.getPane().setVisible(true);
+                screenSaver.setImageViewVisable(false);
+                System.out.println("OFF");
+            }
+            break;
+            case TURN_ON_SLEEPMODE:{
+                monitorPane.getPane().setVisible(false);
+                screenSaver.setImageViewVisable(true);
+                System.out.println("ON");
+            }
+                break;
+            default:
+                System.out.println("Sth other");
         }
     }
 

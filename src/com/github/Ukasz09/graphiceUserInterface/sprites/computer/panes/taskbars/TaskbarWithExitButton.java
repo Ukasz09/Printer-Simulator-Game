@@ -30,4 +30,5 @@ public class TaskbarWithExitButton extends Taskbar {
     public void updateObserver(EventKind eventKind) {
         //todo:
     }
+
 }

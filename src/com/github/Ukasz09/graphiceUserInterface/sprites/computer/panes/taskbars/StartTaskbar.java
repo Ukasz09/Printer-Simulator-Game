@@ -32,16 +32,22 @@ public class StartTaskbar extends Taskbar {
         getPane().getChildren().add(windowButton);
     }
 
+//    private void addStartPane(double width, double height) {
+//        Point2D position = calculateStartPanePosition(height);
+//        startDialogWindow = new StartDialogWindow(position.getX(), position.getY(), width, height);
+//    }
+
+
     private void addStartPane(double width, double height) {
-        Point2D position = calculateStartPanePosition(height);
-        startDialogWindow = new StartDialogWindow(position.getX(), position.getY(), width, height);
+        startDialogWindow = new StartDialogWindow(0, -height, width, height);
+        getPane().getChildren().add(startDialogWindow.getPane());
     }
 
-    private Point2D calculateStartPanePosition(double paneHeight) {
-        double positionX = getPositionX();
-        double positionY = getPositionY() - paneHeight;
-        return new Point2D(positionX, positionY);
-    }
+//    private Point2D calculateStartPanePosition(double paneHeight) {
+//        double positionX = getPositionX();
+//        double positionY = getPositionY() - paneHeight;
+//        return new Point2D(positionX, positionY);
+//    }
 
     @Override
     public void updateObserver(EventKind eventKind) {

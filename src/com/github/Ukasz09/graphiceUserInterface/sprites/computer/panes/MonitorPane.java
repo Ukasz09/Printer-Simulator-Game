@@ -42,15 +42,15 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
     public MonitorPane(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height);
         printOptionObservers = new HashSet<>();
-        makePrinterPane(positionX, positionY, width, height);
+        makePrinterPane(0, 0, width, height);
         printErrorPane = new PrintErrorDialogWindow(printerPane.getPositionX(), printerPane.getPositionY(), printerPane.getWidth(), printerPane.getHeight());
-        taskbarPane = new StartTaskbar(positionX, positionY + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, height);
+        taskbarPane = new StartTaskbar(0, 0 + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, height);
         attachObserver(taskbarPane);
         taskbarPane.attachObserver(this);
         printerPane.attachObserver(taskbarPane);
         printErrorPane.attachObserver(taskbarPane);
         addMonitorEventHandler();
-
+        getPane().getChildren().addAll(taskbarPane.getPane(),printerPane.getPane(),printErrorPane.getPane());
         addDefaultPrintingWays();
     }
 
@@ -122,6 +122,8 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
 
     private void addMonitorEventHandler() {
         getPane().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> notifyObservers(EventKind.MONITOR_PANE));
+        getPane().addEventHandler(MouseEvent.MOUSE_ENTERED, event -> notifyObservers(EventKind.TURN_OF_SLEEPMODE));
+        getPane().addEventHandler(MouseEvent.MOUSE_EXITED, event -> notifyObservers(EventKind.TURN_ON_SLEEPMODE));
     }
 
     @Override

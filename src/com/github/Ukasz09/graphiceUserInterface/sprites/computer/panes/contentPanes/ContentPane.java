@@ -14,4 +14,5 @@ public abstract class ContentPane extends ComputerPane {
     public void updateObserver(EventKind eventKind) {
         //todo:
     }
+
 }

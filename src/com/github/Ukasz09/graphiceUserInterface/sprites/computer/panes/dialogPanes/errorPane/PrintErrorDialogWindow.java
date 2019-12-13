@@ -67,4 +67,5 @@ public class PrintErrorDialogWindow extends ErrorDialogWindow {
         super.update();
         actualTheme.setThemeToText(errorText);
     }
+
 }

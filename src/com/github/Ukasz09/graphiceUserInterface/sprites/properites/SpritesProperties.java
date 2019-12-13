@@ -39,4 +39,15 @@ public class SpritesProperties {
                 .build();
         return sheetProperty;
     }
+
+    public static ImageSheetProperty screenSaverProperty() {
+        String spritePath = "\\resources\\sprites\\computer\\screensaver.png";
+        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
+                .withImagePath(spritePath)
+                .withSizeOfOneFrame(634, 476)
+                .withDefaultDurationPerOneFrame(1)
+                .withAddActionState(DecorationState.STANDBY, 0, 101)
+                .build();
+        return sheetProperty;
+    }
 }
