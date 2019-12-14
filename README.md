@@ -7,11 +7,11 @@ If there is a problem with opening try to open it by console with commend:
 
 # For dev
 Used Designs Patterns:
--Builder
--Singleton
--Strategy
--Decorator
+- Builder
+- Singleton
+- Strategy
+- Decorator
 
 Code overview:
--90 classes (including enums and interfaces)
--over 4200 lines of code
+- 90 classes (including enums and interfaces)
+- over 4200 lines of code
