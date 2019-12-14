@@ -27,8 +27,4 @@ public abstract class ComputerPaneWithGraphicContext extends ComputerPane implem
         graphicContext = canvas.getGraphicsContext2D();
         getPane().getChildren().add(canvas);
     }
-
-    protected void setFillColor(Color color) {
-        graphicContext.setFill(color);
-    }
 }

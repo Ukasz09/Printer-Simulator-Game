@@ -35,7 +35,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
     private int actualWallpaperIndex = 0;
     private Image wallpaper = DEFAULT_WALLPAPERS[actualWallpaperIndex];
     private StartTaskbar taskbarPane;
-    private WindowDialog printerPane; //todo: dac pozniej na interfejsach
+    private WindowDialog printerPane;
     private ErrorDialogWindow printErrorPane;
     private Set<IPrintOptionObserver> printOptionObservers;
 
@@ -45,8 +45,8 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         printOptionObservers = new HashSet<>();
         makePrinterPane(0, 0, width, height);
         printErrorPane = new PrintErrorDialogWindow(printerPane.getPositionX(), printerPane.getPositionY(), printerPane.getWidth(), printerPane.getHeight());
-        taskbarPane = new StartTaskbar(0, 0 + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT * manager.getBottomFrameBorder(), width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT * manager.getBottomFrameBorder(), height);
-
+        taskbarPane = new StartTaskbar(0, height - getHeightAfterScaling(StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT),
+                width, getHeightAfterScaling(StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT), height);
         attachObserver(taskbarPane);
         taskbarPane.attachObserver(this);
         printerPane.attachObserver(taskbarPane);
@@ -66,7 +66,6 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         printerPane.getPane().setVisible(false);
     }
 
-    //todo: tmp
     private void addDefaultPrintingWays() {
         Image thumbnailImage = ImagesProperties.thumbnailImage();
         addPrintingWayButton(thumbnailImage, "Sepia", PrintOption.SEPIA);
@@ -157,8 +156,6 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
             case WALLPAPER_CHANGE:
                 setNextWallpaper();
                 break;
-            default:
-                Logger.logError(getClass(), "Unknown eventKind: " + eventKind.toString());
         }
     }
 

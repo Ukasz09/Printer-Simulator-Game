@@ -27,8 +27,6 @@ public class PrinterDialogWindow extends WindowDialogWithExitTaskbar {
                 notifyObservers(EventKind.EXIT_BUTTON);
             }
             break;
-            default:
-                Logger.logError(getClass(), "unknown event kind");
         }
     }
 

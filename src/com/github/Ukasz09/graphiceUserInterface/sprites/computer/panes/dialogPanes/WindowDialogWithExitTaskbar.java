@@ -4,7 +4,6 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars.TaskbarWithExitButton;
 
 public abstract class WindowDialogWithExitTaskbar extends WindowDialog {
-
     private static final double DEFAULT_WINDOW_OPACITY = 0.9;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,5 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.taskbars;
 
-import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ComputerPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.ComputerPaneWithGraphicContext;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;

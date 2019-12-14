@@ -4,6 +4,7 @@ import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.Background;
 import com.github.Ukasz09.graphiceUserInterface.backgrounds.RoomBackground;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
+import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.ComputerSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
@@ -27,6 +28,7 @@ public class Room implements IRoomGraphic, IEventKindObserver {
     private ComputerSprite computerSprite;
     private ZingsPosterSprite posterSprite;
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Room() {
         manager = ViewManager.getInstance();
         background = new RoomBackground();
@@ -37,7 +39,6 @@ public class Room implements IRoomGraphic, IEventKindObserver {
         addComputer(printerSprite);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void addDefaultDecorations() {
         addDesk();
         ISpriteGraphic desk = decorations.get(DESK);
@@ -48,17 +49,6 @@ public class Room implements IRoomGraphic, IEventKindObserver {
         addLamps();
     }
 
-    private void addLamps(){
-        XmasLamp lamp1=new XmasLamp(0,0,manager.getRightFrameBorder()/4,manager.getBottomFrameBorder()/9);
-        XmasLamp lamp2=new XmasLamp(lamp1.getPositionX()+lamp1.getWidth(),0,manager.getRightFrameBorder()/4,manager.getBottomFrameBorder()/9);
-        XmasLamp lamp3=new XmasLamp(lamp2.getPositionX()+lamp2.getWidth(),0,manager.getRightFrameBorder()/4,manager.getBottomFrameBorder()/9);
-        XmasLamp lamp4=new XmasLamp(lamp3.getPositionX()+lamp3.getWidth(),0,manager.getRightFrameBorder()/4,manager.getBottomFrameBorder()/9);
-        decorations.put(LAMP1,lamp1);
-        decorations.put(LAMP2,lamp2);
-        decorations.put(LAMP3,lamp3);
-        decorations.put(LAMP4,lamp4);
-    }
-
     private void addDesk() {
         Point2D position = calculateDeskPosition();
         DeskSprite deskSprite = new DeskSprite(position.getX(), position.getY());
@@ -66,8 +56,8 @@ public class Room implements IRoomGraphic, IEventKindObserver {
     }
 
     private Point2D calculateDeskPosition() {
-        double positionX = manager.getRightFrameBorder() / 2 - DeskSprite.WIDTH_TO_FRAME_PROPORTION * manager.getRightFrameBorder() / 2;
-        double positionY = manager.getBottomFrameBorder() - DeskSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder() - background.getFloorHeight();
+        double positionX = manager.getRightFrameBorder() / 2 - getWidthAfterScaling(DeskSprite.WIDTH_TO_FRAME_PROPORTION) / 2;
+        double positionY = manager.getBottomFrameBorder() - getHeightAfterScaling(DeskSprite.HEIGHT_TO_FRAME_PROPORTION) - background.getFloorHeight();
         return new Point2D(positionX, positionY);
     }
 
@@ -85,7 +75,7 @@ public class Room implements IRoomGraphic, IEventKindObserver {
 
     private Point2D calculateGlobePosition(double deskPositionX, double deskPositionY) {
         double positionX = deskPositionX;
-        double positionY = deskPositionY - GlobeSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder();
+        double positionY = deskPositionY - getHeightAfterScaling(GlobeSprite.HEIGHT_TO_FRAME_PROPORTION);
         return new Point2D(positionX, positionY);
     }
 
@@ -95,8 +85,8 @@ public class Room implements IRoomGraphic, IEventKindObserver {
     }
 
     private Point2D calculateCatPosition() {
-        double positionX = manager.getRightFrameBorder() - CatSprite.WIDTH_TO_FRAME_PROPORTION * manager.getRightFrameBorder();
-        double positionY = manager.getBottomFrameBorder() - background.getFloorHeight() - CatSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder();
+        double positionX = manager.getRightFrameBorder() - getWidthAfterScaling(CatSprite.WIDTH_TO_FRAME_PROPORTION);
+        double positionY = manager.getBottomFrameBorder() - background.getFloorHeight() - getHeightAfterScaling(CatSprite.HEIGHT_TO_FRAME_PROPORTION);
         return new Point2D(positionX, positionY);
     }
 
@@ -107,11 +97,21 @@ public class Room implements IRoomGraphic, IEventKindObserver {
 
     private Point2D calculateXmasTreePosition() {
         double positionX = 0;
-        double positionY = manager.getBottomFrameBorder() - background.getFloorHeight() - XmasTreeSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder();
+        double positionY = manager.getBottomFrameBorder() - background.getFloorHeight() - getHeightAfterScaling(XmasTreeSprite.HEIGHT_TO_FRAME_PROPORTION);
         return new Point2D(positionX, positionY);
     }
 
-    //todo: dodac go jako osobny interfejs mozee
+    private void addLamps() {
+        XmasLamp lamp1 = new XmasLamp(0, 0, manager.getRightFrameBorder() / 4, manager.getBottomFrameBorder() / 9);
+        XmasLamp lamp2 = new XmasLamp(lamp1.getPositionX() + lamp1.getWidth(), 0, manager.getRightFrameBorder() / 4, manager.getBottomFrameBorder() / 9);
+        XmasLamp lamp3 = new XmasLamp(lamp2.getPositionX() + lamp2.getWidth(), 0, manager.getRightFrameBorder() / 4, manager.getBottomFrameBorder() / 9);
+        XmasLamp lamp4 = new XmasLamp(lamp3.getPositionX() + lamp3.getWidth(), 0, manager.getRightFrameBorder() / 4, manager.getBottomFrameBorder() / 9);
+        decorations.put(LAMP1, lamp1);
+        decorations.put(LAMP2, lamp2);
+        decorations.put(LAMP3, lamp3);
+        decorations.put(LAMP4, lamp4);
+    }
+
     private void addPoster() {
         Point2D position = calculatePosterPosition();
         posterSprite = new ZingsPosterSprite(position.getX(), position.getY());
@@ -120,15 +120,15 @@ public class Room implements IRoomGraphic, IEventKindObserver {
 
     private Point2D calculatePosterPosition() {
         double positionX, positionY;
-        positionX = positionY = ZingsPosterSprite.FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION * manager.getRightFrameBorder() * 2;
+        positionX = positionY = getWidthAfterScaling(ZingsPosterSprite.FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION) * 2;
         return new Point2D(positionX, positionY);
     }
 
     private void addPrinter() {
         ISpriteGraphic desk = decorations.get(DESK);
         Point2D position = calculatePrinterPosition(desk.getPositionX(), desk.getPositionY(), desk.getWidth());
-        ISpriteGraphic lamp=decorations.get(LAMP1);
-        printerSprite = new PrinterSprite(position.getX(), position.getY(),lamp.getPositionY()+lamp.getHeight());
+        ISpriteGraphic lamp = decorations.get(LAMP1);
+        printerSprite = new PrinterSprite(position.getX(), position.getY(), lamp.getPositionY() + lamp.getHeight());
     }
 
     private void addComputer(PrinterSprite printerSprite) {
@@ -140,14 +140,14 @@ public class Room implements IRoomGraphic, IEventKindObserver {
     }
 
     private Point2D calculatePrinterPosition(double deskPositionX, double deskPositionY, double deskWidth) {
-        double positionX = deskPositionX + deskWidth * 0.95 - PrinterSprite.WIDTH_TO_FRAME_PROPORTION * manager.getRightFrameBorder();
-        double positionY = deskPositionY - PrinterSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder();
+        double positionX = deskPositionX + deskWidth * 0.95 - getWidthAfterScaling(PrinterSprite.WIDTH_TO_FRAME_PROPORTION);
+        double positionY = deskPositionY - getHeightAfterScaling(PrinterSprite.HEIGHT_TO_FRAME_PROPORTION);
         return new Point2D(positionX, positionY);
     }
 
     private Point2D calculateComputerPosition(double globePositionX, double globeWidth, double deskPositionY) {
         double positionX = globePositionX + globeWidth;
-        double positionY = deskPositionY - ComputerSprite.MONITOR_HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder();
+        double positionY = deskPositionY - getHeightAfterScaling(ComputerSprite.MONITOR_HEIGHT_TO_FRAME_PROPORTION);
         return new Point2D(positionX, positionY);
     }
 
@@ -192,9 +192,14 @@ public class Room implements IRoomGraphic, IEventKindObserver {
             case POSTER_CHANGE:
                 computerSprite.updatePrintImage(posterSprite.getSpriteImage());
                 break;
-
-            default:
-                Logger.logError(getClass(), " unknown event");
         }
+    }
+
+    private static double getWidthAfterScaling(double widthBeforeScaling) {
+        return widthBeforeScaling * ViewManager.getInstance().getRightFrameBorder();
+    }
+
+    private static double getHeightAfterScaling(double heightBeforeScaling) {
+        return heightBeforeScaling * ViewManager.getInstance().getBottomFrameBorder();
     }
 }

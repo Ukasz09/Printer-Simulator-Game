@@ -24,10 +24,8 @@ public abstract class WindowDialog extends ComputerPaneWithGraphicContext {
         addNodeToPane(windowTaskbarPane.getPane());
         contentPane = makeContentPaneInstance();
         addContentPaneToNode();
-
         actualTheme = new DarkTheme();
         applyTheme(contentPane.getPane());
-
         windowTaskbarPane.attachObserver(this);
     }
 

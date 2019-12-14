@@ -66,11 +66,11 @@ public abstract class ComputerPane implements IPane {
         pane.setLayoutY(positionY);
     }
 
-    public void setPanelColor(String hexColorWithHash) {
+    protected void setPanelColor(String hexColorWithHash) {
         setPanelColor(pane, hexColorWithHash);
     }
 
-    protected void setPanelColor(Pane pane, String hexColorWithHash) {
+    private void setPanelColor(Pane pane, String hexColorWithHash) {
         pane.setStyle("-fx-background-color: " + hexColorWithHash);
     }
 
@@ -163,7 +163,6 @@ public abstract class ComputerPane implements IPane {
         printerButton.setGraphic(getImageViewForButton(widthOfImageInButton, heightOfImageInButton, buttonImage));
         printerButton.setAlignment(alignment);
         setNormalButtonProperty(printerButton, widthOfButton, heightOfButton);
-
         printerButton.setStyle(String.format("-fx-font-size: %dpx;", (int) (printerButton.getMaxWidth() / 11)));
         return printerButton;
     }
@@ -172,7 +171,6 @@ public abstract class ComputerPane implements IPane {
         pane.getChildren().add(node);
     }
 
-    //todo: moze usunac pozniej
     @Override
     public double getPositionX() {
         return positionX;
@@ -192,4 +190,13 @@ public abstract class ComputerPane implements IPane {
     public double getHeight() {
         return height;
     }
+
+    protected static double getWidthAfterScaling(double widthBeforeScaling) {
+        return widthBeforeScaling * ViewManager.getInstance().getRightFrameBorder();
+    }
+
+    protected static double getHeightAfterScaling(double heightBeforeScaling) {
+        return heightBeforeScaling * ViewManager.getInstance().getBottomFrameBorder();
+    }
+
 }

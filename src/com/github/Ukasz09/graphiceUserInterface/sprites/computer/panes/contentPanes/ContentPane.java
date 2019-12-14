@@ -12,7 +12,7 @@ public abstract class ContentPane extends ComputerPane {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void updateObserver(EventKind eventKind) {
-        //todo:
+        //nothing to do
     }
 
 }

@@ -1,15 +1,17 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer;
 
+import com.github.Ukasz09.IMonitor;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.MonitorPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.Screensaver;
+import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.errorPane.ErrorKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
-public class MonitorSprite extends ImageSprite implements IEventKindObserver {
+public class MonitorSprite extends ImageSprite implements IEventKindObserver, IMonitor {
     private final static Image DEFAULT_IMAGE = ImagesProperties.monitorSprite();
     private final static double FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION = 15.0 / 1600;
     private final static double DEFAULT_DISPLAY_TO_MONITOR_PROPORTION = 0.68;
@@ -25,20 +27,12 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MonitorSprite(double width, double height, double positionX, double positionY) {
-        super(width, height,DEFAULT_IMAGE, positionX, positionY);
-        frameThickness = manager.getRightFrameBorder() * FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION;
+        super(width, height, DEFAULT_IMAGE, positionX, positionY);
+        frameThickness = getWidthAfterScaling(FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION);
         displayToMonitorProportion = DEFAULT_DISPLAY_TO_MONITOR_PROPORTION;
         initializeMonitorPane();
-
-        //todo: test
-        screenSaver = new Screensaver(monitorPane.getWidth(), monitorPane.getHeight(), monitorPane.getPositionX(), monitorPane.getPositionY());
-        screenSaver.attachObserver(this);
-        monitorPane.getPane().setVisible(false);
-        screenSaver.setImageViewVisible(true);
-
-        screensaverCooldown = SCREENSAVER_COOLDOWN;
+        addScreensaver();
         monitorPane.attachObserver(this);
-        sleepModeWasActivated = true;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,6 +52,14 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
         double panePositionX = positionX + frameThickness;
         double panePositionY = positionY + frameThickness;
         return new Point2D(panePositionX, panePositionY);
+    }
+
+    private void addScreensaver() {
+        screenSaver = new Screensaver(monitorPane.getWidth(), monitorPane.getHeight(), monitorPane.getPositionX(), monitorPane.getPositionY());
+        turnOnScreensaver();
+        sleepModeWasActivated = true;
+        screenSaver.attachObserver(this);
+        screensaverCooldown = SCREENSAVER_COOLDOWN;
     }
 
     @Override
@@ -113,21 +115,24 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
     @Override
     public void updateObserver(EventKind eventKind) {
         switch (eventKind) {
-            //todo: tmp
             case TURN_OF_SLEEPMODE:
                 sleepModeWasActivated = false;
                 break;
             case TURN_ON_SLEEPMODE:
                 sleepModeWasActivated = true;
                 break;
-            default:
-                System.out.println("Sth other");
         }
     }
 
     public MonitorPane getMonitorPane() {
         return monitorPane;
     }
+
+    @Override
+    public void showPrintErrorMessage(ErrorKind errorKind) {
+        monitorPane.showPrintErrorMessage(errorKind);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

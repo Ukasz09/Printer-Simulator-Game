@@ -28,7 +28,7 @@ public class TaskbarWithExitButton extends Taskbar {
 
     @Override
     public void updateObserver(EventKind eventKind) {
-        //todo:
+        //nothing to do
     }
 
 }

@@ -203,7 +203,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
     private Point2D getWhitePaperPositionBySalver(double paperWidth, double paperHeight) {
         double salverPositionX = printerUpperSalver.getPositionX();
         double salverPositionY = printerUpperSalver.getPositionY();
-        double salverWidth = printerUpperSalver.getWidth(); System.out.println(salverWidth);
+        double salverWidth = printerUpperSalver.getWidth();
         double salverHeight = printerUpperSalver.getHeight();
         double immersionDepthOfPaper = getWidthAfterScaling(SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION) * printer.getMaxQtyOfAvailableSheets();
         double paperPositionX = salverPositionX + salverWidth / 2 - paperWidth / 2;

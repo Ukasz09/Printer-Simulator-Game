@@ -5,7 +5,6 @@ public class WhitePaperSprite extends PaperSprite {
     public WhitePaperSprite(double positionX, double positionY, double animationSpeed) {
         super(positionX, positionY, animationSpeed);
     }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void render() {

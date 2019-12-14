@@ -18,7 +18,7 @@ import java.util.Calendar;
 public class StartTaskbar extends Taskbar {
     private static final Image DEFAULT_WINDOWS_BUTTON_IMAGE = ImagesProperties.windowsLogoTaskbarIcon();
     private static final double DEFAULT_WINDOWS_BUTTON_WIDTH = 0.05;
-    public static final double DEFAULT_WINDOWS_BUTTON_HEIGHT = 0.022; //0.0223
+    public static final double DEFAULT_WINDOWS_BUTTON_HEIGHT = 0.0223;
     public static final double DEFAULT_START_WINDOW_TO_TASKBAR_PROPORTION = 0.3;
 
     private final Image windowButtonImage = DEFAULT_WINDOWS_BUTTON_IMAGE;
@@ -34,14 +34,13 @@ public class StartTaskbar extends Taskbar {
         addStartButton();
         addStartPane(width * DEFAULT_START_WINDOW_TO_TASKBAR_PROPORTION, monitorHeight * 0.6);
         attachObserver(startDialogWindow);
-        startDialogWindow.attachObserver(this); //TODO: czy potrzebne ??
-
+        startDialogWindow.attachObserver(this);
         addTimePane();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void addStartButton() {
-        Button windowButton = makeButtonWithBackgroundAndEventHandler(DEFAULT_WINDOWS_BUTTON_WIDTH * manager.getRightFrameBorder(), getHeight(), windowButtonImage, EventKind.MENU_START_BUTTON);
+        Button windowButton = makeButtonWithBackgroundAndEventHandler(getWidthAfterScaling(DEFAULT_WINDOWS_BUTTON_WIDTH), getHeight(), windowButtonImage, EventKind.MENU_START_BUTTON);
         getPane().getChildren().add(windowButton);
     }
 
@@ -90,9 +89,6 @@ public class StartTaskbar extends Taskbar {
             case WALLPAPER_CHANGE:
                 notifyObservers(EventKind.WALLPAPER_CHANGE);
                 break;
-
-            default:
-                Logger.logError(getClass(), "Unknown eventKind:" + eventKind.toString());
         }
     }
 

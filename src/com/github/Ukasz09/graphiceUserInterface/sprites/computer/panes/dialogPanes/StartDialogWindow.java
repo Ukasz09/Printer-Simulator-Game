@@ -1,6 +1,5 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes;
 
-import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes.ContentPane;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.contentPanes.VerticalContentPane;
@@ -40,9 +39,6 @@ public class StartDialogWindow extends WindowDialog {
             case MENU_START_BUTTON:
                 getPane().setVisible(!getPane().isVisible());
                 break;
-
-            default:
-                Logger.logError(getClass(), "Unknown eventKind");
         }
     }
 
@@ -57,10 +53,7 @@ public class StartDialogWindow extends WindowDialog {
         double sizeOfImageInButton = getWidth() * DEFAULT_ICONS_TO_WINDOW_PROPORTION;
         addStartPaneButton(sizeOfImageInButton, DEFAULT_PRINTER_ICON_IMAGE, "Drukowanie", EventKind.PRINTER_BUTTON);
         addStartPaneButton(sizeOfImageInButton, DEFAULT_WALLPAPER_CHANGE_ICON_IMAGE, "Zmiana tapety", EventKind.WALLPAPER_CHANGE);
-
-        //todo: nie dziala
         addChangeThemeButton(sizeOfImageInButton, "Zmiana motywu");
-
     }
 
     private void addStartPaneButton(double sizeOfImageInButton, Image buttonImage, String buttonTxt, EventKind buttonEvent) {
