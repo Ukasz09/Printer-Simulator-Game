@@ -63,13 +63,13 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
     private SoundsPlayer printingSound;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public PrinterSprite(double positionX, double positionY) {
+    public PrinterSprite(double positionX, double positionY, double inkPositionY) {
         super(WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), HEIGHT_TO_FRAME_PROPORTION * ViewManager.getInstance().getBottomFrameBorder(), positionX, positionY);
         observers = new HashSet<>();
         printer = new Printer();
         printingSound = SoundsProperties.printing(DEFAULT_PRINTING_VOLUME);
         initializeLists();
-        initializeAllSprites();
+        initializeAllSprites(inkPositionY);
         addUpperSalverEventHandler();
         logicPrinterErrors = new HashMap<>();
         addAllPrintErrorsToMap();
@@ -87,19 +87,19 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         inksList = new ArrayList<>();
     }
 
-    private void initializeAllSprites() {
+    private void initializeAllSprites(double inkPositionY) {
         //ORDER OF INITIALIZATION IS VERY IMPORTANT!
         initializeLowerBody(width, height);
         initializeUpperBody(width, height, printerLowerBody.getHeight());
         initializeUpperSalver(width,height, printerUpperBody.getPositionY());
         initializeDownSalver(width, height);
         initializeWhitePapersList();
-        addInkSprites();
+        addInkSprites(inkPositionY);
     }
 
-    private void addInkSprites() {
+    private void addInkSprites(double inkPositionY) {
         double positionX = manager.getRightFrameBorder();
-        double positionY = 0;
+        double positionY = inkPositionY;
 
         for (Map.Entry<ColorEnum, ColorInk> entry : printer.getPrinterInks().entrySet()) {
             positionX -= (InkSprite.WIDTH_TO_FRAME_PROPORTION * manager.getRightFrameBorder()

@@ -50,4 +50,37 @@ public class SpritesProperties {
                 .build();
         return sheetProperty;
     }
+
+    public static ImageSheetProperty xmasTreeProperty() {
+        String spritePath = "resources/sprites/decorations/xmasTree.png";
+        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
+                .withImagePath(spritePath)
+                .withSizeOfOneFrame(329, 340)
+                .withDefaultDurationPerOneFrame(10)
+                .withAddActionState(DecorationState.STANDBY, 0, 4)
+                .build();
+        return sheetProperty;
+    }
+
+    public static ImageSheetProperty xmasChainProperty() {
+        String spritePath = "resources/sprites/decorations/xmasChain.png";
+        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
+                .withImagePath(spritePath)
+                .withSizeOfOneFrame(718, 240)
+                .withDefaultDurationPerOneFrame(12)
+                .withAddActionState(DecorationState.STANDBY, 0, 3)
+                .build();
+        return sheetProperty;
+    }
+
+    public static ImageSheetProperty xmasLampProperty() {
+        String spritePath = "resources/sprites/decorations/xmasLamp.png";
+        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
+                .withImagePath(spritePath)
+                .withSizeOfOneFrame(700, 183)
+                .withDefaultDurationPerOneFrame(12)
+                .withAddActionState(DecorationState.STANDBY, 0, 3)
+                .build();
+        return sheetProperty;
+    }
 }
