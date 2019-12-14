@@ -44,9 +44,9 @@ public class SpritesProperties {
         String spritePath = "resources/sprites/computer/screensaver.png";
         ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
                 .withImagePath(spritePath)
-                .withSizeOfOneFrame(634, 476)
-                .withDefaultDurationPerOneFrame(1)
-                .withAddActionState(DecorationState.STANDBY, 0, 101)
+                .withSizeOfOneFrame(336, 252)
+                .withDefaultDurationPerOneFrame(3)
+                .withAddActionState(DecorationState.STANDBY, 0, 184)
                 .build();
         return sheetProperty;
     }
