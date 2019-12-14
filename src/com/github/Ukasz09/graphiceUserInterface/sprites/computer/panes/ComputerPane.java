@@ -164,7 +164,7 @@ public abstract class ComputerPane implements IPane {
         printerButton.setAlignment(alignment);
         setNormalButtonProperty(printerButton, widthOfButton, heightOfButton);
 
-//        printerButton.setStyle(String.format("-fx-font-size: %dpx;", (int) (printerButton.getMaxWidth() / 10)));
+        printerButton.setStyle(String.format("-fx-font-size: %dpx;", (int) (printerButton.getMaxWidth() / 11)));
         return printerButton;
     }
 

@@ -17,9 +17,9 @@ public class StartDialogWindowTaskbar extends Taskbar {
     }
 
     private void addUserLogoButton() {
-        Button logoButton = makeButtonWithBackground(getHeight() * 0.9, getHeight() *0.9, DEFAULT_USER_LOGO_IMAGE);
+        Button logoButton = makeButtonWithBackground(getHeight() * 0.9, getHeight() * 0.9, DEFAULT_USER_LOGO_IMAGE);
         logoButton.setContentDisplay(ContentDisplay.RIGHT);
-        setPaddingToLogo(logoButton, DEFAULT_LOGO_PADDING_TO_FRAME_PROPORTION*manager.getRightFrameBorder());
+        setPaddingToLogo(logoButton, DEFAULT_LOGO_PADDING_TO_FRAME_PROPORTION * manager.getRightFrameBorder());
         addNodeToPane(logoButton);
     }
 

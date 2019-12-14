@@ -33,16 +33,17 @@ public class PrintErrorDialogWindow extends ErrorDialogWindow {
 
     private void setImageViewProperty() {
         errorImageView = new ImageView(ErrorKind.UNKNOWN_ERROR.errorImage);
-        errorImageView.setFitWidth(ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION*manager.getRightFrameBorder());
-        errorImageView.setFitHeight(ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION*manager.getRightFrameBorder());
+        errorImageView.setFitWidth(ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION * manager.getRightFrameBorder());
+        errorImageView.setFitHeight(ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION * manager.getRightFrameBorder());
     }
 
     private void setTextPaneProperty() {
-        double textPaneWidth = getWidth() - ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION*manager.getRightFrameBorder() * 1.5;
+        double textPaneWidth = getWidth() - ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION * manager.getRightFrameBorder() * 1.5;
         FlowPane pane = new FlowPane();
         pane.setPrefSize(textPaneWidth, getHeight() - getWindowTaskbarHeight() * 2);
         pane.setAlignment(Pos.CENTER);
-        this.textPane=pane;
+        pane.setStyle(String.format("-fx-font-size: %dpx;", (int) (textPaneWidth / 12)));
+        this.textPane = pane;
         setTextProperty(textPaneWidth);
     }
 

@@ -18,7 +18,6 @@ public abstract class SpriteWithEventHandler extends Sprite implements ISpriteGr
         makeAndAddImageView();
     }
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void makeAndAddImageView() {
         makeImageView();
@@ -43,7 +42,7 @@ public abstract class SpriteWithEventHandler extends Sprite implements ISpriteGr
     }
 
     private void setSamePropertyToImageViewAsImage(ImageView iv) {
-        iv.setOpacity(0.2);
+        iv.setOpacity(0);
         iv.setVisible(true);
         setImageViewPosition(iv, positionX, positionY);
         setImageViewSize(iv, width, height);

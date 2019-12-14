@@ -45,12 +45,13 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         makePrinterPane(0, 0, width, height);
         printErrorPane = new PrintErrorDialogWindow(printerPane.getPositionX(), printerPane.getPositionY(), printerPane.getWidth(), printerPane.getHeight());
         taskbarPane = new StartTaskbar(0, 0 + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT*manager.getBottomFrameBorder(), width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT*manager.getBottomFrameBorder(), height);
+
         attachObserver(taskbarPane);
         taskbarPane.attachObserver(this);
         printerPane.attachObserver(taskbarPane);
         printErrorPane.attachObserver(taskbarPane);
         addMonitorEventHandler();
-        getPane().getChildren().addAll(taskbarPane.getPane(), printerPane.getPane(), printErrorPane.getPane());
+        getPane().getChildren().addAll(printerPane.getPane(), printErrorPane.getPane(),taskbarPane.getPane());
         addDefaultPrintingWays();
     }
 
@@ -75,6 +76,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
 
     private void addPrintingWayButton(Image imageWithoutEffects, String buttonText, PrintOption printOption) {
         Button printingWayButton = makePrintButton(imageWithoutEffects, buttonText, printOption);
+        printingWayButton.setStyle(String.format("-fx-font-size: %dpx;", (int) (printingWayButton.getMaxWidth()/6)));
         printingWayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, getPrintButtonEventHandler(printOption));
         printerPane.addNodeToContentPane(printingWayButton);
     }
