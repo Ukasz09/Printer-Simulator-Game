@@ -8,6 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -67,6 +69,16 @@ public class ViewManager {
         setStartedGraphicsContextProperties();
         initializeWindowBoundary(canvas);
 //        scaleToProperResolution();
+
+        addExitButtonHandler(KeyCode.ESCAPE);
+    }
+
+    private void addExitButtonHandler(KeyCode exitCode) {
+        mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+            if (exitCode == event.getCode()) {
+                mainStage.close();
+            }
+        });
     }
 
     private void initializeMainStage(String title, boolean fullScreen) {

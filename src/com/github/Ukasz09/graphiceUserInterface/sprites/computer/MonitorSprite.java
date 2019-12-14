@@ -13,14 +13,15 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
     private final static Image DEFAULT_IMAGE = ImagesProperties.monitorSprite();
     private final static double DEFAULT_MONITOR_FRAME_THICKNESS = 15;
     private final static double DEFAULT_DISPLAY_TO_MONITOR_PROPORTION = 0.68;
-//    private static final double SCREENSAVER_COOLDOWN = 100;
+    private static final double SCREENSAVER_COOLDOWN = 200;
 
     private final double frameThickness;
     private final double displayToMonitorProportion;
 
     private MonitorPane monitorPane;
     private Screensaver screenSaver;
-//    private double screensaverCooldown;
+    private double screensaverCooldown;
+    private boolean sleepModeWasActivated;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MonitorSprite(double width, double height, double positionX, double positionY) {
@@ -35,8 +36,9 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
         monitorPane.getPane().setVisible(false);
         screenSaver.setImageViewVisable(true);
 
-//        screensaverCooldown = SCREENSAVER_COOLDOWN;
+        screensaverCooldown = SCREENSAVER_COOLDOWN;
         monitorPane.attachObserver(this);
+        sleepModeWasActivated = true;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,43 +72,58 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
         super.update();
         monitorPane.update();
         screenSaver.update();
-//        reduceScreensaverCooldown();
+        updateScreensaver();
     }
 
-//    private void reduceScreensaverCooldown() {
-//        screensaverCooldown -= 1;
-//    }
+    private void updateScreensaver() {
+        if (canTurnOnScreensaver())
+            turnOnScreensaver();
+        else if (sleepModeWasActivated)
+            reduceScreensaverCooldown();
+        else {
+            turnOffScreensaver();
+            restoreScreensaverCooldown();
+        }
+    }
+
+    private void turnOnScreensaver() {
+        monitorPane.getPane().setVisible(false);
+        screenSaver.setImageViewVisable(true);
+    }
+
+    private void turnOffScreensaver() {
+        monitorPane.getPane().setVisible(true);
+        screenSaver.setImageViewVisable(false);
+    }
+
+    private boolean canTurnOnScreensaver() {
+        return (screensaverCooldown <= 0 && sleepModeWasActivated);
+    }
+
+    private void reduceScreensaverCooldown() {
+        screensaverCooldown -= 1;
+        if (screensaverCooldown < 0)
+            screensaverCooldown = 0;
+    }
+
+    private void restoreScreensaverCooldown() {
+        screensaverCooldown = SCREENSAVER_COOLDOWN;
+    }
 
     @Override
     public void updateObserver(EventKind eventKind) {
         switch (eventKind) {
             //todo: tmp
-            case TURN_OF_SLEEPMODE: {
-                monitorPane.getPane().setVisible(true);
-                screenSaver.setImageViewVisable(false);
-                System.out.println("OFF");
-            }
-            break;
-            case TURN_ON_SLEEPMODE: {
-//                if (canTurnOnScreensaver()) {
-                    monitorPane.getPane().setVisible(false);
-                    screenSaver.setImageViewVisable(true);
-                    System.out.println("ON");
-//                }
-            }
-            break;
+            case TURN_OF_SLEEPMODE:
+                sleepModeWasActivated = false;
+                break;
+            case TURN_ON_SLEEPMODE:
+                sleepModeWasActivated = true;
+                break;
             default:
                 System.out.println("Sth other");
         }
     }
-
-//    private void restoreScreensaverCooldown(){
-//        screensaverCooldown=SCREENSAVER_COOLDOWN;
-//    }
-//
-//    private boolean canTurnOnScreensaver() {
-//        return (screensaverCooldown <= 0);
-//    }
 
     public MonitorPane getMonitorPane() {
         return monitorPane;
