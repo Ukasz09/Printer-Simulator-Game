@@ -33,14 +33,14 @@ import javafx.scene.input.MouseEvent;
 import java.util.*;
 
 public class PrinterSprite extends SpriteWithEventHandler implements IEventKindObservable {
-    public final static double WIDTH_TO_FRAME_PROPORTION = 0.175;// 28.0 / 160;
-    public final static double HEIGHT_TO_FRAME_PROPORTION = 0.167;//15.0 / 90;
+    public final static double WIDTH_TO_FRAME_PROPORTION = 28.0 / 160;
+    public final static double HEIGHT_TO_FRAME_PROPORTION = 15.0 / 90;
     private final static double DEFAULT_PRINTING_SPEED = 4;
     private final static double UPPER_TO_LOWER_BODY_PROPORTION = 0.4;
     private final static double SALVER_TO_PRINTER_WIDTH_PROPORTION = 0.6;
     private final static double SALVER_TO_PRINTER_HEIGHT_PROPORTION = 0.4;
-    private final static double SPACE_BETWEEN_INKS_TO_FRAME_WIDTH_PROPORTION = 0.0125;//2.0 / 160;
-    private final static double SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION = 0.0019;//3.0 / 1600; //to made all papers visual in stack (avoid superimpose)
+    private final static double SPACE_BETWEEN_INKS_TO_FRAME_WIDTH_PROPORTION = 2.0 / 160;
+    private final static double SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION =3.0 / 1600; //to made all papers visual in stack (avoid superimpose)
     private final static double DEFAULT_PRINTING_VOLUME = 0.9;
     private final ErrorKind[] logicPrinterGraphicErrors = {
             ErrorKind.RUN_OUT_OF_INK_ERROR,

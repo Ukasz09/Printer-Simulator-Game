@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
 
 public class MonitorSprite extends ImageSprite implements IEventKindObserver {
     private final static Image DEFAULT_IMAGE = ImagesProperties.monitorSprite();
-    private final static double FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION = 0.009;//0.00937  //15.0 / 1600;
+    private final static double FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION = 15.0 / 1600;
     private final static double DEFAULT_DISPLAY_TO_MONITOR_PROPORTION = 0.68;
     private static final double SCREENSAVER_COOLDOWN = 300;
 

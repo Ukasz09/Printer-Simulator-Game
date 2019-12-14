@@ -5,9 +5,9 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
 import javafx.scene.paint.Color;
 
 public abstract class PaperSprite extends SpriteWithEventHandler implements IPaperGraphic {
-    public static final double WIDTH_TO_FRAME_PROPORTION =0.062;//0.0625// 1.0 / 16;
-    public static final double HEIGHT_TO_FRAME_PROPORTION = 0.111;//1.0 / 9;
-    private static final double STROKE_WIDTH_TO_FRAME_PROPORTION = 0.002;//3.0/1600;
+    public static final double WIDTH_TO_FRAME_PROPORTION = 1.0 / 16;
+    public static final double HEIGHT_TO_FRAME_PROPORTION = 1.0 / 9;
+    private static final double STROKE_WIDTH_TO_FRAME_PROPORTION = 3.0/1600;
     private static final Color DEFAULT_STROKE_COLOR = Color.BLACK;
     private static final Color DEFAULT_PAPER_COLOR = Color.WHITE;
     private static final double DEFAULT_TIME_ON_ONE_FRAME_IN_ANIMATION = 5;

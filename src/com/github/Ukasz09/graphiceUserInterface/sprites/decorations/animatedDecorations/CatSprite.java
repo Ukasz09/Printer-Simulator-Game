@@ -14,8 +14,8 @@ public class CatSprite extends AnimatedSprite {
     private final static ImageSheetProperty DEFAULT_SHEET_PROPERTY = SpritesProperties.catSheetProperty();
     private final static double DEFAULT_CAT_SOUND_VOLUME = 0.2;
     private final static SoundsPlayer DEFAULT_CAT_SOUND = SoundsProperties.catMeow(DEFAULT_CAT_SOUND_VOLUME);
-    public final static double WIDTH_TO_FRAME_PROPORTION = 0.138;//219.0 / 1600;
-    public final static double HEIGHT_TO_FRAME_PROPORTION = 0.333;//3.0 / 9;
+    public final static double WIDTH_TO_FRAME_PROPORTION = 219.0 / 1600;
+    public final static double HEIGHT_TO_FRAME_PROPORTION = 3.0 / 9;
 
     private SoundsPlayer catMeowSound;
 

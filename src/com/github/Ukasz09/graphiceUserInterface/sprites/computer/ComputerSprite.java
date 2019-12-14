@@ -14,8 +14,8 @@ import javafx.scene.image.Image;
 
 //todo: tmp na sprite with handler
 public class ComputerSprite extends SpriteWithEventHandler implements IPrintOptionObserver, IEventKindObserver {
-    public final static double MONITOR_WIDTH_TO_FRAME_PROPORTION = 0.275;//44.0/160;
-    public final static double MONITOR_HEIGHT_TO_FRAME_PROPORTION = 0.356; //32.0/90;
+    public final static double MONITOR_WIDTH_TO_FRAME_PROPORTION = 44.0/160;
+    public final static double MONITOR_HEIGHT_TO_FRAME_PROPORTION = 32.0/90;
 
     private MonitorSprite monitorSprite;
     private PrinterSprite printerSprite;

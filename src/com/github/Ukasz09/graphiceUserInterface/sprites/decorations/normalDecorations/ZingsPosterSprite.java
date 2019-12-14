@@ -14,9 +14,9 @@ import java.util.Set;
 
 public class ZingsPosterSprite extends ImageSprite implements IEventKindObservable {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final static double WIDTH_TO_FRAME_PROPORTION = 0.175;//28.0 / 160;
-    private final static double HEIGHT_TO_FRAME_PROPORTION =0.389;// 35.0 / 90;
-    public final static double FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION = 0.006;//0.00625;///1.0 / 160;
+    private final static double WIDTH_TO_FRAME_PROPORTION =28.0 / 160;
+    private final static double HEIGHT_TO_FRAME_PROPORTION =35.0 / 90;
+    public final static double FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION = 1.0 / 160;
 
     private static final Image[] zingsImages = ImagesProperties.zingsPosterSprites();
     private Set<IEventKindObserver> observers;

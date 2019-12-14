@@ -5,7 +5,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
 import javafx.scene.paint.Color;
 
 public class CapacityStatusBar extends Sprite {
-    private static final double BAR_WIDTH_TO_FRAME_PROPORTION = 0.016;//0.0156//25.0 / 1600;
+    private static final double BAR_WIDTH_TO_FRAME_PROPORTION = 25.0 / 1600;
 
     private final double maxBarHeight;
 

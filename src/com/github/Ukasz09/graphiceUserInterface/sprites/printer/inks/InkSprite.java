@@ -8,8 +8,8 @@ import javafx.scene.input.MouseEvent;
 
 public class InkSprite extends ImageSprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public final static double WIDTH_TO_FRAME_PROPORTION = 0.04;//64.0 / 1600;
-    public final static double HEIGHT_TO_FRAME_PROPORTION = 0.142;//128.0 / 900;
+    public final static double WIDTH_TO_FRAME_PROPORTION = 64.0 / 1600;
+    public final static double HEIGHT_TO_FRAME_PROPORTION = 128.0 / 900;
 
     private final ColorInk printerInk;
     private final CapacityStatusBar statusBar;

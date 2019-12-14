@@ -9,8 +9,8 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.states.DecorationState;
 public class GlobeSprite extends AnimatedSprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private final static ImageSheetProperty DEFAULT_SHEET_PROPERTY = SpritesProperties.globeSheetProperty();
-    private final static double WIDTH_TO_FRAME_PROPORTION = 0.12;//192.0 / 1600;
-    public final static double HEIGHT_TO_FRAME_PROPORTION = 0.213;//192.0 / 900;
+    private final static double WIDTH_TO_FRAME_PROPORTION = 192.0 / 1600;
+    public final static double HEIGHT_TO_FRAME_PROPORTION = 192.0 / 900;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public GlobeSprite(double positionX, double positionY) {
