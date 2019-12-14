@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
 public class XmasTreeSprite extends AnimatedSprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private final static ImageSheetProperty DEFAULT_SHEET_PROPERTY = SpritesProperties.xmasTreeProperty();
-    private final static double WIDTH_TO_FRAME_PROPORTION = 292.0 / 1600;
+    private final static double WIDTH_TO_FRAME_PROPORTION = 262.0 / 1600;
     public final static double HEIGHT_TO_FRAME_PROPORTION = 38.0 / 90;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

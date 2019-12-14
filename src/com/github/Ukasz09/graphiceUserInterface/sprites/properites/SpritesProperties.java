@@ -51,13 +51,24 @@ public class SpritesProperties {
         return sheetProperty;
     }
 
+//    public static ImageSheetProperty xmasTreeProperty() {
+//        String spritePath = "resources/sprites/decorations/xmasTree.png";
+//        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
+//                .withImagePath(spritePath)
+//                .withSizeOfOneFrame(329, 340)
+//                .withDefaultDurationPerOneFrame(10)
+//                .withAddActionState(DecorationState.STANDBY, 0, 4)
+//                .build();
+//        return sheetProperty;
+//    }
+
     public static ImageSheetProperty xmasTreeProperty() {
         String spritePath = "resources/sprites/decorations/xmasTree.png";
         ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
                 .withImagePath(spritePath)
-                .withSizeOfOneFrame(329, 340)
-                .withDefaultDurationPerOneFrame(10)
-                .withAddActionState(DecorationState.STANDBY, 0, 4)
+                .withSizeOfOneFrame(232, 352)
+                .withDefaultDurationPerOneFrame(20)
+                .withAddActionState(DecorationState.STANDBY, 0, 3)
                 .build();
         return sheetProperty;
     }

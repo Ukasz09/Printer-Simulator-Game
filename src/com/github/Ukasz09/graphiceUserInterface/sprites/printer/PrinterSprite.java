@@ -40,7 +40,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
     private final static double SALVER_TO_PRINTER_WIDTH_PROPORTION = 0.6;
     private final static double SALVER_TO_PRINTER_HEIGHT_PROPORTION = 0.4;
     private final static double SPACE_BETWEEN_INKS_TO_FRAME_WIDTH_PROPORTION = 2.0 / 160;
-    private final static double SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION =3.0 / 1600; //to made all papers visual in stack (avoid superimpose)
+    private final static double SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION = 3.0 / 1600; //to made all papers visual in stack (avoid superimpose)
     private final static double DEFAULT_PRINTING_VOLUME = 0.9;
     private final ErrorKind[] logicPrinterGraphicErrors = {
             ErrorKind.RUN_OUT_OF_INK_ERROR,
@@ -91,7 +91,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         //ORDER OF INITIALIZATION IS VERY IMPORTANT!
         initializeLowerBody(width, height);
         initializeUpperBody(width, height, printerLowerBody.getHeight());
-        initializeUpperSalver(width,height, printerUpperBody.getPositionY());
+        initializeUpperSalver(width, height, printerUpperBody.getPositionY());
         initializeDownSalver(width, height);
         initializeWhitePapersList();
         addInkSprites(inkPositionY);
@@ -223,11 +223,16 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
     private void addNewWhitePaperSprite() {
         Point2D paperPosition = calculateWhitePaperPosition();
         WhitePaperSprite newPaper = new WhitePaperSprite(paperPosition.getX(), paperPosition.getY(), DEFAULT_PRINTING_SPEED);
+        addPaperEventHandler(newPaper, addingPaperEventHandler());
         whitePapersQueue.add(newPaper);
     }
 
     private void addUpperSalverEventHandler() {
-        printerUpperSalver.addNewEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+        printerUpperSalver.addNewEventHandler(MouseEvent.MOUSE_CLICKED, addingPaperEventHandler());
+    }
+
+    private EventHandler addingPaperEventHandler() {
+        return event -> {
             try {
                 printer.refillAvailablePaper(1);
                 addNewWhitePaperSprite();
@@ -236,7 +241,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
                     notifyObservers(EventKind.FULL_AVAILABLE_PAPER_STACK);
                 else Logger.logError(getClass(), "Unknown error: " + e.getMessage());
             }
-        });
+        };
     }
 
     private void addAllPrintErrorsToMap() {
