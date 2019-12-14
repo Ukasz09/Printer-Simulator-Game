@@ -12,6 +12,7 @@ Used Designs Patterns:
 - Singleton
 - Strategy
 - Decorator
+- Observer
 
 Code overview:
 - 90 classes (including enums and interfaces)
