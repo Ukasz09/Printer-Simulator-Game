@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 public class BasePrintDecorator implements IPrintDecorator {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    protected Effect addedEffects() {
+    public Effect addedEffects() {
         return new ColorAdjust();
     }
 

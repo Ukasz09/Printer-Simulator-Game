@@ -1,11 +1,13 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.printer;
 
+import com.github.Ukasz09.IAnimatedSpriteGraphic;
 import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.applicationLogic.printer.Printer;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterContainersException;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
+import com.github.Ukasz09.graphiceUserInterface.IDrawingGraphic;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsProperties;
@@ -20,8 +22,9 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.IPaperGra
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.ImagePaperSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.PaperSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers.WhitePaperSprite;
+import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterDownSalver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterLowerBody;
-import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterSalver;
+import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterUpperSalver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.parts.PrinterUpperBody;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import com.github.Ukasz09.graphiceUserInterface.sprites.states.PrinterState;
@@ -47,6 +50,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
             ErrorKind.FULL_PRINTED_PAPER_STACK_ERROR,
             ErrorKind.RUN_OUT_OF_PAPER_ERROR,
     };
+
     private Printer printer;
 
     private Deque<IPaperGraphic> whitePapersQueue;
@@ -55,16 +59,15 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
     private Map<String, ErrorKind> logicPrinterErrors;
     private Set<IEventKindObserver> observers;
 
-    private PrinterLowerBody printerLowerBody;
-    private PrinterUpperBody printerUpperBody;
-    private PrinterSalver printerUpperSalver;
-    private PrinterSalver printerDownSalver;
-
+    private IAnimatedSpriteGraphic printerUpperBody;
+    private ISpriteGraphic printerLowerBody;
+    private ISpriteGraphic printerUpperSalver;
+    private ISpriteGraphic printerDownSalver;
     private SoundsPlayer printingSound;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PrinterSprite(double positionX, double positionY, double inkPositionY) {
-        super(WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), HEIGHT_TO_FRAME_PROPORTION * ViewManager.getInstance().getBottomFrameBorder(), positionX, positionY);
+        super(getWidthAfterScaling(WIDTH_TO_FRAME_PROPORTION), getHeightAfterScaling(HEIGHT_TO_FRAME_PROPORTION), positionX, positionY);
         observers = new HashSet<>();
         printer = new Printer();
         printingSound = SoundsProperties.printing(DEFAULT_PRINTING_VOLUME);
@@ -73,11 +76,6 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         addUpperSalverEventHandler();
         logicPrinterErrors = new HashMap<>();
         addAllPrintErrorsToMap();
-
-        //TODO: tmp dopoki nie ma komputera zeby nie zaslanialy inne czesci eventHandlera na drukowanie
-        printerLowerBody.setImageViewVisable(false);
-        printerUpperBody.setImageViewVisable(false);
-        printerDownSalver.setImageViewVisable(false);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +110,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         switch (color) {
             case RED:
                 return ImagesProperties.redInkSprite();
-            case YEALLOW:
+            case YELLOW:
                 return ImagesProperties.yellowInkSprite();
             case BLUE:
                 return ImagesProperties.blueInkSprite();
@@ -154,7 +152,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
     private void initializeUpperSalver(double printerWidth, double printerHeight, double upperBodyPositionY) {
         Point2D salverSize = calculateUpperSalverSize(printerWidth, printerHeight);
         Point2D salverPosition = calculateUpperSalverPosition(positionX, upperBodyPositionY, printerWidth, printerUpperBody.getHeight(), salverSize.getX(), salverSize.getY());
-        printerUpperSalver = new PrinterSalver(salverSize.getX(), salverSize.getY(), salverPosition.getX(), salverPosition.getY());
+        printerUpperSalver = new PrinterUpperSalver(salverSize.getX(), salverSize.getY(), salverPosition.getX(), salverPosition.getY());
     }
 
     private static Point2D calculateUpperSalverSize(double printerWidth, double printerHeight) {
@@ -171,7 +169,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
     private void initializeDownSalver(double printerWidth, double printerHeight) {
         Point2D salverSize = calculateDownSalverSize(printerWidth, printerHeight);
         Point2D salverPosition = calculateDownSalverPosition(positionX, positionY + HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder(), width, printerLowerBody.getHeight(), salverSize.getX());
-        printerDownSalver = new PrinterSalver(salverSize.getX(), salverSize.getY(), salverPosition.getX(), salverPosition.getY());
+        printerDownSalver = new PrinterDownSalver(salverSize.getX(), salverSize.getY(), salverPosition.getX(), salverPosition.getY());
     }
 
     private static Point2D calculateDownSalverSize(double printerWidth, double printerHeight) {
@@ -290,12 +288,6 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         updatePrintedPapers();
         updateColorInks();
         updatePrinterState();
-
-        //todo: tmp
-//        System.out.println(printer.isInPrintingTime());
-//        System.out.println("White: SPRITE: " + whitePapersQueue.size() + ", LOGIC: " + printer.getAvailablePaperSheets());
-//        System.out.println("Printed: SPRITE: " + printedPapersQueue.size() + ", LOGIC: " + printer.getQtyOfPrintedPages());
-//        System.out.println("\n\n\n\n\n\n\n");
     }
 
     private void updatePrinterParts() {
@@ -310,9 +302,8 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
             paper.update();
 
         if (!whitePapersQueue.isEmpty())
-            if (whitePapersQueue.peek().canBeDestroyedNow()) {
+            if (whitePapersQueue.peek().canBeDestroyedNow())
                 whitePapersQueue.pop().removeNodeFromRoot();
-            }
     }
 
     private void updatePrintedPapers() {
@@ -366,7 +357,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
             return printerDownSalver.getPositionY();
 
         IPaperGraphic lastPrintedPaper = printedPapersQueue.peek();
-        return lastPrintedPaper.getPositionY() - SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION * manager.getRightFrameBorder(); //todo: dac mozliwosc printowania tylko jak calkoem skonczy siw wczesj9eisze
+        return lastPrintedPaper.getPositionY() - getWidthAfterScaling(SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION);
     }
 
     private void initializePrintedPage(IPaperGraphic newPrintedPage) {

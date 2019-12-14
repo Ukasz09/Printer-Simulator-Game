@@ -1,6 +1,5 @@
 package com.github.Ukasz09.graphiceUserInterface.backgrounds;
 
-import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsProperties;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
@@ -15,7 +14,6 @@ public class RoomBackground extends Background {
     private static final SoundsPlayer DEFAULT_MUSIC = SoundsProperties.room1(DEFAULT_VOLUME);
 
     public RoomBackground() {
-        super(FLOOR_HEIGHT_TO_FRAME_PROPERTY * ViewManager.getInstance().getBottomFrameBorder(), DEFAULT_IMAGE, DEFAULT_FLOOR_COLOR, DEFAULT_MUSIC);
+        super(getHeightAfterScaling(FLOOR_HEIGHT_TO_FRAME_PROPERTY), DEFAULT_IMAGE, DEFAULT_FLOOR_COLOR, DEFAULT_MUSIC);
     }
-
 }

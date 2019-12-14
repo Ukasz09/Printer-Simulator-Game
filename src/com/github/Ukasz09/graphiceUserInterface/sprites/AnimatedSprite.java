@@ -1,23 +1,22 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites;
 
+import com.github.Ukasz09.IAnimatedSpriteGraphic;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.FrameStatePositions;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImageSheetProperty;
 import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import com.github.Ukasz09.graphiceUserInterface.sprites.states.IKindOfState;
 
-public abstract class AnimatedSprite extends ImageSprite {
+public abstract class AnimatedSprite extends ImageSprite implements IAnimatedSpriteGraphic {
     private ImageSheetProperty spriteSheetProperty;
     private FrameStatePositions actualAnimationState;
     private double actualCooldownOnFrame;
     private double actualFramePositionX;
     private double actualFramePositionY;
 
-    public AnimatedSprite(double width, double height, double positionX, double positionY,
-                          ImageSheetProperty spriteSheetProperty, FrameStatePositions actualAnimationState) {
+    public AnimatedSprite(double width, double height, double positionX, double positionY, ImageSheetProperty sheetProperty, FrameStatePositions startedAnimationState) {
         super(width, height, ImagesProperties.schemeSpriteForImageView(), positionX, positionY);
-
-        this.spriteSheetProperty = spriteSheetProperty;
-        this.actualAnimationState = actualAnimationState;
+        this.spriteSheetProperty = sheetProperty;
+        this.actualAnimationState = startedAnimationState;
         actualCooldownOnFrame = 0;
         actualFramePositionX = 0;
         actualFramePositionY = 0;
@@ -56,7 +55,7 @@ public abstract class AnimatedSprite extends ImageSprite {
             actualFramePositionX = minXPosition;
             actualFramePositionY = minYPosition;
         }
-        //Steped out of sheet
+        //Stepped out of sheet
         else if (actualFramePositionX >= sheetWidth) {
             actualFramePositionX = 0;
             actualFramePositionY += spriteSheetProperty.getHeightOfOneFrame();
@@ -75,6 +74,7 @@ public abstract class AnimatedSprite extends ImageSprite {
                 widthOfOneFrame, heightOfOneFrame, positionX, positionY, width, height);
     }
 
+    @Override
     public void changeState(IKindOfState state) {
         actualAnimationState = spriteSheetProperty.getAction(state);
     }

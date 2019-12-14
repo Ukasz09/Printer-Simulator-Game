@@ -7,13 +7,13 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.properites.SpritesProper
 import com.github.Ukasz09.graphiceUserInterface.sprites.states.DecorationState;
 
 public class GlobeSprite extends AnimatedSprite {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private final static ImageSheetProperty DEFAULT_SHEET_PROPERTY = SpritesProperties.globeSheetProperty();
     private final static double WIDTH_TO_FRAME_PROPORTION = 192.0 / 1600;
     public final static double HEIGHT_TO_FRAME_PROPORTION = 192.0 / 900;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public GlobeSprite(double positionX, double positionY) {
-        super(WIDTH_TO_FRAME_PROPORTION* ViewManager.getInstance().getRightFrameBorder(),HEIGHT_TO_FRAME_PROPORTION*ViewManager.getInstance().getBottomFrameBorder(),positionX, positionY, DEFAULT_SHEET_PROPERTY, DEFAULT_SHEET_PROPERTY.getAction(DecorationState.STANDBY));
+        super(getWidthAfterScaling(WIDTH_TO_FRAME_PROPORTION), getHeightAfterScaling(HEIGHT_TO_FRAME_PROPORTION), positionX, positionY,
+                DEFAULT_SHEET_PROPERTY, DEFAULT_SHEET_PROPERTY.getAction(DecorationState.STANDBY));
     }
 }

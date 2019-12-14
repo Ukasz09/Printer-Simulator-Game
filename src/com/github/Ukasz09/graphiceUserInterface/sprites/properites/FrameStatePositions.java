@@ -33,13 +33,8 @@ public class FrameStatePositions {
         return maxY;
     }
 
-    void setIndexes(int startIndex, int endIndex) {
+    protected void setIndexes(int startIndex, int endIndex) {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
-    }
-
-    public int getRandomIndex() {
-        int range = (endIndex - startIndex) + 1;
-        return (int) (Math.random() * range) + startIndex;
     }
 }

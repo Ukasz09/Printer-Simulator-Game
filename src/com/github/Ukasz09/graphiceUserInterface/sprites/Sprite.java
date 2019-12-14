@@ -47,4 +47,12 @@ public abstract class Sprite implements IDrawingGraphic {
     public double getPositionY() {
         return positionY;
     }
+
+    protected static double getWidthAfterScaling(double widthBeforeScaling) {
+        return widthBeforeScaling * ViewManager.getInstance().getRightFrameBorder();
+    }
+
+    protected static double getHeightAfterScaling(double heightBeforeScaling) {
+        return heightBeforeScaling * ViewManager.getInstance().getBottomFrameBorder();
+    }
 }

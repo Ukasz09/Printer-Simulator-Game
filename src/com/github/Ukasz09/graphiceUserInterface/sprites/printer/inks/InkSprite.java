@@ -12,13 +12,13 @@ public class InkSprite extends ImageSprite {
     public final static double HEIGHT_TO_FRAME_PROPORTION = 128.0 / 900;
 
     private final ColorInk printerInk;
-    private final CapacityStatusBar statusBar;
+    private final ICapacityStatusBar statusBar;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public InkSprite(Image inkImage, ColorInk printerInk, double positionX, double positionY) {
-        super(WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), HEIGHT_TO_FRAME_PROPORTION * ViewManager.getInstance().getBottomFrameBorder(),inkImage, positionX, positionY);
+        super(getWidthAfterScaling(WIDTH_TO_FRAME_PROPORTION), getHeightAfterScaling(HEIGHT_TO_FRAME_PROPORTION), inkImage, positionX, positionY);
+        statusBar = new CapacityStatusBar(height, positionX, positionY + height);
         this.printerInk = printerInk;
-        statusBar = new CapacityStatusBar(HEIGHT_TO_FRAME_PROPORTION*manager.getBottomFrameBorder(), positionX, positionY + height);
         addInkEventHandler();
     }
 

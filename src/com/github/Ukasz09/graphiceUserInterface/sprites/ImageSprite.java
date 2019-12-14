@@ -21,7 +21,6 @@ public abstract class ImageSprite extends SpriteWithEventHandler {
         manager.getGraphicContext().drawImage(spriteImage, positionX, positionY, width, height);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     protected void setSpriteImage(Image spriteImage) {
         this.spriteImage = spriteImage;
     }

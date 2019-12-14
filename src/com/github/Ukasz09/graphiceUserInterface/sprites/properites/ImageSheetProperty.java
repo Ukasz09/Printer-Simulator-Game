@@ -126,8 +126,6 @@ public class ImageSheetProperty {
         return new Point2D(maxXOffset, maxYOffset);
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Image getSheet() {
         return imageSheet;
     }

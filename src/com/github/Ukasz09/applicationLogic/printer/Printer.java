@@ -11,30 +11,24 @@ import javafx.scene.image.Image;
 import java.util.*;
 
 public class Printer {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static final double DEFAULT_INC_CAPACITY = 40;
-    private static final int DEFAULT_AMOUNT_OF_SHEETS = 2;
     private static final int DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS = 5;
     private static final int DEFAULT_MAX_QTY_OF_PRINTED_SHEETS = 10;
 
-    private final ColorEnum[] defaultIncColors = {ColorEnum.BLUE, ColorEnum.RED, ColorEnum.YEALLOW, ColorEnum.BLACK};
+    private final ColorEnum[] defaultIncColors = {ColorEnum.BLUE, ColorEnum.RED, ColorEnum.YELLOW, ColorEnum.BLACK};
 
     private Map<ColorEnum, ColorInk> printerInks;
     private Deque<PrinterPaper> notTakenPrintedPages;
     private int availablePaperSheets;
     private boolean isInPrintingTime;
-    private int maxQtyOfAvailableSheets;
-    private int maxQtyOfPrintedSheets;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Printer() {
         printerInks = new LinkedHashMap<>();
         addDefaultIncs(DEFAULT_INC_CAPACITY);
         notTakenPrintedPages = new LinkedList<>();
-        availablePaperSheets = DEFAULT_AMOUNT_OF_SHEETS;
+        availablePaperSheets = DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS;
         isInPrintingTime = false;
-        maxQtyOfAvailableSheets = DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS;
-        maxQtyOfPrintedSheets = DEFAULT_MAX_QTY_OF_PRINTED_SHEETS;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,9 +102,7 @@ public class Printer {
 
     private boolean isEnoughOfInc(ColorEnum colorEnum) {
         ColorInk ink = printerInks.get(colorEnum);
-        if (ink == null)
-            return false;
-        return (ink.getActualCapacity() >= ink.getIncConsumption()); //todo: dac inc consumption do drukarki
+        return (ink != null) && (ink.getActualCapacity() >= ink.getIncConsumption());
     }
 
     private void checkImageToPrint(Image image) throws PrinterException {
@@ -144,7 +136,6 @@ public class Printer {
             notTakenPrintedPages.pop();
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public boolean isInPrintingTime() {
         return isInPrintingTime;
     }
@@ -162,6 +153,6 @@ public class Printer {
     }
 
     public int getMaxQtyOfAvailableSheets() {
-        return maxQtyOfAvailableSheets;
+        return DEFAULT_MAX_QTY_OF_AVAILABLE_SHEETS;
     }
 }

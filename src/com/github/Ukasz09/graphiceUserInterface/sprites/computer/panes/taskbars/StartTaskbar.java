@@ -9,17 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class StartTaskbar extends Taskbar {
-    private static final Image DEFAULT_WINDOWS_BUTTON_IMAGE = ImagesProperties.windowsLogoTaskbarImage();
+    private static final Image DEFAULT_WINDOWS_BUTTON_IMAGE = ImagesProperties.windowsLogoTaskbarIcon();
     private static final double DEFAULT_WINDOWS_BUTTON_WIDTH = 0.05;
     public static final double DEFAULT_WINDOWS_BUTTON_HEIGHT = 0.022; //0.0223
     public static final double DEFAULT_START_WINDOW_TO_TASKBAR_PROPORTION = 0.3;

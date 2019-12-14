@@ -11,5 +11,6 @@ public class PrinterLowerBody extends ImageSprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PrinterLowerBody(double width, double height, double positionX, double positionY) {
         super(width,height,DEFAULT_IMAGE,positionX, positionY);
+        setImageViewVisible(false);
     }
 }

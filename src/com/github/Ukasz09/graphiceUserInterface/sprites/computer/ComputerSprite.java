@@ -39,7 +39,7 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
 
     private void initializeComputerBody() {
         monitorSprite = new MonitorSprite(width, height, positionX, positionY);
-        monitorSprite.setImageViewVisable(false);
+        monitorSprite.setImageViewVisible(false);
     }
 
     @Override

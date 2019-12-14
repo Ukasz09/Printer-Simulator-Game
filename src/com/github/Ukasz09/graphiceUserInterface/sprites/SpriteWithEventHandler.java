@@ -89,9 +89,7 @@ public abstract class SpriteWithEventHandler extends Sprite implements ISpriteGr
         return true;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //todo: dopoki nie ma komputera
-    public void setImageViewVisable(boolean visable) {
-        spriteImageView.setVisible(visable);
+    public void setImageViewVisible(boolean visible) {
+        spriteImageView.setVisible(visible);
     }
 }

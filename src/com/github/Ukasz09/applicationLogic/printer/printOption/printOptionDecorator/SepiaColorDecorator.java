@@ -3,16 +3,17 @@ package com.github.Ukasz09.applicationLogic.printer.printOption.printOptionDecor
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.SepiaTone;
 
-public class SepiaColorDecorator extends BasePrintDecorator implements IColorDecorator {
-    private BasePrintDecorator basePrintDecorator;
+public class SepiaColorDecorator extends BasePrintDecorator  {
+    private IPrintDecorator basePrintDecorator;
 
-    public SepiaColorDecorator(BasePrintDecorator basePrintDecorator) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public SepiaColorDecorator(IPrintDecorator basePrintDecorator) {
         this.basePrintDecorator = basePrintDecorator;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    protected Effect addedEffects() {
+    public Effect addedEffects() {
         SepiaTone sepiaTone = getSepiaEffect();
         sepiaTone.setInput(basePrintDecorator.addedEffects());
         return sepiaTone;

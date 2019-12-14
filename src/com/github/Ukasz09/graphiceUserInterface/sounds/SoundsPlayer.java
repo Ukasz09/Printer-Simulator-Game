@@ -10,19 +10,20 @@ public class SoundsPlayer {
     private MediaPlayer mediaPlayer;
     private double volume;
     private boolean inLoop;
+    private boolean isPlayingNow;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public SoundsPlayer(String soundPath, double volume, boolean inLoop) {
         this.soundPath = soundPath;
         this.inLoop = inLoop;
         this.volume = volume;
+        isPlayingNow = false;
         makeSound();
+        addPlayingChecking();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void makeSound() {
-//        String resource = new File(soundPath).toURI().toString();
-
         java.net.URL soundURL = ImageResource.class.getResource(soundPath);
         Media media = new Media(soundURL.toString());
         mediaPlayer = new MediaPlayer(media);
@@ -34,9 +35,18 @@ public class SoundsPlayer {
 
     public void playSound() {
         mediaPlayer.play();
+        isPlayingNow = true;
     }
 
     public void stopSound() {
         mediaPlayer.stop();
+    }
+
+    private void addPlayingChecking() {
+        mediaPlayer.setOnEndOfMedia(() -> isPlayingNow = false);
+    }
+
+    public boolean isPlayingNow() {
+        return isPlayingNow;
     }
 }

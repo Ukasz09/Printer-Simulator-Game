@@ -1,10 +1,9 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.printer.inks;
 
-import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
 import javafx.scene.paint.Color;
 
-public class CapacityStatusBar extends Sprite {
+public class CapacityStatusBar extends Sprite implements ICapacityStatusBar {
     private static final double BAR_WIDTH_TO_FRAME_PROPORTION = 25.0 / 1600;
 
     private final double maxBarHeight;
@@ -14,7 +13,7 @@ public class CapacityStatusBar extends Sprite {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public CapacityStatusBar(double maxBarHeight, double positionX, double positionY) {
-        super(BAR_WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), maxBarHeight,positionX, positionY);
+        super(getWidthAfterScaling(BAR_WIDTH_TO_FRAME_PROPORTION), maxBarHeight, positionX, positionY);
         this.maxBarHeight = maxBarHeight;
         actualColor = Color.GREEN;
         actualCapacityPercents = 100;
@@ -27,12 +26,9 @@ public class CapacityStatusBar extends Sprite {
         updateBarHeight();
     }
 
-    //todo: poprawic
     private void updateColorOfBar() {
         if (height > 0) {
-            double r = 187;
-            double g = 6;
-            double b = 6;
+            double r, g, b;
 
             height = maxBarHeight * actualCapacityPercents / 100;
             if (actualCapacityPercents > 50) {
@@ -74,7 +70,7 @@ public class CapacityStatusBar extends Sprite {
         manager.getGraphicContext().fillRect(positionX, positionY, width, height);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
     public void setActualCapacityPercents(double actualCapacityPercent) {
         this.actualCapacityPercents = actualCapacityPercent;
     }

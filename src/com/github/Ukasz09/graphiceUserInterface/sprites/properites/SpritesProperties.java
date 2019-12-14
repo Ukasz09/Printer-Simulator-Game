@@ -6,6 +6,7 @@ import com.github.Ukasz09.graphiceUserInterface.sprites.states.PrinterState;
 
 public class SpritesProperties {
 
+    //decorations
     public static ImageSheetProperty globeSheetProperty() {
         String spritePath = "resources/sprites/decorations/globe.png";
         ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
@@ -27,40 +28,6 @@ public class SpritesProperties {
                 .build();
         return sheetProperty;
     }
-
-    public static ImageSheetProperty printerUpperBodyProperty() {
-        String spritePath = "resources/sprites/computer/printerUpperBody.png";
-        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
-                .withImagePath(spritePath)
-                .withSizeOfOneFrame(666, 238)
-                .withDefaultDurationPerOneFrame(6)
-                .withAddActionState(PrinterState.STANDBY, 3, 1)
-                .withAddActionState(PrinterState.PRINTING, 0, 3)
-                .build();
-        return sheetProperty;
-    }
-
-    public static ImageSheetProperty screenSaverProperty() {
-        String spritePath = "resources/sprites/computer/screensaver.png";
-        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
-                .withImagePath(spritePath)
-                .withSizeOfOneFrame(336, 252)
-                .withDefaultDurationPerOneFrame(3)
-                .withAddActionState(DecorationState.STANDBY, 0, 184)
-                .build();
-        return sheetProperty;
-    }
-
-//    public static ImageSheetProperty xmasTreeProperty() {
-//        String spritePath = "resources/sprites/decorations/xmasTree.png";
-//        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
-//                .withImagePath(spritePath)
-//                .withSizeOfOneFrame(329, 340)
-//                .withDefaultDurationPerOneFrame(10)
-//                .withAddActionState(DecorationState.STANDBY, 0, 4)
-//                .build();
-//        return sheetProperty;
-//    }
 
     public static ImageSheetProperty xmasTreeProperty() {
         String spritePath = "resources/sprites/decorations/xmasTree.png";
@@ -91,6 +58,35 @@ public class SpritesProperties {
                 .withSizeOfOneFrame(700, 183)
                 .withDefaultDurationPerOneFrame(12)
                 .withAddActionState(DecorationState.STANDBY, 0, 3)
+                .build();
+        return sheetProperty;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //printer
+    public static ImageSheetProperty printerUpperBodyProperty() {
+        String spritePath = "resources/sprites/computer/printerUpperBody.png";
+        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
+                .withImagePath(spritePath)
+                .withSizeOfOneFrame(666, 238)
+                .withDefaultDurationPerOneFrame(6)
+                .withAddActionState(PrinterState.STANDBY, 3, 1)
+                .withAddActionState(PrinterState.PRINTING, 0, 3)
+                .build();
+        return sheetProperty;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //computer
+    public static ImageSheetProperty screenSaverProperty() {
+        String spritePath = "resources/sprites/computer/screensaver.png";
+        ImageSheetProperty sheetProperty = ImageSheetProperty.builder()
+                .withImagePath(spritePath)
+                .withSizeOfOneFrame(336, 252)
+                .withDefaultDurationPerOneFrame(3)
+                .withAddActionState(DecorationState.STANDBY, 0, 184)
                 .build();
         return sheetProperty;
     }

@@ -3,15 +3,17 @@ package com.github.Ukasz09.applicationLogic.printer.printOption.printOptionDecor
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
 
-public class GrayColorDecorator extends BasePrintDecorator implements IColorDecorator {
-    private BasePrintDecorator basePrintDecorator;
+public class GrayColorDecorator extends BasePrintDecorator {
+    private IPrintDecorator basePrintDecorator;
 
-    public GrayColorDecorator(BasePrintDecorator basePrintDecorator) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public GrayColorDecorator(IPrintDecorator basePrintDecorator) {
         this.basePrintDecorator = basePrintDecorator;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    protected Effect addedEffects() {
+    public Effect addedEffects() {
         ColorAdjust colorAdjust = getGreyEffect();
         colorAdjust.setInput(basePrintDecorator.addedEffects());
         return colorAdjust;

@@ -3,16 +3,17 @@ package com.github.Ukasz09.applicationLogic.printer.printOption.printOptionDecor
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
 
-public class RandomHueDecorator extends BasePrintDecorator implements IColorDecorator {
-    private BasePrintDecorator basePrintDecorator;
+public class RandomHueDecorator extends BasePrintDecorator {
+    private IPrintDecorator basePrintDecorator;
 
-    public RandomHueDecorator(BasePrintDecorator basePrintDecorator) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public RandomHueDecorator(IPrintDecorator basePrintDecorator) {
         this.basePrintDecorator = basePrintDecorator;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    protected Effect addedEffects() {
+    public Effect addedEffects() {
         ColorAdjust colorHue = getRandomHue();
         colorHue.setInput(basePrintDecorator.addedEffects());
         return colorHue;

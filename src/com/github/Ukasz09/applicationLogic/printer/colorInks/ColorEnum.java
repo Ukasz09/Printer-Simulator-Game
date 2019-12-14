@@ -1,8 +1,13 @@
 package com.github.Ukasz09.applicationLogic.printer.colorInks;
 
 public enum ColorEnum {
-    RED(4), BLUE(4), YEALLOW(4), BLACK(1);
+    RED(4),
+    BLUE(4),
+    YELLOW(4),
+    BLACK(2);
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     double defaultIncConsumption;
 
     ColorEnum(double defaultIncConsumption) {
@@ -10,6 +15,7 @@ public enum ColorEnum {
     }
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public double getDefaultIncConsumption() {
         return defaultIncConsumption;
     }

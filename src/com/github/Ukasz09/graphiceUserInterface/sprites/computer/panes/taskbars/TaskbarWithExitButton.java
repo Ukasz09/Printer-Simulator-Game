@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 
 public class TaskbarWithExitButton extends Taskbar {
-    private static final Image DEFAULT_EXIT_BUTTON_IMAGE = ImagesProperties.exitButtonImage();
+    private static final Image DEFAULT_EXIT_BUTTON_IMAGE = ImagesProperties.exitButtonIcon();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public TaskbarWithExitButton(double positionX, double positionY, double width, double height) {

@@ -1,6 +1,5 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer;
 
-import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
@@ -35,7 +34,7 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
         screenSaver = new Screensaver(monitorPane.getWidth(), monitorPane.getHeight(), monitorPane.getPositionX(), monitorPane.getPositionY());
         screenSaver.attachObserver(this);
         monitorPane.getPane().setVisible(false);
-        screenSaver.setImageViewVisable(true);
+        screenSaver.setImageViewVisible(true);
 
         screensaverCooldown = SCREENSAVER_COOLDOWN;
         monitorPane.attachObserver(this);
@@ -89,12 +88,12 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
 
     private void turnOnScreensaver() {
         monitorPane.getPane().setVisible(false);
-        screenSaver.setImageViewVisable(true);
+        screenSaver.setImageViewVisible(true);
     }
 
     private void turnOffScreensaver() {
         monitorPane.getPane().setVisible(true);
-        screenSaver.setImageViewVisable(false);
+        screenSaver.setImageViewVisible(false);
     }
 
     private boolean canTurnOnScreensaver() {
