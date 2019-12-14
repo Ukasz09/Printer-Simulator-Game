@@ -32,7 +32,8 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
     private static final double DEFAULT_BUTTON_WIDTH_TO_MONITOR_PROPORTION = 0.22;
     private static final double DEFAULT_BUTTON_HEIGHT_TO_MONITOR_PROPORTION = 0.5;
 
-    private Image wallpaper = DEFAULT_WALLPAPERS[0];
+    private int actualWallpaperIndex = 0;
+    private Image wallpaper = DEFAULT_WALLPAPERS[actualWallpaperIndex];
     private StartTaskbar taskbarPane;
     private WindowDialog printerPane; //todo: dac pozniej na interfejsach
     private ErrorDialogWindow printErrorPane;
@@ -44,14 +45,14 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         printOptionObservers = new HashSet<>();
         makePrinterPane(0, 0, width, height);
         printErrorPane = new PrintErrorDialogWindow(printerPane.getPositionX(), printerPane.getPositionY(), printerPane.getWidth(), printerPane.getHeight());
-        taskbarPane = new StartTaskbar(0, 0 + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT*manager.getBottomFrameBorder(), width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT*manager.getBottomFrameBorder(), height);
+        taskbarPane = new StartTaskbar(0, 0 + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT * manager.getBottomFrameBorder(), width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT * manager.getBottomFrameBorder(), height);
 
         attachObserver(taskbarPane);
         taskbarPane.attachObserver(this);
         printerPane.attachObserver(taskbarPane);
         printErrorPane.attachObserver(taskbarPane);
         addMonitorEventHandler();
-        getPane().getChildren().addAll(printerPane.getPane(), printErrorPane.getPane(),taskbarPane.getPane());
+        getPane().getChildren().addAll(printerPane.getPane(), printErrorPane.getPane(), taskbarPane.getPane());
         addDefaultPrintingWays();
     }
 
@@ -76,7 +77,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
 
     private void addPrintingWayButton(Image imageWithoutEffects, String buttonText, PrintOption printOption) {
         Button printingWayButton = makePrintButton(imageWithoutEffects, buttonText, printOption);
-        printingWayButton.setStyle(String.format("-fx-font-size: %dpx;", (int) (printingWayButton.getMaxWidth()/6)));
+        printingWayButton.setStyle(String.format("-fx-font-size: %dpx;", (int) (printingWayButton.getMaxWidth() / 6)));
         printingWayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, getPrintButtonEventHandler(printOption));
         printerPane.addNodeToContentPane(printingWayButton);
     }
@@ -154,16 +155,19 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
                 printerPane.getPane().setVisible(true);
                 break;
             case WALLPAPER_CHANGE:
-                setRandomWallpaper();
+                setNextWallpaper();
                 break;
             default:
                 Logger.logError(getClass(), "Unknown eventKind: " + eventKind.toString());
         }
     }
 
-    private void setRandomWallpaper() {
-        int randIndex = (int) (Math.random() * DEFAULT_WALLPAPERS.length);
-        wallpaper = DEFAULT_WALLPAPERS[randIndex];
+    private void setNextWallpaper() {
+        int maxIndex = DEFAULT_WALLPAPERS.length - 1;
+        actualWallpaperIndex++;
+        if (actualWallpaperIndex > maxIndex)
+            actualWallpaperIndex = 0;
+        wallpaper = DEFAULT_WALLPAPERS[actualWallpaperIndex];
     }
 
     @Override
