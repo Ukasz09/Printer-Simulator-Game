@@ -26,17 +26,10 @@ public class ViewManager {
     private static double resolutionX;
     private static double resolutionY;
 
-    private final double DEFAULT_RESOLUTION_X = 1600;
-    private final double DEFAULT_RESOLUTION_Y = 900;
-
-    double translateOffsetX;
-    double translateOffsetY;
-
     private Stage mainStage;
     private Canvas canvas;
     private GraphicsContext gc;
     private Group root;
-    Scene mainScene;
 
     private double rightFrameBorder;
     private double bottomFrameBorder;
@@ -59,8 +52,6 @@ public class ViewManager {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         resolutionX = screenSize.getWidth();
         resolutionY = screenSize.getHeight();
-
-
         initializeMainStage(title, fullScreen);
         root = new Group();
         setMainStageScene();
@@ -68,8 +59,6 @@ public class ViewManager {
         gc = canvas.getGraphicsContext2D();
         setStartedGraphicsContextProperties();
         initializeWindowBoundary(canvas);
-//        scaleToProperResolution();
-
         addExitButtonHandler(KeyCode.ESCAPE);
     }
 
@@ -90,7 +79,7 @@ public class ViewManager {
     }
 
     private void setMainStageScene() {
-        mainScene = new Scene(root);
+        Scene mainScene = new Scene(root);
         mainStage.setScene(mainScene);
     }
 
@@ -112,7 +101,7 @@ public class ViewManager {
         setFont(DEFAULT_FONT_FAMILY, DEFAULT_FONT_WEIGHT, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR);
     }
 
-    public void setFont(String family, FontWeight weight, int size, Color color) {
+    private void setFont(String family, FontWeight weight, int size, Color color) {
         try {
             Font font = Font.font(family, weight, size);
             setFont(font, color);
@@ -136,26 +125,6 @@ public class ViewManager {
         bottomFrameBorder = bounds.getMaxY();
     }
 
-    private void scaleToProperResolution() {
-        Point2D userResolution = getUserResolution();
-        canvas.setScaleX(userResolution.getX() / DEFAULT_RESOLUTION_X);
-        canvas.setScaleY(userResolution.getY() / DEFAULT_RESOLUTION_Y);
-
-        translateOffsetX = (userResolution.getX() - DEFAULT_RESOLUTION_X) / 2;
-        translateOffsetY = (userResolution.getY() - DEFAULT_RESOLUTION_Y) / 2;
-        translateCanvas(translateOffsetX, translateOffsetY);
-    }
-
-    private Point2D getUserResolution() {
-        Rectangle2D resolutionBounds = Screen.getPrimary().getBounds();
-        return new Point2D(resolutionBounds.getWidth(), resolutionBounds.getHeight());
-    }
-
-    private void translateCanvas(double offsetX, double offsetY) {
-        canvas.setTranslateX(offsetX);
-        canvas.setTranslateY(offsetY);
-    }
-
     public void addNode(Node iv) {
         root.getChildren().add(iv);
     }
@@ -164,7 +133,6 @@ public class ViewManager {
         root.getChildren().remove(iv);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Stage getMainStage() {
         return mainStage;
     }

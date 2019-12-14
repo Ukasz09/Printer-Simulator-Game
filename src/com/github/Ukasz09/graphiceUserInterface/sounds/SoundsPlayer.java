@@ -1,6 +1,6 @@
 package com.github.Ukasz09.graphiceUserInterface.sounds;
 
-import com.github.Ukasz09.ImageResource;
+import com.github.Ukasz09.SoundResource;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -24,7 +24,7 @@ public class SoundsPlayer {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void makeSound() {
-        java.net.URL soundURL = ImageResource.class.getResource(soundPath);
+        java.net.URL soundURL = SoundResource.class.getResource(soundPath);
         Media media = new Media(soundURL.toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(volume);

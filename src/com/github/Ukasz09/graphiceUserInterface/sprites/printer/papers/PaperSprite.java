@@ -79,7 +79,7 @@ public abstract class PaperSprite extends SpriteWithEventHandler implements IPap
 
     private void setLineWidth(double lineWidth) {
         if (lineWidth < 1)
-            manager.getGraphicContext().setLineWidth(STROKE_WIDTH_TO_FRAME_PROPORTION * manager.getRightFrameBorder());
+            manager.getGraphicContext().setLineWidth(getWidthAfterScaling(STROKE_WIDTH_TO_FRAME_PROPORTION));
         else manager.getGraphicContext().setLineWidth(lineWidth);
     }
 
