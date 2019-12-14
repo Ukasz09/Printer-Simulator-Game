@@ -13,12 +13,14 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
     private final static Image DEFAULT_IMAGE = ImagesProperties.monitorSprite();
     private final static double DEFAULT_MONITOR_FRAME_THICKNESS = 15;
     private final static double DEFAULT_DISPLAY_TO_MONITOR_PROPORTION = 0.68;
+//    private static final double SCREENSAVER_COOLDOWN = 100;
 
     private final double frameThickness;
     private final double displayToMonitorProportion;
 
     private MonitorPane monitorPane;
     private Screensaver screenSaver;
+//    private double screensaverCooldown;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MonitorSprite(double width, double height, double positionX, double positionY) {
@@ -33,6 +35,7 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
         monitorPane.getPane().setVisible(false);
         screenSaver.setImageViewVisable(true);
 
+//        screensaverCooldown = SCREENSAVER_COOLDOWN;
         monitorPane.attachObserver(this);
     }
 
@@ -67,7 +70,12 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
         super.update();
         monitorPane.update();
         screenSaver.update();
+//        reduceScreensaverCooldown();
     }
+
+//    private void reduceScreensaverCooldown() {
+//        screensaverCooldown -= 1;
+//    }
 
     @Override
     public void updateObserver(EventKind eventKind) {
@@ -79,16 +87,26 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
                 System.out.println("OFF");
             }
             break;
-            case TURN_ON_SLEEPMODE:{
-                monitorPane.getPane().setVisible(false);
-                screenSaver.setImageViewVisable(true);
-                System.out.println("ON");
+            case TURN_ON_SLEEPMODE: {
+//                if (canTurnOnScreensaver()) {
+                    monitorPane.getPane().setVisible(false);
+                    screenSaver.setImageViewVisable(true);
+                    System.out.println("ON");
+//                }
             }
-                break;
+            break;
             default:
                 System.out.println("Sth other");
         }
     }
+
+//    private void restoreScreensaverCooldown(){
+//        screensaverCooldown=SCREENSAVER_COOLDOWN;
+//    }
+//
+//    private boolean canTurnOnScreensaver() {
+//        return (screensaverCooldown <= 0);
+//    }
 
     public MonitorPane getMonitorPane() {
         return monitorPane;

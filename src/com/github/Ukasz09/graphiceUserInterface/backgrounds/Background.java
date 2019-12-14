@@ -30,7 +30,7 @@ public abstract class Background {
     }
 
     private void drawBackground() {
-        manager.getGraphicContext().drawImage(backgroundImage, 0, 0);
+        manager.getGraphicContext().drawImage(backgroundImage, 0, 0, manager.getRightFrameBorder(),manager.getBottomFrameBorder());
     }
 
     private void drawFloor() {

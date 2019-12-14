@@ -50,7 +50,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         printerPane.attachObserver(taskbarPane);
         printErrorPane.attachObserver(taskbarPane);
         addMonitorEventHandler();
-        getPane().getChildren().addAll(taskbarPane.getPane(),printerPane.getPane(),printErrorPane.getPane());
+        getPane().getChildren().addAll(taskbarPane.getPane(), printerPane.getPane(), printErrorPane.getPane());
         addDefaultPrintingWays();
     }
 
@@ -181,7 +181,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
     }
 
     public void showPrintErrorMessage(ErrorKind errorKind) {
-        printErrorPane.updateErrorMessage(errorKind.errorImage,errorKind.errorText);
+        printErrorPane.updateErrorMessage(errorKind.errorImage, errorKind.errorText);
         printErrorPane.getPane().setVisible(true);
     }
 
