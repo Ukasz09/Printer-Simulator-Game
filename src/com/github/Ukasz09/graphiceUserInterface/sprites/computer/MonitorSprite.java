@@ -1,5 +1,6 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.computer;
 
+import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
@@ -11,9 +12,9 @@ import javafx.scene.image.Image;
 
 public class MonitorSprite extends ImageSprite implements IEventKindObserver {
     private final static Image DEFAULT_IMAGE = ImagesProperties.monitorSprite();
-    private final static double DEFAULT_MONITOR_FRAME_THICKNESS = 15;
+    private final static double FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION = 0.009;//0.00937  //15.0 / 1600;
     private final static double DEFAULT_DISPLAY_TO_MONITOR_PROPORTION = 0.68;
-    private static final double SCREENSAVER_COOLDOWN = 200;
+    private static final double SCREENSAVER_COOLDOWN = 100;
 
     private final double frameThickness;
     private final double displayToMonitorProportion;
@@ -25,8 +26,8 @@ public class MonitorSprite extends ImageSprite implements IEventKindObserver {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public MonitorSprite(double width, double height, double positionX, double positionY) {
-        super(DEFAULT_IMAGE, width, height, positionX, positionY);
-        frameThickness = DEFAULT_MONITOR_FRAME_THICKNESS;
+        super(width, height,DEFAULT_IMAGE, positionX, positionY);
+        frameThickness = manager.getRightFrameBorder() * FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION;
         displayToMonitorProportion = DEFAULT_DISPLAY_TO_MONITOR_PROPORTION;
         initializeMonitorPane();
 

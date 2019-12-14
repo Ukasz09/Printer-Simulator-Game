@@ -1,5 +1,6 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.decorations.normalDecorations;
 
+import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObservable;
@@ -13,16 +14,16 @@ import java.util.Set;
 
 public class ZingsPosterSprite extends ImageSprite implements IEventKindObservable {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public final static double DEFAULT_WIDTH = 280;
-    public final static double DEFAULT_HEIGHT = 350;
-    public final static double DEFAULT_FRAME_THICKNESS = 10;
+    private final static double WIDTH_TO_FRAME_PROPORTION = 0.175;//28.0 / 160;
+    private final static double HEIGHT_TO_FRAME_PROPORTION =0.389;// 35.0 / 90;
+    public final static double FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION = 0.006;//0.00625;///1.0 / 160;
 
     private static final Image[] zingsImages = ImagesProperties.zingsPosterSprites();
     private Set<IEventKindObserver> observers;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public ZingsPosterSprite(double positionX, double positionY) {
-        super(zingsImages[getRandomIndex()], DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY);
+        super(WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), HEIGHT_TO_FRAME_PROPORTION * ViewManager.getInstance().getBottomFrameBorder(),zingsImages[getRandomIndex()], positionX, positionY);
         observers = new HashSet<>();
         addPosterEventHandler();
     }

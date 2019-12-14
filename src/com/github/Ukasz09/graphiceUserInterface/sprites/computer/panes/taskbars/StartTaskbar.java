@@ -10,8 +10,8 @@ import javafx.scene.image.Image;
 
 public class StartTaskbar extends Taskbar {
     private static final Image DEFAULT_WINDOWS_BUTTON_IMAGE = ImagesProperties.windowsLogoTaskbarImage();
-    private static final double DEFAULT_WINDOWS_BUTTON_WIDTH = 80;
-    public static final double DEFAULT_WINDOWS_BUTTON_HEIGHT = 20;
+    private static final double DEFAULT_WINDOWS_BUTTON_WIDTH = 0.05;
+    public static final double DEFAULT_WINDOWS_BUTTON_HEIGHT = 0.022; //0.0223
     public static final double DEFAULT_START_WINDOW_TO_TASKBAR_PROPORTION = 0.3;
 
     private final Image windowButtonImage = DEFAULT_WINDOWS_BUTTON_IMAGE;
@@ -28,7 +28,7 @@ public class StartTaskbar extends Taskbar {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void addStartButton() {
-        Button windowButton = makeButtonWithBackgroundAndEventHandler(DEFAULT_WINDOWS_BUTTON_WIDTH, getHeight(), windowButtonImage, EventKind.MENU_START_BUTTON);
+        Button windowButton = makeButtonWithBackgroundAndEventHandler(DEFAULT_WINDOWS_BUTTON_WIDTH*manager.getRightFrameBorder(), getHeight(), windowButtonImage, EventKind.MENU_START_BUTTON);
         getPane().getChildren().add(windowButton);
     }
 

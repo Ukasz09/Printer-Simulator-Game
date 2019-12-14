@@ -44,7 +44,7 @@ public class MonitorPane extends ComputerPaneWithGraphicContext implements IPrin
         printOptionObservers = new HashSet<>();
         makePrinterPane(0, 0, width, height);
         printErrorPane = new PrintErrorDialogWindow(printerPane.getPositionX(), printerPane.getPositionY(), printerPane.getWidth(), printerPane.getHeight());
-        taskbarPane = new StartTaskbar(0, 0 + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT, height);
+        taskbarPane = new StartTaskbar(0, 0 + height - StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT*manager.getBottomFrameBorder(), width, StartTaskbar.DEFAULT_WINDOWS_BUTTON_HEIGHT*manager.getBottomFrameBorder(), height);
         attachObserver(taskbarPane);
         taskbarPane.attachObserver(this);
         printerPane.attachObserver(taskbarPane);

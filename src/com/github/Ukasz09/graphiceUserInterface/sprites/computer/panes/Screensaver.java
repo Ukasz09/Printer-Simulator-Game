@@ -18,7 +18,7 @@ public class Screensaver extends AnimatedSprite implements IEventKindObservable 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Screensaver(double width, double height, double positionX, double positionY) {
-        super(width, height, positionX, positionY, DEFAULT_SHEET_PROPERTY, DEFAULT_SHEET_PROPERTY.getAction(DecorationState.STANDBY));
+        super(width,height, positionX, positionY, DEFAULT_SHEET_PROPERTY, DEFAULT_SHEET_PROPERTY.getAction(DecorationState.STANDBY));
         observers = new HashSet<>();
         setImageViewVisable(false);
         addScreensaverEventHandler();

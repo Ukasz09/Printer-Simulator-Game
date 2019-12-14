@@ -12,6 +12,6 @@ public class PrinterUpperBody extends AnimatedSprite {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PrinterUpperBody(double width, double height, double positionX, double positionY) {
-        super(width, height, positionX, positionY,DEFAULT_SHEET_PROPERTY, DEFAULT_SHEET_PROPERTY.getAction(PrinterState.STANDBY));
+        super(width, height,positionX, positionY,DEFAULT_SHEET_PROPERTY, DEFAULT_SHEET_PROPERTY.getAction(PrinterState.STANDBY));
     }
 }

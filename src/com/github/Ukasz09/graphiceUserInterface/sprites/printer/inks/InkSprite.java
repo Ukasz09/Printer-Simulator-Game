@@ -1,23 +1,24 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.printer.inks;
 
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
+import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
 public class InkSprite extends ImageSprite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public final static double DEFAULT_WIDTH = 64;
-    public final static double DEFAULT_HEIGHT = 128;
+    public final static double WIDTH_TO_FRAME_PROPORTION = 0.04;//64.0 / 1600;
+    public final static double HEIGHT_TO_FRAME_PROPORTION = 0.142;//128.0 / 900;
 
     private final ColorInk printerInk;
     private final CapacityStatusBar statusBar;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public InkSprite(Image inkImage, ColorInk printerInk, double positionX, double positionY) {
-        super(inkImage, DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY);
+        super(WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), HEIGHT_TO_FRAME_PROPORTION * ViewManager.getInstance().getBottomFrameBorder(),inkImage, positionX, positionY);
         this.printerInk = printerInk;
-        statusBar = new CapacityStatusBar(DEFAULT_HEIGHT, positionX, positionY + height);
+        statusBar = new CapacityStatusBar(HEIGHT_TO_FRAME_PROPORTION*manager.getBottomFrameBorder(), positionX, positionY + height);
         addInkEventHandler();
     }
 

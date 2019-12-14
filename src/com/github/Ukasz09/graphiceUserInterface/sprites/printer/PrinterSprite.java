@@ -6,6 +6,7 @@ import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorEnum;
 import com.github.Ukasz09.applicationLogic.printer.colorInks.ColorInk;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterContainersException;
 import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
+import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsPlayer;
 import com.github.Ukasz09.graphiceUserInterface.sounds.SoundsProperties;
 import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
@@ -32,14 +33,14 @@ import javafx.scene.input.MouseEvent;
 import java.util.*;
 
 public class PrinterSprite extends SpriteWithEventHandler implements IEventKindObservable {
-    public final static double DEFAULT_WIDTH = 280;
-    public final static double DEFAULT_HEIGHT = 150;
+    public final static double WIDTH_TO_FRAME_PROPORTION = 0.175;// 28.0 / 160;
+    public final static double HEIGHT_TO_FRAME_PROPORTION = 0.167;//15.0 / 90;
     private final static double DEFAULT_PRINTING_SPEED = 4;
     private final static double UPPER_TO_LOWER_BODY_PROPORTION = 0.4;
     private final static double SALVER_TO_PRINTER_WIDTH_PROPORTION = 0.6;
     private final static double SALVER_TO_PRINTER_HEIGHT_PROPORTION = 0.4;
-    private final static double DEFAULT_SPACE_BETWEEN_INKS = 20;
-    private final static double DEFAULT_SPACE_BETWEEN_PAPERS = 3; //to made all papers visual in stack (avoid superimpose)
+    private final static double SPACE_BETWEEN_INKS_TO_FRAME_WIDTH_PROPORTION = 0.0125;//2.0 / 160;
+    private final static double SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION = 0.0019;//3.0 / 1600; //to made all papers visual in stack (avoid superimpose)
     private final static double DEFAULT_PRINTING_VOLUME = 0.9;
     private final ErrorKind[] logicPrinterGraphicErrors = {
             ErrorKind.RUN_OUT_OF_INK_ERROR,
@@ -63,7 +64,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PrinterSprite(double positionX, double positionY) {
-        super(DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY);
+        super(WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), HEIGHT_TO_FRAME_PROPORTION * ViewManager.getInstance().getBottomFrameBorder(), positionX, positionY);
         observers = new HashSet<>();
         printer = new Printer();
         printingSound = SoundsProperties.printing(DEFAULT_PRINTING_VOLUME);
@@ -88,10 +89,10 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
 
     private void initializeAllSprites() {
         //ORDER OF INITIALIZATION IS VERY IMPORTANT!
-        initializeLowerBody();
-        initializeUpperBody(printerLowerBody.getHeight());
-        initializeUpperSalver(printerUpperBody.getPositionY());
-        initializeDownSalver();
+        initializeLowerBody(width, height);
+        initializeUpperBody(width, height, printerLowerBody.getHeight());
+        initializeUpperSalver(width,height, printerUpperBody.getPositionY());
+        initializeDownSalver(width, height);
         initializeWhitePapersList();
         addInkSprites();
     }
@@ -101,7 +102,8 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         double positionY = 0;
 
         for (Map.Entry<ColorEnum, ColorInk> entry : printer.getPrinterInks().entrySet()) {
-            positionX -= (InkSprite.DEFAULT_WIDTH + DEFAULT_SPACE_BETWEEN_INKS);
+            positionX -= (InkSprite.WIDTH_TO_FRAME_PROPORTION * manager.getRightFrameBorder()
+                    + SPACE_BETWEEN_INKS_TO_FRAME_WIDTH_PROPORTION * manager.getRightFrameBorder());
             inksList.add(new InkSprite(getInkImageByColor(entry.getKey()), entry.getValue(), positionX, positionY));
         }
     }
@@ -121,9 +123,9 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         }
     }
 
-    private void initializeLowerBody() {
-        Point2D lowerBodySize = calculateLowerBodySize(width, height);
-        Point2D lowerBodyPosition = calculateLowerBodyPosition(positionX, positionY + DEFAULT_HEIGHT, lowerBodySize.getY());
+    private void initializeLowerBody(double printerWidth, double printerHeight) {
+        Point2D lowerBodySize = calculateLowerBodySize(printerWidth, printerHeight);
+        Point2D lowerBodyPosition = calculateLowerBodyPosition(positionX, positionY + HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder(), lowerBodySize.getY());
         printerLowerBody = new PrinterLowerBody(lowerBodySize.getX(), lowerBodySize.getY(), lowerBodyPosition.getX(), lowerBodyPosition.getY());
     }
 
@@ -135,9 +137,9 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         return new Point2D(positionX, positionY - lowerBodyHeight);
     }
 
-    private void initializeUpperBody(double lowerBodyHeight) {
-        Point2D upperBodySize = calculateUpperBodySize(width, height);
-        Point2D upperBodyPosition = calculateUpperBodyPosition(positionX, positionY + DEFAULT_HEIGHT, lowerBodyHeight, upperBodySize.getY());
+    private void initializeUpperBody(double printerWidth, double printerHeight, double lowerBodyHeight) {
+        Point2D upperBodySize = calculateUpperBodySize(printerWidth, printerHeight);
+        Point2D upperBodyPosition = calculateUpperBodyPosition(positionX, positionY + HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder(), lowerBodyHeight, upperBodySize.getY());
         printerUpperBody = new PrinterUpperBody(upperBodySize.getX(), upperBodySize.getY(), upperBodyPosition.getX(), upperBodyPosition.getY());
     }
 
@@ -149,9 +151,9 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         return new Point2D(printerPositionX, printerPositionY - lowerBodyHeight - upperBodyHeight);
     }
 
-    private void initializeUpperSalver(double upperBodyPositionY) {
-        Point2D salverSize = calculateUpperSalverSize(width, height);
-        Point2D salverPosition = calculateUpperSalverPosition(positionX, upperBodyPositionY, width, printerUpperBody.getHeight(), salverSize.getX(), salverSize.getY());
+    private void initializeUpperSalver(double printerWidth, double printerHeight, double upperBodyPositionY) {
+        Point2D salverSize = calculateUpperSalverSize(printerWidth, printerHeight);
+        Point2D salverPosition = calculateUpperSalverPosition(positionX, upperBodyPositionY, printerWidth, printerUpperBody.getHeight(), salverSize.getX(), salverSize.getY());
         printerUpperSalver = new PrinterSalver(salverSize.getX(), salverSize.getY(), salverPosition.getX(), salverPosition.getY());
     }
 
@@ -166,9 +168,9 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         return new Point2D(positionX, positionY);
     }
 
-    private void initializeDownSalver() {
-        Point2D salverSize = calculateDownSalverSize(width, height);
-        Point2D salverPosition = calculateDownSalverPosition(positionX, positionY + DEFAULT_HEIGHT, width, printerLowerBody.getHeight(), salverSize.getX());
+    private void initializeDownSalver(double printerWidth, double printerHeight) {
+        Point2D salverSize = calculateDownSalverSize(printerWidth, printerHeight);
+        Point2D salverPosition = calculateDownSalverPosition(positionX, positionY + HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder(), width, printerLowerBody.getHeight(), salverSize.getX());
         printerDownSalver = new PrinterSalver(salverSize.getX(), salverSize.getY(), salverPosition.getX(), salverPosition.getY());
     }
 
@@ -193,7 +195,9 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
     private Point2D calculateWhitePaperPosition() {
         Point2D paperPosition;
         if (whitePapersQueue.isEmpty() || (whitePapersQueue.size() == 1 && printer.isInPrintingTime()))
-            paperPosition = getWhitePaperPositionBySalver(PaperSprite.DEFAULT_WIDTH, PaperSprite.DEFAULT_HEIGHT);
+            paperPosition =
+                    getWhitePaperPositionBySalver(PaperSprite.WIDTH_TO_FRAME_PROPORTION * manager.getRightFrameBorder(),
+                            PaperSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder());
         else paperPosition = getWhitePaperPositionByOtherPaper(whitePapersQueue.getLast());
 
         return new Point2D(paperPosition.getX(), paperPosition.getY());
@@ -204,7 +208,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
         double salverPositionY = printerUpperSalver.getPositionY();
         double salverWidth = printerUpperSalver.getWidth();
         double salverHeight = printerUpperSalver.getHeight();
-        double immersionDepthOfPaper = DEFAULT_SPACE_BETWEEN_PAPERS * printer.getMaxQtyOfAvailableSheets();
+        double immersionDepthOfPaper = SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION * manager.getRightFrameBorder() * printer.getMaxQtyOfAvailableSheets();
         double paperPositionX = salverPositionX + salverWidth / 2 - paperWidth / 2;
         double paperPositionY = salverPositionY + salverHeight - paperHeight + immersionDepthOfPaper;
         return new Point2D(paperPositionX, paperPositionY);
@@ -212,7 +216,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
 
     private Point2D getWhitePaperPositionByOtherPaper(IPaperGraphic lastPaper) {
         double paperPositionX = lastPaper.getPositionX();
-        double paperPositionY = lastPaper.getPositionY() - DEFAULT_SPACE_BETWEEN_PAPERS;
+        double paperPositionY = lastPaper.getPositionY() - SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION * manager.getRightFrameBorder();
         return new Point2D(paperPositionX, paperPositionY);
     }
 
@@ -357,7 +361,7 @@ public class PrinterSprite extends SpriteWithEventHandler implements IEventKindO
             return printerDownSalver.getPositionY();
 
         IPaperGraphic lastPrintedPaper = printedPapersQueue.peek();
-        return lastPrintedPaper.getPositionY() - DEFAULT_SPACE_BETWEEN_PAPERS; //todo: dac mozliwosc printowania tylko jak calkoem skonczy siw wczesj9eisze
+        return lastPrintedPaper.getPositionY() - SPACE_BETWEEN_PAPERS_TO_FRAME_WIDTH_PROPORTION * manager.getRightFrameBorder(); //todo: dac mozliwosc printowania tylko jak calkoem skonczy siw wczesj9eisze
     }
 
     private void initializePrintedPage(IPaperGraphic newPrintedPage) {

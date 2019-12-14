@@ -9,18 +9,18 @@ public abstract class Background {
     private Image backgroundImage;
     private SoundsPlayer backgroundSound;
     private boolean backgroundSoundIsPlaying;
-    private ViewManager manager;
+    protected ViewManager manager;
     private double floorHeight;
     private Color floorColor;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Background(Image backgroundImage, double floorHeight, Color floorColor, SoundsPlayer backgroundSound) {
+    public Background(double floorHeight, Image backgroundImage, Color floorColor, SoundsPlayer backgroundSound) {
         this.backgroundImage = backgroundImage;
         this.backgroundSound = backgroundSound;
         this.floorColor = floorColor;
         manager = ViewManager.getInstance();
         backgroundSoundIsPlaying = false;
-        this.floorHeight = floorHeight;
+        this.floorHeight=floorHeight;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ public abstract class Background {
     }
 
     private void drawBackground() {
-        manager.getGraphicContext().drawImage(backgroundImage, 0, 0, manager.getRightFrameBorder(),manager.getBottomFrameBorder());
+        manager.getGraphicContext().drawImage(backgroundImage, 0, 0, manager.getRightFrameBorder(), manager.getBottomFrameBorder());
     }
 
     private void drawFloor() {

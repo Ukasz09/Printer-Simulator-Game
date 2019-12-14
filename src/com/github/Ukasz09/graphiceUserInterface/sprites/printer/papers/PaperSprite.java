@@ -1,17 +1,13 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.printer.papers;
 
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
-import com.github.Ukasz09.graphiceUserInterface.sprites.IEventHandler;
-import com.github.Ukasz09.graphiceUserInterface.sprites.ImageSprite;
-import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
 import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public abstract class PaperSprite extends SpriteWithEventHandler implements IPaperGraphic {
-    public static final double DEFAULT_WIDTH = 100;
-    public static final double DEFAULT_HEIGHT = 100;
-    private static final double DEFAULT_STROKE_WIDTH = 3;
+    public static final double WIDTH_TO_FRAME_PROPORTION =0.062;//0.0625// 1.0 / 16;
+    public static final double HEIGHT_TO_FRAME_PROPORTION = 0.111;//1.0 / 9;
+    private static final double STROKE_WIDTH_TO_FRAME_PROPORTION = 0.002;//3.0/1600;
     private static final Color DEFAULT_STROKE_COLOR = Color.BLACK;
     private static final Color DEFAULT_PAPER_COLOR = Color.WHITE;
     private static final double DEFAULT_TIME_ON_ONE_FRAME_IN_ANIMATION = 5;
@@ -28,9 +24,9 @@ public abstract class PaperSprite extends SpriteWithEventHandler implements IPap
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PaperSprite(double positionX, double positionY, double animationSpeed) {
-        super(DEFAULT_WIDTH, DEFAULT_HEIGHT, positionX, positionY);
-        manager = ViewManager.getInstance();
-        strokeWidth = DEFAULT_STROKE_WIDTH;
+        super(WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), HEIGHT_TO_FRAME_PROPORTION * ViewManager.getInstance().getBottomFrameBorder(),positionX, positionY);
+//        manager = ViewManager.getInstance();
+        strokeWidth = STROKE_WIDTH_TO_FRAME_PROPORTION*manager.getRightFrameBorder();
         strokeColor = DEFAULT_STROKE_COLOR;
         paperColor = DEFAULT_PAPER_COLOR;
         actualCooldownOnFrame = timeOnFrameInAnimation = DEFAULT_TIME_ON_ONE_FRAME_IN_ANIMATION;
@@ -87,7 +83,7 @@ public abstract class PaperSprite extends SpriteWithEventHandler implements IPap
 
     private void setLineWidth(double lineWidth) {
         if (lineWidth < 1)
-            manager.getGraphicContext().setLineWidth(DEFAULT_STROKE_WIDTH);
+            manager.getGraphicContext().setLineWidth(STROKE_WIDTH_TO_FRAME_PROPORTION*manager.getRightFrameBorder());
         else manager.getGraphicContext().setLineWidth(lineWidth);
     }
 

@@ -9,6 +9,6 @@ public class PrinterSalver extends ImageSprite {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public PrinterSalver(double width, double height, double positionX, double positionY) {
-        super(DEFAULT_IMAGE, width, height, positionX, positionY);
+        super(width, height,DEFAULT_IMAGE, positionX, positionY);
     }
 }

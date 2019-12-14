@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public class PrintErrorDialogWindow extends ErrorDialogWindow {
-    private static final double ERROR_IMAGE_SIZE = 80;
+    private static final double ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION = 0.05;
 
     private ImageView errorImageView;
     private Pane textPane;
@@ -33,12 +33,12 @@ public class PrintErrorDialogWindow extends ErrorDialogWindow {
 
     private void setImageViewProperty() {
         errorImageView = new ImageView(ErrorKind.UNKNOWN_ERROR.errorImage);
-        errorImageView.setFitWidth(ERROR_IMAGE_SIZE);
-        errorImageView.setFitHeight(ERROR_IMAGE_SIZE);
+        errorImageView.setFitWidth(ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION*manager.getRightFrameBorder());
+        errorImageView.setFitHeight(ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION*manager.getRightFrameBorder());
     }
 
     private void setTextPaneProperty() {
-        double textPaneWidth = getWidth() - ERROR_IMAGE_SIZE * 1.5;
+        double textPaneWidth = getWidth() - ERROR_IMAGE_SIZE_TO_WIDTH_PROPORTION*manager.getRightFrameBorder() * 1.5;
         FlowPane pane = new FlowPane();
         pane.setPrefSize(textPaneWidth, getHeight() - getWindowTaskbarHeight() * 2);
         pane.setAlignment(Pos.CENTER);

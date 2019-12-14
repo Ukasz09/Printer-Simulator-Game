@@ -6,7 +6,7 @@ public abstract class ImageSprite extends SpriteWithEventHandler {
     private Image spriteImage;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public ImageSprite(Image spriteImage, double width, double height, double positionX, double positionY) {
+    public ImageSprite(double width, double height, Image spriteImage, double positionX, double positionY) {
         super(width, height, positionX, positionY);
         this.spriteImage = spriteImage;
     }

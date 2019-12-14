@@ -3,20 +3,19 @@ package com.github.Ukasz09.graphiceUserInterface.sprites.computer;
 import com.github.Ukasz09.applicationLogic.Logger;
 import com.github.Ukasz09.applicationLogic.computer.Computer;
 import com.github.Ukasz09.applicationLogic.printer.printOption.printOptionEnum.PrintOption;
-import com.github.Ukasz09.applicationLogic.printer.printerExceptions.PrinterException;
+import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.SpriteWithEventHandler;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.eventKind.EventKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IEventKindObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.observerPattern.IPrintOptionObserver;
 import com.github.Ukasz09.graphiceUserInterface.sprites.computer.panes.dialogPanes.errorPane.ErrorKind;
 import com.github.Ukasz09.graphiceUserInterface.sprites.printer.PrinterSprite;
-import com.github.Ukasz09.graphiceUserInterface.sprites.properites.ImagesProperties;
 import javafx.scene.image.Image;
 
 //todo: tmp na sprite with handler
 public class ComputerSprite extends SpriteWithEventHandler implements IPrintOptionObserver, IEventKindObserver {
-    public final static double DEFAULT_MONITOR_WIDTH = 440;
-    public final static double DEFAULT_MONITOR_HEIGHT = 320;
+    public final static double MONITOR_WIDTH_TO_FRAME_PROPORTION = 0.275;//44.0/160;
+    public final static double MONITOR_HEIGHT_TO_FRAME_PROPORTION = 0.356; //32.0/90;
 
     private MonitorSprite monitorSprite;
     private PrinterSprite printerSprite;
@@ -25,7 +24,7 @@ public class ComputerSprite extends SpriteWithEventHandler implements IPrintOpti
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public ComputerSprite(double positionX, double positionY, PrinterSprite printerSprite, Image actualImageToPrint) {
-        super(DEFAULT_MONITOR_WIDTH, DEFAULT_MONITOR_HEIGHT, positionX, positionY);
+        super(MONITOR_WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), MONITOR_HEIGHT_TO_FRAME_PROPORTION * ViewManager.getInstance().getBottomFrameBorder(), positionX, positionY);
         initializeAllSprites();
         computer = new Computer(actualImageToPrint);
         this.printerSprite = printerSprite;

@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class StartDialogWindowTaskbar extends Taskbar {
     private static final Image DEFAULT_USER_LOGO_IMAGE = ImagesProperties.userLogoIcon();
-    private static final double DEFAULT_LOGO_PADDING = 2;
+    private static final double DEFAULT_LOGO_PADDING_TO_FRAME_PROPORTION = 0.001;//0.00125
 
     public StartDialogWindowTaskbar(double positionX, double positionY, double width, double height) {
         super(positionX, positionY, width, height);
@@ -19,7 +19,7 @@ public class StartDialogWindowTaskbar extends Taskbar {
     private void addUserLogoButton() {
         Button logoButton = makeButtonWithBackground(getHeight() * 0.9, getHeight() *0.9, DEFAULT_USER_LOGO_IMAGE);
         logoButton.setContentDisplay(ContentDisplay.RIGHT);
-        setPaddingToLogo(logoButton, DEFAULT_LOGO_PADDING);
+        setPaddingToLogo(logoButton, DEFAULT_LOGO_PADDING_TO_FRAME_PROPORTION*manager.getRightFrameBorder());
         addNodeToPane(logoButton);
     }
 

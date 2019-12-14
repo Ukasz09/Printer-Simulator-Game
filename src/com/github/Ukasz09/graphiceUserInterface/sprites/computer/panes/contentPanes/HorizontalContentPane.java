@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 
 
 public class HorizontalContentPane extends ContentPane {
-    private static final double DEFAULT_SPACE_BETWEEN_BUTTONS = 10;
+    private static final double SPACE_BETWEEN_BUTTONS_TO_WIDTH_PROPORTION=0.006;//00625;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public HorizontalContentPane(double positionX, double positionY, double width, double height) {
@@ -17,8 +17,8 @@ public class HorizontalContentPane extends ContentPane {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     protected Pane makePaneInstance() {
-        HBox pane = new HBox(DEFAULT_SPACE_BETWEEN_BUTTONS / 2);
-        pane.setPadding(new Insets(DEFAULT_SPACE_BETWEEN_BUTTONS));
+        HBox pane = new HBox(SPACE_BETWEEN_BUTTONS_TO_WIDTH_PROPORTION * manager.getRightFrameBorder() / 2);
+        pane.setPadding(new Insets(SPACE_BETWEEN_BUTTONS_TO_WIDTH_PROPORTION));
         pane.setAlignment(Pos.CENTER);
         return pane;
     }

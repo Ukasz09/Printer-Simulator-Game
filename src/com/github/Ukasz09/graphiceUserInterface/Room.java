@@ -50,12 +50,13 @@ public class Room implements IRoomGraphic, IEventKindObserver {
 
     private void addDesk() {
         Point2D position = calculateDeskPosition();
-        decorations.put(DESK, new DeskSprite(position.getX(), position.getY()));
+        DeskSprite deskSprite=new DeskSprite(position.getX(), position.getY());
+        decorations.put(DESK, deskSprite);
     }
 
     private Point2D calculateDeskPosition() {
-        double positionX = manager.getRightFrameBorder() / 2 - DeskSprite.DEFAULT_WIDTH / 2;
-        double positionY = manager.getBottomFrameBorder() - DeskSprite.DEFAULT_HEIGHT - background.getFloorHeight();
+        double positionX = manager.getRightFrameBorder() / 2 - DeskSprite.WIDTH_TO_FRAME_PROPORTION * manager.getRightFrameBorder() / 2;
+        double positionY = manager.getBottomFrameBorder() - DeskSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder() - background.getFloorHeight();
         return new Point2D(positionX, positionY);
     }
 
@@ -66,7 +67,7 @@ public class Room implements IRoomGraphic, IEventKindObserver {
 
     private Point2D calculateGlobePosition(double deskPositionX, double deskPositionY) {
         double positionX = deskPositionX;
-        double positionY = deskPositionY - GlobeSprite.DEFAULT_HEIGHT;
+        double positionY = deskPositionY - GlobeSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder();
         return new Point2D(positionX, positionY);
     }
 
@@ -76,8 +77,8 @@ public class Room implements IRoomGraphic, IEventKindObserver {
     }
 
     private Point2D calculateCatPosition() {
-        double positionX = manager.getRightFrameBorder() - CatSprite.DEFAULT_WIDTH;
-        double positionY = manager.getBottomFrameBorder() - background.getFloorHeight() - CatSprite.DEFAULT_HEIGHT;
+        double positionX = manager.getRightFrameBorder() - CatSprite.WIDTH_TO_FRAME_PROPORTION * manager.getRightFrameBorder();
+        double positionY = manager.getBottomFrameBorder() - background.getFloorHeight() - CatSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder();
         return new Point2D(positionX, positionY);
     }
 
@@ -88,7 +89,7 @@ public class Room implements IRoomGraphic, IEventKindObserver {
 
     private Point2D calculateFlowerPosition() {
         double positionX = 0;
-        double positionY = manager.getBottomFrameBorder() - background.getFloorHeight() - FlowerSprite.DEFAULT_HEIGHT;
+        double positionY = manager.getBottomFrameBorder() - background.getFloorHeight() - FlowerSprite.HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder();
         return new Point2D(positionX, positionY);
     }
 
@@ -101,7 +102,7 @@ public class Room implements IRoomGraphic, IEventKindObserver {
 
     private Point2D calculatePosterPosition() {
         double positionX, positionY;
-        positionX = positionY = ZingsPosterSprite.DEFAULT_FRAME_THICKNESS * 2;
+        positionX = positionY = ZingsPosterSprite.FRAME_THICKNESS_TO_FRAME_WIDTH_PROPORTION * manager.getRightFrameBorder() * 2;
         return new Point2D(positionX, positionY);
     }
 
@@ -120,14 +121,14 @@ public class Room implements IRoomGraphic, IEventKindObserver {
     }
 
     private Point2D calculatePrinterPosition(double deskPositionX, double deskPositionY, double deskWidth) {
-        double positionX = deskPositionX + deskWidth * 0.95 - PrinterSprite.DEFAULT_WIDTH;
-        double positionY = deskPositionY - PrinterSprite.DEFAULT_HEIGHT;
+        double positionX = deskPositionX + deskWidth * 0.95 - PrinterSprite.WIDTH_TO_FRAME_PROPORTION*manager.getRightFrameBorder();
+        double positionY = deskPositionY - PrinterSprite.HEIGHT_TO_FRAME_PROPORTION*manager.getBottomFrameBorder();
         return new Point2D(positionX, positionY);
     }
 
     private Point2D calculateComputerPosition(double globePositionX, double globeWidth, double deskPositionY) {
         double positionX = globePositionX + globeWidth;
-        double positionY = deskPositionY - ComputerSprite.DEFAULT_MONITOR_HEIGHT;
+        double positionY = deskPositionY - ComputerSprite.MONITOR_HEIGHT_TO_FRAME_PROPORTION * manager.getBottomFrameBorder();
         return new Point2D(positionX, positionY);
     }
 

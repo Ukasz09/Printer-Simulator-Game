@@ -1,10 +1,11 @@
 package com.github.Ukasz09.graphiceUserInterface.sprites.printer.inks;
 
+import com.github.Ukasz09.graphiceUserInterface.ViewManager;
 import com.github.Ukasz09.graphiceUserInterface.sprites.Sprite;
 import javafx.scene.paint.Color;
 
 public class CapacityStatusBar extends Sprite {
-    private static final double DEFAULT_BAR_WIDTH = 25;
+    private static final double BAR_WIDTH_TO_FRAME_PROPORTION = 0.016;//0.0156//25.0 / 1600;
 
     private final double maxBarHeight;
 
@@ -13,7 +14,7 @@ public class CapacityStatusBar extends Sprite {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public CapacityStatusBar(double maxBarHeight, double positionX, double positionY) {
-        super(DEFAULT_BAR_WIDTH, maxBarHeight, positionX, positionY);
+        super(BAR_WIDTH_TO_FRAME_PROPORTION * ViewManager.getInstance().getRightFrameBorder(), maxBarHeight,positionX, positionY);
         this.maxBarHeight = maxBarHeight;
         actualColor = Color.GREEN;
         actualCapacityPercents = 100;

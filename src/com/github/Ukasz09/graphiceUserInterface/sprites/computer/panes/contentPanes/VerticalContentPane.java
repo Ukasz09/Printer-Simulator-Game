@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class VerticalContentPane extends ContentPane {
-    private static final double DEFAULT_SPACE_BETWEEN_BUTTONS = 10;
+    private static final double SPACE_BETWEEN_BUTTONS_TO_WIDTH_PROPORTION=0.006;//0.00625;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public VerticalContentPane(double positionX, double positionY, double width, double height) {
@@ -15,7 +15,7 @@ public class VerticalContentPane extends ContentPane {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     protected Pane makePaneInstance() {
-        VBox pane = new VBox(DEFAULT_SPACE_BETWEEN_BUTTONS / 2);
+        VBox pane = new VBox(SPACE_BETWEEN_BUTTONS_TO_WIDTH_PROPORTION*manager.getRightFrameBorder() / 2);
         return pane;
     }
 }

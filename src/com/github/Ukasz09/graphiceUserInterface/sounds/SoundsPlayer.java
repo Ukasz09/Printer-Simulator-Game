@@ -4,11 +4,6 @@ import com.github.Ukasz09.ImageResource;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import java.io.File;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class SoundsPlayer {
     private String soundPath;

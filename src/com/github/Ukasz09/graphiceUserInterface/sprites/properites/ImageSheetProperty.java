@@ -21,8 +21,6 @@ public class ImageSheetProperty {
 
         private Builder(int amountOfFramesInRow) {
             maxAmountOfFramesInRow = amountOfFramesInRow;
-            this.widthOfOneFrame = widthOfOneFrame;
-            this.heightOfOneFrame = heightOfOneFrame;
             timeOnFrameInAnimation = DEFAULT_DURATION_PER_FRAME;
             actionStates = new HashMap<>();
         }

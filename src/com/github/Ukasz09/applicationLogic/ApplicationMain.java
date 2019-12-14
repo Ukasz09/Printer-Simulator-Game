@@ -1,8 +1,10 @@
 package com.github.Ukasz09.applicationLogic;
 
+import com.github.Ukasz09.graphiceUserInterface.IDrawingGraphic;
 import com.github.Ukasz09.graphiceUserInterface.IRoomGraphic;
 import com.github.Ukasz09.graphiceUserInterface.Room;
 import com.github.Ukasz09.graphiceUserInterface.ViewManager;
+import com.github.Ukasz09.graphiceUserInterface.sprites.ISpriteGraphic;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;

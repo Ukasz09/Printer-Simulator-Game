@@ -14,7 +14,7 @@ public abstract class AnimatedSprite extends ImageSprite {
 
     public AnimatedSprite(double width, double height, double positionX, double positionY,
                           ImageSheetProperty spriteSheetProperty, FrameStatePositions actualAnimationState) {
-        super(ImagesProperties.schemeSpriteForImageView(), width, height, positionX, positionY);
+        super(width, height, ImagesProperties.schemeSpriteForImageView(), positionX, positionY);
 
         this.spriteSheetProperty = spriteSheetProperty;
         this.actualAnimationState = actualAnimationState;
