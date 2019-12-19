@@ -2,9 +2,13 @@
 ![alt text](https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/1.png)
 ![alt text](https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/2.png)
 ![alt text](https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/3.png)
+
 # JAR
 If there is a problem with running, try to open it by console with command:
 "java -jar PrinterSimulator2.jar"
+
+# Game control
+By mouse - intuitively, by clicking on individual elements
 
 # For dev
 Used Designs Patterns:
