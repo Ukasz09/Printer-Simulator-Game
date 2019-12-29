@@ -19,7 +19,7 @@ By `mouse` - intuitively, by clicking on individual elements
 ---
 # For dev
 **Used Designs Patterns:**
-<br/>
+<br/><br/>
 ✅ Builder <br/>
 ✅ Singleton <br/>
 ✅ Strategy <br/>
@@ -27,8 +27,9 @@ By `mouse` - intuitively, by clicking on individual elements
 ✅ Observer <br/>
 
 **Code overview:**
-- 90 classes (including enums and interfaces)
-- over 4200 lines of code
+<br/><br/>
+✔️ 90 classes (including enums and interfaces) <br/>
+✔️ over 4200 lines of code  <br/>
 
 ---
 ## Contact
