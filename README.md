@@ -19,11 +19,11 @@ By `mouse` - intuitively, by clicking on individual elements
 ---
 # For dev
 **Used Designs Patterns:**
-✅ Builder
-✅ Singleton
-✅ Strategy
-✅ Decorator
-✅ Observer
+✅ Builder <br/>
+✅ Singleton <br/>
+✅ Strategy <br/>
+✅ Decorator <br/>
+✅ Observer <br/>
 
 **Code overview:**
 - 90 classes (including enums and interfaces)
