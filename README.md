@@ -19,6 +19,7 @@ By `mouse` - intuitively, by clicking on individual elements
 ---
 # For dev
 **Used Designs Patterns:**
+<br/>
 ✅ Builder <br/>
 ✅ Singleton <br/>
 ✅ Strategy <br/>
