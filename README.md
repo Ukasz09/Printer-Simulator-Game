@@ -6,8 +6,8 @@
 🔉 Sounds and music <br/>
 
 # Gameplay
-<p align="center"><img width=95% src="https://raw.githubusercontent.com/Ukasz09/Printer-Simulator-Game/master/readmeImages/gameplay1.gif"></p>
-<p align="center"><img width=95% src="https://raw.githubusercontent.com/Ukasz09/Printer-Simulator-Game/master/readmeImages/gameplay1.gif"></p>
+<p align="center"><img width=95% src="https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/gameplay1.gif"></p>
+<p align="center"><img width=95% src="https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/gameplay1.gif"></p>
 <br/>
 
 # Screenshots 
