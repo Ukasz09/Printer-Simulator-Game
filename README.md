@@ -1,4 +1,4 @@
-# Printer Simulator/Game [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://choosealicense.com/licenses/mit/) [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)](https://github.com/Ukasz09/Printer-Simulator-Game)
+# Printer Simulator/Game [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://choosealicense.com/licenses/mit/) [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)](https://github.com/Ukasz09/Printer-Simulator-Game) ![stability-frozen](https://img.shields.io/badge/stability-locked-blue.svg)
 > Fun 2D game/simulator of printer, written in Java language using JavaFX library 📠 🎄 🎮
 <br/>
 
