@@ -7,7 +7,7 @@
 
 # Gameplay
 <p align="center"><img width=95% src="https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/gameplay1.gif"></p>
-<p align="center"><img width=95% src="https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/gameplay1.gif"></p>
+<p align="center"><img width=95% src="https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/gameplay2.gif"></p>
 <br/>
 
 # Screenshots 
