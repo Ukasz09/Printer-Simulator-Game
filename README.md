@@ -1,8 +1,9 @@
-# Printer Simulator/Game [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://choosealicense.com/licenses/mit/) [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)](https://github.com/Ukasz09/Printer-Simulator-Game) [![stability-frozen](https://img.shields.io/badge/stability-locked-blue.svg)](https://github.com/Ukasz09/TDD-Tic-Tac-Toe)
+# Printer Simulator/Game [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://choosealicense.com/licenses/mit/) [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)](https://github.com/Ukasz09/Printer-Simulator-Game) [![stability-frozen](https://img.shields.io/badge/stability-locked-blue.svg)](https://github.com/Ukasz09/Printer-Simulator-Game)
 
 💻 All resolutions support <br/>
 🔉 Sounds and music <br/>
 
+___
 # Gameplay
 <p align="center"><img width=95% src="https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/gameplay1.gif"></p>
 <p align="center"><img width=95% src="https://raw.githubusercontent.com/Ukasz09/PrinterSimulator/master/readmeImages/gameplay2.gif"></p>
