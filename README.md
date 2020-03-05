@@ -1,6 +1,6 @@
 # 📠 Printer Simulator/Game [![License](https://img.shields.io/badge/licence-MIT-blue)](https://choosealicense.com/licenses/mit/) [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)](https://github.com/Ukasz09/Printer-Simulator-Game) [![Status](https://img.shields.io/badge/status-finished-brightgreen)](https://github.com/Ukasz09/Printer-Simulator-Game)
 
-
+<br/>
 💻 All resolutions support <br/>
 🔉 Sounds and music <br/>
 
@@ -38,6 +38,8 @@ By `mouse` - intuitively, by clicking on individual elements
 ✔️ 90 classes (including enums and interfaces) <br/>
 ✔️ over 4200 lines of code  <br/>
 
+## Acknowledgements
+Thanks to one of my teacher, who inspired me to this app 
 ___
 ## 📫 Contact 
 Created by <br/>
