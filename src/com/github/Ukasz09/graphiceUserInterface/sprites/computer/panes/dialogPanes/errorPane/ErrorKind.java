@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 public enum ErrorKind {
     RUN_OUT_OF_INK_ERROR(PrinterErrorCodes.RUN_OUT_OF_INK.code, ImagesProperties.emptyInksError(), "Poziom atramentu nie wystarczajacy do wydrukowania. Uzupelnij by kontunuowac"),
     PRINTER_IS_BUSY_ERROR(PrinterErrorCodes.PRINTER_IS_BUSY_ERROR.code, ImagesProperties.printerIsBusyError(), "Prosze poczekac na zakonczenie procesu..."),
-    RUN_OUT_OF_PAPER_ERROR(PrinterErrorCodes.RUN_OUT_OF_PAPER.code, ImagesProperties.noPaperError(), "W drukarce nie ma papieru. Prosze uzupelnic aby kontunuowac dukowanie"),
+    RUN_OUT_OF_PAPER_ERROR(PrinterErrorCodes.RUN_OUT_OF_PAPER.code, ImagesProperties.noPaperError(), "W drukarce nie ma papieru. Prosze uzupelnic aby kontunuowac drukowanie"),
     FULL_PRINTED_PAPER_STACK_ERROR(PrinterErrorCodes.FULL_PRINTED_PAGES_STACK.code, ImagesProperties.fullPrintedPagesStackError(), "Zapelniono stos wydrukow. Zabierz wydrukowane kartki by kontynuowac"),
     FULL_AVAILABLE_PAPER_STACK(PrinterErrorCodes.FULL_AVAILABLE_PAPER_STACK.code, ImagesProperties.noPaperError(), "Zapelniono stos dostepnego papieru. Nie mozna dodac wiecej"),
     UNKNOWN_ERROR(PrinterErrorCodes.UNKNOWN_ERROR.code, ImagesProperties.unknownError(), "Nierozpoznany blad!"),
