@@ -17,9 +17,29 @@
 
 ## How to use it
 If there is a problem with running, try to open it by console with command:
+- Windows
 ```cmd
 java -jar PrinterSimulator2.jar
 ```
+
+- Linux 
+```bash
+java -jar PrinterSimulator2.jar
+```
+<br/>
+If you will see errors about not having error like this:
+`java.lang.NoClassDefFoundError: javafx/application/Application`
+it means that you don't have javafx libraries and you need to follow this steps:
+- 1) Download javaFx libraries for linux 
+ [javafx-oracle.com](https://www.oracle.com/java/technologies/java-archive-javafx-downloads.html#javafx_sdk-1.3.1-oth-JPR) 
+- 2) Unpack files into your java library destination, for example: `/usr/lib/jvm/java-14-oracle`
+- 3) Run script made by myself for you, with java library destination folder , for example: `/usr/lib/jvm/java-14-oracle`
+
+<br/>
+```bash
+./runGame.sh /usr/lib/jvm/java-14-oracle
+```
+- 4) Enjoy 
 
 ## Game control
 By `mouse` - intuitively, by clicking on individual elements
