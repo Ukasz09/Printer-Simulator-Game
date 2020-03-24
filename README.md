@@ -28,18 +28,20 @@ java -jar PrinterSimulator2.jar
 ```
 <br/>
 If you will see errors about not having error like this: <br/>
-`java.lang.NoClassDefFoundError: javafx/application/Application` <br/>
+```bash
+java.lang.NoClassDefFoundError: javafx/application/Application
+```
+<br/>
 it means that you don't have javafx libraries and you need to follow this steps: <br/>
-- 1) Download javaFx libraries for linux [javafx-oracle.com](https://www.oracle.com/java/technologies/java-archive-javafx-downloads.html#javafx_sdk-1.3.1-oth-JPR) 
+
+- 1) Download javaFx libraries for linux [javafx-oracle.com](https://www.oracle.com/java/technologies/java-archive-javafx-downloads.html#javafx_sdk-1.3.1-oth-JPR)
 - 2) Unpack files into your java library destination, for example: `/usr/lib/jvm/java-14-oracle`
-- 3) Run script made by myself for you, with java library destination folder , for example: `/usr/lib/jvm/java-14-oracle`
+- 3) Run script made by myself for you, with java library destination folder
 
 <br/>
 ```bash
 ./runGame.sh /usr/lib/jvm/java-14-oracle
 ```
-- 4) Enjoy :heart:
-
 ## Game control
 By `mouse` - intuitively, by clicking on individual elements
 
